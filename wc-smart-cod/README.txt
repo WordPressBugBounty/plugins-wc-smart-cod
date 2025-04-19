@@ -2,8 +2,8 @@
 Contributors: fullstackhouse
 Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD, WooCommerce COD, Multiple Fees
 Requires at least: 3.0.1
-Tested up to: 6.5
-Stable tag: 1.7.2
+Tested up to: 6.8
+Stable tag: 1.7.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,9 +11,12 @@ All the COD restrictions and extra fees you'll ever need, in a single plugin.
 
 == Description ==
 
-This plugin extends WooCommerce Cash on Delivery Gateway, providing the capability to add not one, but multiple different extra fees and restrictions based on customer's location, selected shipping method and many other factors.
+**WooCommerce Smart COD** is a powerful plugin that extends the **WooCommerce Cash on Delivery (COD) Gateway**, enabling you to add **multiple extra fees and restrictions** based on a variety of customer conditions such as location, selected shipping method, and more.
 
-It also supports many different restriction cases, covering every possible scenario you'll ever need.
+Whether you’re managing a small shop or a large e-commerce business, this plugin helps you fine-tune your Cash on Delivery service to cater to a wide range of scenarios and requirements.
+
+A common challenge faced by WooCommerce store owners is the inability to apply an extra fee for the Cash on Delivery (COD) payment method. This is a critical feature for many e-commerce shops, as charging an additional fee for COD is a standard practice.
+This plugin not only addresses this issue but goes even further, offering a wide range of customizable restrictions and flexible extra fees. It’s the all-in-one solution for managing COD payments in your store.
 
 = WooCommerce Smart COD PRO =
 [WooCommerce Smart COD PRO](https://woosmartcod.com), **a business class, cash on delivery management tool**. 
@@ -40,8 +43,7 @@ Some of the **additional robust features** are:
 With our [PRO version](https://woosmartcod.com), you can manage cash on delivery payment gateway, securely and effectively. 
 
 = Restrictions =
-Restriction can be enable or disable. The switch between enable and disable is extremely easy.
-The restrictions available are:
+Each restriction can be easily toggled between Enable and Disable. When set to Enable, the restriction will allow the Cash on Delivery (COD) payment option only for the specified selections. On the other hand, when set to Disable, the restriction will disable the COD option for the specified selections, making it unavailable for them.
 
 * Shipping Zone
 * Shipping Method inside Shipping Zone
@@ -59,7 +61,7 @@ You can define an informational message to display before the payment methods, w
 You can define different messages per restrict reason.
 
 = Extra Fees =
-The extra fee can be variable and except the "standard" one, you can define fees per:
+The extra fee is flexible, and in addition to the "standard" fee, you can define fees based on the following criteria:
 
 * Shipping Zone
 * Country
@@ -71,20 +73,14 @@ You can use a fixed price or a percentage of the customer's cart amount.
 You also have a nice rounding option.
 You can enable tax for this fee.
 
-= Details =
+= Developer-Friendly =
+The plugin integrates seamlessly with WooCommerce and uses a clean, **object-oriented** codebase. It also provides the following filters for easy customization:
 
-A usual scenario that troubles every WooCommerce Shop Admin is that he can't charge the Cash on Delivery payment method with an extra fee.
-That's a very crucial requirement for the e-shops since almost everyone is charging extra this method.
+- `wc_smart_cod_fee`: Alter the extra fee.
+- `wc_smart_cod_available`: Alter the current COD restriction.
+- `wc_smart_cod_fee_title`: Change the COD fee title.
 
-This plugin except of covering the above scenario, it goes many steps further, providing a high variety of restrictions and variable extra fees. It's the only COD plugin you'll ever need.
-
-= Developers =
-The plugin extends the already existing WooCommerce Cash on Delivery Gateway, so there is no need to enable or disable gateways.
-The code is clean, fast and OO.
-There are three filters you can use:
-* One to alter the extra fee ( wc_smart_cod_fee ).
-* One to alter the current cod restriction ( wc_smart_cod_available ).
-* One to change the cod fee title ( wc_smart_cod_fee_title ).
+Since the plugin extends the existing WooCommerce Cash on Delivery Gateway, there’s **no need to enable or disable gateways** manually.
 
 == Installation ==
 
@@ -99,6 +95,9 @@ There are three filters you can use:
 3. assets/screenshot-3.png
 
 == Changelog ==
+
+= 1.7.3 =
+* Fix - Deprecated creation of dynamic properties
 
 = 1.6 =
 * Fix - Bad require on admin partial

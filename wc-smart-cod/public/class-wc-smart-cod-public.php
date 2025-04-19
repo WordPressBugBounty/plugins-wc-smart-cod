@@ -51,11 +51,18 @@ class Wc_Smart_Cod_Public {
 	private $has_cod_available;
 	private $reason;
 
+	public $cod_settings = array();
+	public $restriction_settings = array();
+	public $fee_settings = array();
+
+	private $cart_products = false;
+	private $settings_analyzed = false;
+	private $nocharge_amount_mode = false;
+
 	public function __construct( $plugin_name ) {
 
 		$this->plugin_name  = $plugin_name;
 		$this->version      = SMART_COD_VER;
-		$this->cod_settings = array();
 
 		$this->cart_products        =
 		$this->settings_analyzed    =

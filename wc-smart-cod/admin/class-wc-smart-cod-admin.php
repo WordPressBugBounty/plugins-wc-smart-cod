@@ -47,12 +47,14 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
+
+	public $new_wc = false;
+
 	public function __construct() {
 
 		parent::__construct();
 		$this->plugin_name = 'wc-smart-cod';
 		$this->version = SMART_COD_VER;
-		$this->new_wc = false;
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'woocommerce_settings_api_form_fields_cod', array( $this, 'extend_cod' ) );

@@ -79,7 +79,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.7.2' );
+		define( 'SMART_COD_VER', '1.7.3' );
 
 		self::$version = SMART_COD_VER;
 
@@ -311,7 +311,7 @@ class Wc_Smart_Cod {
 	}
 
 	public function dismiss_wsc_notice() {
-		set_transient( 'wsc-notice-dismissed', true, 2592000 );
+		set_transient( 'wsc-notice-dismissed', true, 5184000 );
 		die();
 	}
 
