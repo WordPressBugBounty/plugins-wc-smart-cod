@@ -79,11 +79,13 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.7.3' );
+		define( 'SMART_COD_VER', '1.8.0' );
 
 		self::$version = SMART_COD_VER;
 
 		$this->load_notification_manager();
+
+		$this->load_settings_manager();
 
 		self::setup_promos();
 
@@ -220,6 +222,22 @@ class Wc_Smart_Cod {
 		return false;
 	}
 
+	public static function get_settings_manager() {
+
+		$settings = get_transient( 'wc-smart-cod-settings' );
+
+		if( $settings ) {
+			return $settings;
+		}
+
+		$settings_manager = new Wc_Smart_Cod_Settings_Manager( self::$pro_url );
+		$settings = $settings_manager->get_settings_manager();
+
+		set_transient( 'wc-smart-cod-settings', $settings, 86400 );
+		
+		return $settings;
+	}
+
 	public function activate_notice() {
 
 		if ( get_transient( 'wc-smart-cod-activated' ) ) :
@@ -265,6 +283,13 @@ class Wc_Smart_Cod {
 		 * Class responsible for notifications
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-notification-settings.php';
+	}
+
+	public function load_settings_manager() {
+		/**
+		 * Class responsible for settings manager
+		 */
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-settings-manager.php';
 	}
 
 	public function load_dependencies() {
@@ -334,21 +359,6 @@ class Wc_Smart_Cod {
 		$plugin_i18n = new Wc_Smart_Cod_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
-
-	}
-
-	/**
-	 * Register all of the hooks related to the admin area functionality
-	 * of the plugin.
-	 *
-	 * @since    1.0.0
-	 * @access   private
-	 */
-	private function define_admin_hooks() {
-
-		$plugin_admin = new Wc_Smart_Cod_Admin( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 	}
 

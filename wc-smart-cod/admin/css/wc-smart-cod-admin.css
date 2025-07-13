@@ -91,6 +91,35 @@ a.wc-smart-cod-mode, a.wc-smart-cod-mode:hover, a.wc-smart-cod-mode:focus {
 	max-width: 100% !important;
 }
 
+.pro-badge {
+	margin: 5px 0;
+}
+
+.pro-badge a {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  background: #403447;
+  border-radius: 999px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.5px;
+  user-select: none;
+  cursor: pointer;
+  text-transform: none;
+  text-decoration: none;
+  transition: all 0.2s ease-in;
+}
+
+.pro-badge a:hover {
+  background-color: #481c41;
+}
+
+.woocommerce_page_wc-settings-checkout-cod form h2 {
+	padding-top: 15px;
+}
+
 @media screen and (min-width: 1200px) {
 
 	.wsc-columns {

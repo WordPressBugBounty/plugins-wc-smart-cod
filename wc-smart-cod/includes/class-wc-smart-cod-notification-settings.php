@@ -16,18 +16,17 @@ class Wc_Smart_Cod_Notification_Settings {
 
 			$res = wp_remote_get(
 				$this->settings_url,
-				array( 'timeout' => 1 )
+				array( 'timeout' => 5, 'headers' => $headers )
 			);
 
 			if( is_wp_error( $res ) ) {
 				return array();
 			}
 
-			$ok = ( $res
-				&& isset( $res['response'] )
-				&& isset( $res['response']['code'] )
-				&& $res['response']['code'] === 200
-			);
+			$ok = $res
+				&& isset($res['response'])
+				&& isset($res['response']['code'])
+				&& $res['response']['code'] === 200;
 	
 			if($ok) {
 				return json_decode( $res['body'], true );

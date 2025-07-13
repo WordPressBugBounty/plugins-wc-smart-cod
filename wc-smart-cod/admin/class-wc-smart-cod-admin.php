@@ -50,15 +50,26 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	public $new_wc = false;
 
+	private $restriction_settings = array();
+
+	private $fee_settings = array();
+
+	private $prepared_fields = array();
+
+	private $settings_manager = array();
+
 	public function __construct() {
 
 		parent::__construct();
 		$this->plugin_name = 'wc-smart-cod';
 		$this->version = SMART_COD_VER;
+		
+		$this->settings_manager = (object)Wc_Smart_Cod::get_settings_manager();
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'woocommerce_settings_api_form_fields_cod', array( $this, 'extend_cod' ) );
 		add_action( 'woocommerce_settings_api_sanitized_fields_cod', array( $this, 'clean_up_settings' ) );
+		add_filter( 'experimental_woocommerce_admin_payment_reactify_render_sections', array( $this, 'woocommerce_smart_cod') );
 		add_action( 'woocommerce_delete_shipping_zone', array( $this, 'clean_up_gateway' ) );
 	}
 
@@ -143,6 +154,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );
 		echo '</h2>';
 		echo wp_kses_post( wpautop( $this->get_method_description() ) );
+		
 		$template_data = array(
 			'promo_texts' => WC_Smart_Cod::$promo_texts,
 			'version' => WC_Smart_Cod::$version,
@@ -220,6 +232,26 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	}
 
+	public function woocommerce_smart_cod($sections) {
+		$cod = 'cod';
+		return array_filter($sections, function($v) use ($cod) {
+			return $v !== $cod;
+		});
+	}
+
+	public function get_field_value($key, $field, $post_data = array())
+	{
+		if ($this->has_prefix_in_array($key, $this->settings_manager->e)) {
+			if (!in_array($key, haystack: $this->settings_manager->d)) {
+				if (isset($this->settings[$key]) && $this->settings[$key] !== '') {
+					return $this->settings[$key];
+				}
+				return '';
+			}
+		}
+		return parent::get_field_value($key, $field, $post_data);
+	}
+
 	private function update_wc_smart_cod( $settings, $restriction_settings ) {
 
 		$mode = $settings[ 'restriction_mode' ];
@@ -257,9 +289,24 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	}
 
+	/**
+	 * Check if a string starts with any of the prefixes in an array.
+	 *
+	 * @param string $haystack   The string to check.
+	 * @param array  $prefixes   Array of possible prefixes.
+	 * @return bool              True if any prefix matches the start of the string.
+	 */
+	protected function has_prefix_in_array($haystack, $prefixes) {
+		foreach ($prefixes as $prefix) {
+			if (strncmp($haystack, $prefix, strlen($prefix)) === 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	protected function analyze_fields( $form_fields, $settings, $restriction_settings, $old_wc_smart_cod ) {
 
-		$fields = array();
 		$fee_settings = array_key_exists( 'fee_settings', $settings ) ? $settings[ 'fee_settings' ] : false;
 		$fee_settings = $fee_settings ? json_decode( $fee_settings, true ) : array();
 		$update_fee = $update_restriction = $needs_update = false;
@@ -273,6 +320,13 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 			$class_arr = explode( ' ', $field[ 'class' ] );
 
+			/**
+			 * - Checks if the current field has the 'wc-smart-cod-restriction' class:
+			 *   - Determines whether the restriction mode should be 'enable' or 'disable' based on $restriction_settings.
+			 *   - Updates the field title to reflect the enabled state if applicable.
+			 *   - Initializes restriction settings for new fields after plugin update.
+			 *   - Sets a custom data attribute 'data-mode' to indicate the current mode.
+			 */
 			if( in_array( 'wc-smart-cod-restriction', $class_arr ) ) {
 				// determine include or exclude
 				$mode = 'disable';
@@ -298,6 +352,10 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 			}
 
+			/*   - Checks if the current field has the 'wc-smart-cod-percentage' class:
+			 *   - Ensures the fee type is set (defaults to 'fixed' if not present).
+			 *   - Marks that fee settings need to be updated if a new key is added.
+			 */
 			if( in_array( 'wc-smart-cod-percentage', $class_arr ) ) {
 
 				// determine fixed price
@@ -310,6 +368,17 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 			}
 
+			if ($this->settings_manager && count($this->settings_manager->e) > 0) {
+				if ($this->has_prefix_in_array($key, $this->settings_manager->e)) {
+				
+					if(!in_array($key, $this->settings_manager->d)) {
+						$needle = $this->get_dsb_key(true);
+						$form_fields[ $key ][ $this->get_dsb_key() ] = true;
+						$form_fields[ $key ][ $needle ] = $field[ $needle ] . ' wc-smart-cod-pro-field';
+					}
+					
+				}
+			}
 		}
 
 		if( $update_restriction ) {
@@ -333,6 +402,10 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		return $form_fields;
 
+	}
+
+	private function get_dsb_key( $needle = false ) {
+		return $needle ? "class" : "disabled";
 	}
 
 	public function extend_cod( $form_fields ) {
@@ -388,7 +461,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		$this->new_wc = class_exists( 'WC_Shipping_Zones' ) ? true : false;
 		$existing_settings = $this->settings;
-		$existing_zone_restrictions = array();
 		$countries = new WC_Countries;
 		$states = $countries->get_allowed_country_states();
 		$countries = $countries->get_allowed_countries();
@@ -467,7 +539,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'custom_attributes' => array(
 					'data-placeholder' => __( 'Select shipping zones', 'wc-smart-cod' ),
 					'data-name' => 'shipping_zone_restrictions'
-				)
+				),
+				'disabled' => false
 			);
 
 		}
@@ -482,7 +555,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'custom_attributes' => array(
 				'data-placeholder' => __( 'Select Countries', 'wc-smart-cod' ),
 				'data-name' => 'country_restrictions'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'state_restrictions' ] = array(
@@ -495,7 +569,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'custom_attributes' => array(
 				'data-placeholder' => __( 'Select States', 'wc-smart-cod' ),
 				'data-name' => 'state_restrictions'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'restrict_postals' ] = array(
@@ -505,7 +580,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'description' => __( 'Add the postal codes you want to restrict the COD method. Seperate with a comma. You can use fully numeric ranges as well (e.g<code>55133,55134,55400...55600</code>). For ranges use <code>...</code> for delimiter.', 'wc-smart-cod' ),
 			'custom_attributes' => array(
 				'data-name' => 'restrict_postals'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'city_restrictions' ] = array(
@@ -515,7 +591,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'description' => __( 'Add the cities you want to restrict the COD method. Seperate with a comma. This cannot guarantee the cod restriction at all times, because the city field on checkout is a free text field and the user can make typos or use different characters / spelling for his city.', 'wc-smart-cod' ),
 			'custom_attributes' => array(
 				'data-name' => 'city_restrictions'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'cart_amount_restriction' ] = array(
@@ -526,7 +603,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
 			'custom_attributes' => array(
 				'data-name' => 'cart_amount_restriction'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'user_role_restriction' ] = array(
@@ -539,7 +617,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'custom_attributes' => array(
 				'data-placeholder' => __( 'Select Roles', 'wc-smart-cod' ),
 				'data-name' => 'user_role_restriction'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'category_restriction_mode' ] = array(
@@ -552,7 +631,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'all_products'    => __( 'All products', 'wc-smart-cod' ),
 			),
 			'default' => 'one_product',
-			'description' => __( 'Select "at least one", if you want the COD to be restricted when at least one product of the cart belongs to a restricted category. Select "all", if you want the COD to be restricted if all the cart product\'s belongs to restricted categories. Then add the restricted categories in the select field below.', 'wc-smart-cod' )
+			'description' => __( 'Select "at least one", if you want the COD to be restricted when at least one product of the cart belongs to a restricted category. Select "all", if you want the COD to be restricted if all the cart product\'s belongs to restricted categories. Then add the restricted categories in the select field below.', 'wc-smart-cod' ),
+			'disabled' => false
 		);
 
 		$form_fields[ 'category_restriction' ] = array(
@@ -567,7 +647,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'data-minimum_input_length' => '1',
 				'data-name' => 'category_restriction',
 				'data-action' => 'wcsmartcod_json_search_categories'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'product_restriction_mode' ] = array(
@@ -580,7 +661,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'all_products'    => __( 'All products', 'wc-smart-cod' ),
 			),
 			'default' => 'one_product',
-			'description' => __( 'Select "at least one", if you want the COD to be restricted when at least one product of the cart is restricted. Select "all", if you want the COD to be restricted if all of the cart\'s product\'s are restricted. Then add the restricted products in the select field below.', 'wc-smart-cod' )
+			'description' => __( 'Select "at least one", if you want the COD to be restricted when at least one product of the cart is restricted. Select "all", if you want the COD to be restricted if all of the cart\'s product\'s are restricted. Then add the restricted products in the select field below.', 'wc-smart-cod' ),
+			'disabled' => false
 		);
 
 		$form_fields[ 'product_restriction' ] = array(
@@ -595,7 +677,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'data-action' => 'woocommerce_json_search_products_and_variations',
 				'data-minimum_input_length' => '1',
 				'data-name' => 'product_restriction'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'shipping_class_restriction_mode' ] = array(
@@ -608,7 +691,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'all_products'    => __( 'All products', 'wc-smart-cod' ),
 			),
 			'default' => 'one_product',
-			'description' => __( 'Select "at least one", if you want the COD to be restricted when at least one product of the cart belongs to a restricted shipping class. Select "all", if you want the COD to be restricted if all of the cart\'s product\'s belongs to restricted shipping classes. Then add the restricted shipping classes in the select field below.', 'wc-smart-cod' )
+			'description' => __( 'Select "at least one", if you want the COD to be restricted when at least one product of the cart belongs to a restricted shipping class. Select "all", if you want the COD to be restricted if all of the cart\'s product\'s belongs to restricted shipping classes. Then add the restricted shipping classes in the select field below.', 'wc-smart-cod' ),
+			'disabled' => false
 		);
 
 		$form_fields[ 'shipping_class_restriction' ] = array(
@@ -621,7 +705,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'custom_attributes' => array(
 				'data-placeholder' => __( 'Select Shipping Classes', 'wc-smart-cod' ),
 				'data-name' => 'shipping_class_restriction'
-			)
+			),
+			'disabled' => false
 		);
 
 		$form_fields[ 'shipping_zone_method_restriction' ] = array(
@@ -641,7 +726,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'title' => __( 'COD Unavailable Message', 'wc-smart-cod' ),
 			'type' => 'cod_messages',
 			'class' => 'wc-smart-cod-group',
-			'description' => __( 'An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don\'t want to use this feature. You can define different messages per reason.', 'wc-smart-cod' )
+			'description' => __( 'An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don\'t want to use this feature. You can define different messages per reason.', 'wc-smart-cod' ),
+			'disabled' => false
 		);
 
 		$form_fields[ 'extra_fee' ] = array(
@@ -650,7 +736,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
 			'description' => __( 'The extra amount you charging for cash on delivery (leave blank or zero if you don\'t charge extra)', 'wc-smart-cod' ),
 			'desc_tip' => true,
-			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' )
+			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+			'disabled' => false
 		);
 
 		$form_fields[ 'percentage_rounding' ] = array(
@@ -664,7 +751,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			),
 			'default' => 'round_up',
 			'description' => __( 'Examples: Round up setting will transform 5.345&euro; to 6&euro;<br />Round down will transform it to 5&euro;.', 'wc-smart-cod' ),
-			'desc_tip' => false
+			'desc_tip' => false,
+			'disabled' => false
 		);
 
 		$form_fields[ 'extra_fee_tax' ] = array(
@@ -678,7 +766,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			),
 			'default' => 'disable',
 			'description' => __( 'Is extra fee taxable? Use this option if you have taxes enabled in your shop and you want to include tax to COD method.', 'wc-smart-cod' ),
-			'desc_tip' => false
+			'desc_tip' => false,
+			'disabled' => false
 		);
 
 		$form_fields[ 'nocharge_amount' ] = array(
@@ -690,7 +779,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
 			'custom_attributes' => array(
 				'data-name' => 'nocharge_amount'
-			)
+			),
+			'disabled' => false
 		);
 
 		$ca_options = array(
@@ -711,7 +801,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			),
 			'default' => array( 'tax', 'shipping' ),
 			'description' => __( 'This setting affect those settings: "Disable extra fee if cart amount is greater than this limit." and "Disable if cart amount is greater than". <strong>It defines what is finally calculated as the cart amount.</strong>', 'wc-smart-cod' ),
-			'desc_tip' => false
+			'desc_tip' => false,
+			'disabled' => false
 		);
 
 		foreach( $shipping_methods as $key => $shipping_method ) {
@@ -723,7 +814,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 					'description' =>  __( 'Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount', 'wc-smart-cod' ),
 					'desc_tip' => true,
 					'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
-					'placeholder' => __( 'Enter Amount', 'wc-smart-cod' )
+					'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+					'disabled' => false
 				);
 			}
 
@@ -747,7 +839,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 						'description' =>  __( 'Enter Amount to charge differently in this country or leave it empty to charge the normal amount. Use this field only if you want to have separate prices per country in the same shipping zone, otherwise enter the amount on the shipping zone field', 'wc-smart-cod' ),
 						'desc_tip' => true,
 						'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
-						'placeholder' => __( 'Enter Amount', 'wc-smart-cod' )
+						'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+						'disabled' => false
 					);
 
 				}
@@ -785,7 +878,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 					'description' =>  __( 'Enter Amount to charge differently in this shipping zone or leave it empty to charge the normal amount', 'wc-smart-cod' ),
 					'desc_tip' => true,
 					'class' => 'wc-smart-cod-group wc-smart-cod-fee wc-smart-cod-percentage',
-					'placeholder' => __( 'Enter Amount', 'wc-smart-cod' )
+					'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+					'disabled' => false
 				);
 
 				foreach( $zone[ 'shipping_methods' ] as $shipping_method ) {
@@ -824,7 +918,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 							'description' =>  __( 'Enter Amount to charge differently in this shipping zone with this shipping method or leave it empty to charge the normal amount', 'wc-smart-cod' ),
 							'desc_tip' => true,
 							'class' => 'wc-smart-cod-group wc-smart-cod-fee wc-smart-cod-percentage',
-							'placeholder' => __( 'Enter Amount', 'wc-smart-cod' )
+							'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+							'disabled' => false
 						);
 					}
 				}
@@ -837,6 +932,16 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		$form_fields[ 'fee_settings' ] = array(
 			'type' => 'hidden'
+		);
+
+		$form_fields[ 'risk_free_advance_payment' ] = array(
+			'title' => __( 'Partial payment amount for COD orders', 'wc-smart-cod' ),
+			'type' => 'price',
+			'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
+			'description' => __( 'Require customers to pay a portion of the order in advance, before processing a Cash on Delivery order.', 'wc-smart-cod' ),
+			'desc_tip' => true,
+			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+			'disabled' => true
 		);
 
 		if( ! empty( $unset_zone_methods_fees ) ) {
@@ -1116,7 +1221,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				if( ! is_numeric( $setting ) )
 					unset( $settings [ $key ] );
 			}
-
 		}
 
 		return $settings;
@@ -1193,7 +1297,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'messages' => $messages,
 				'enhanced_select' => $enhanced_select_variables,
 				'restriction_settings' => ( object ) $this->get_json_settings( 'restriction_settings' ),
-				'fee_settings' => ( object ) $this->get_json_settings( 'fee_settings' )
+				'fee_settings' => ( object ) $this->get_json_settings( 'fee_settings' ),
+				'pro_site_url' => $this->settings_manager->l
 			);
 
 			global $wp_scripts;
