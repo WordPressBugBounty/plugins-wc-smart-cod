@@ -79,7 +79,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.8.0' );
+		define( 'SMART_COD_VER', '1.8.2' );
 
 		self::$version = SMART_COD_VER;
 

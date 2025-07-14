@@ -242,7 +242,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 	public function get_field_value($key, $field, $post_data = array())
 	{
 		if ($this->has_prefix_in_array($key, $this->settings_manager->e)) {
-			if (!in_array($key, haystack: $this->settings_manager->d)) {
+			if (!in_array($key, $this->settings_manager->d)) {
 				if (isset($this->settings[$key]) && $this->settings[$key] !== '') {
 					return $this->settings[$key];
 				}
@@ -251,7 +251,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		}
 		return parent::get_field_value($key, $field, $post_data);
 	}
-
+	
 	private function update_wc_smart_cod( $settings, $restriction_settings ) {
 
 		$mode = $settings[ 'restriction_mode' ];
