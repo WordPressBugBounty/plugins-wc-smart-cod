@@ -79,7 +79,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.8.2' );
+		define( 'SMART_COD_VER', '1.8.3' );
 
 		self::$version = SMART_COD_VER;
 
@@ -98,8 +98,16 @@ class Wc_Smart_Cod {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_notices', array( $this, 'show_wsc_notice' ) );
 		add_filter( 'plugin_action_links_wc-smart-cod/wc-smart-cod.php', array( $this, 'plugin_action_links' ) );
+		add_filter( 'experimental_woocommerce_admin_payment_reactify_render_sections', array( $this, 'woocommerce_smart_cod') );
 	}
 
+	public function woocommerce_smart_cod($sections) {
+		$cod = 'cod';
+		return array_filter($sections, function($v) use ($cod) {
+			return $v !== $cod;
+		});
+	}
+	
 	public function plugin_action_links( $links ) {
 		$plugin_links = array();
 

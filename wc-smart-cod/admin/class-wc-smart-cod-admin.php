@@ -63,14 +63,23 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		parent::__construct();
 		$this->plugin_name = 'wc-smart-cod';
 		$this->version = SMART_COD_VER;
-		
+
+		$this->normalize_settings();
+
 		$this->settings_manager = (object)Wc_Smart_Cod::get_settings_manager();
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'woocommerce_settings_api_form_fields_cod', array( $this, 'extend_cod' ) );
 		add_action( 'woocommerce_settings_api_sanitized_fields_cod', array( $this, 'clean_up_settings' ) );
-		add_filter( 'experimental_woocommerce_admin_payment_reactify_render_sections', array( $this, 'woocommerce_smart_cod') );
 		add_action( 'woocommerce_delete_shipping_zone', array( $this, 'clean_up_gateway' ) );
+	}
+
+	private function normalize_settings() {
+		if(is_array($this->settings)
+			&& isset($this->settings['restrict_postals'])
+			&& is_array($this->settings['restrict_postals'])) {
+			$this->settings['restrict_postals'] = '';
+		}
 	}
 
 	public static function ajax_search_categories() {
@@ -230,13 +239,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			unset( $this->settings[ $key ] );
 		}
 
-	}
-
-	public function woocommerce_smart_cod($sections) {
-		$cod = 'cod';
-		return array_filter($sections, function($v) use ($cod) {
-			return $v !== $cod;
-		});
 	}
 
 	public function get_field_value($key, $field, $post_data = array())
