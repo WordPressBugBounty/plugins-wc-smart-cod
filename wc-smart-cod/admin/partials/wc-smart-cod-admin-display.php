@@ -26,7 +26,7 @@
 	</div>
 	<div class="wsc-sidebar">
 		<div class="card">
-			<h2>WooCommerce Smart COD PRO</h2>
+			<h2>Smart COD PRO for WooCommerce</h2>
 			<p><?php echo $template_data['promo_texts']['sidebar']; ?></p>
 			<p><strong><?php echo $template_data['coupon']; ?></strong></p>
 			<ul>

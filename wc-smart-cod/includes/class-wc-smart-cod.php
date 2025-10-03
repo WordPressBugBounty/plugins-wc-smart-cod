@@ -71,7 +71,7 @@ class Wc_Smart_Cod {
 
 	public static $promo_texts;
 
-	public static $plugin_friendly_name = 'WooCommerce Smart COD';
+	public static $plugin_friendly_name = 'Smart COD for WooCommerce';
 
 	public static $plugin_settings_url;
 
@@ -79,7 +79,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.8.3' );
+		define( 'SMART_COD_VER', '1.8.4' );
 
 		self::$version = SMART_COD_VER;
 
@@ -178,9 +178,9 @@ class Wc_Smart_Cod {
 		}
 
 		$promos = array(
-			'generic'  => 'Try <strong><a href="%s" target="_blank" target="_blank" rel="noopener">WooCommerce Smart COD PRO</a></strong> for <strong>more restrictions</strong>, <strong>unlimited extra fees</strong> and <strong>Risk Free COD</strong>, to list only some, of the new features!',
+			'generic'  => 'Try <strong><a href="%s" target="_blank" target="_blank" rel="noopener">Smart COD PRO for WooCommerce</a></strong> for <strong>more restrictions</strong>, <strong>unlimited extra fees</strong> and <strong>Risk Free COD</strong>, to list only some, of the new features!',
 			'sidebar'  => '<strong>A business class, cash on delivery management tool</strong>. Reliable, secure and fully customizable, <span>with a highly engaged and dedicated support team!</span>',
-			'coupon'   => 'As a <strong>valued WooCommerce Smart COD free user, you receive 20%% off</strong>, by visiting <a href="%s" target="_blank" target="_blank" rel="noopener">our shop</a> and using the coupon, you will find there!',
+			'coupon'   => 'As a <strong>valued Smart COD for WooCommerce free user, you receive 20%% off</strong>, by visiting <a href="%s" target="_blank" target="_blank" rel="noopener">our shop</a> and using the coupon, you will find there!',
 			'features' => array(
 				'Risk Free COD (advance payment to secure cod)',
 				'Unlimited extra fees (as many restriction scenario\'s as you need)',
@@ -251,7 +251,7 @@ class Wc_Smart_Cod {
 		if ( get_transient( 'wc-smart-cod-activated' ) ) :
 			?>
 			<div class="updated notice is-dismissible">
-				<p>Thank you for using <strong>WooCommerce Smart COD</strong>! Setup your settings <a href="<?php echo self::$plugin_settings_url; ?>">here</a>. If you liked our plugin, consider to give us a rating on <a href="https://wordpress.org/plugins/wc-smart-cod/" target="_blank">wordpress.org</a>!</p>
+				<p>Thank you for using <strong>Smart COD for WooCommerce</strong>! Setup your settings <a href="<?php echo self::$plugin_settings_url; ?>">here</a>. If you liked our plugin, consider to give us a rating on <a href="https://wordpress.org/plugins/wc-smart-cod/" target="_blank">wordpress.org</a>!</p>
 				<p><?php self::get_promo( 'activation' ); ?></p>
 			</div>
 			<?php

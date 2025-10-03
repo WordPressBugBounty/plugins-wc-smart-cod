@@ -1,9 +1,9 @@
-=== WooCommerce Smart COD ===
+=== Smart COD for WooCommerce ===
 Contributors: fullstackhouse
 Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD, WooCommerce COD, Multiple Fees
 Requires at least: 3.0.1
-Tested up to: 6.8.2
-Stable tag: 1.8.3
+Tested up to: 6.8.3
+Stable tag: 1.8.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,15 +11,15 @@ All the COD restrictions and extra fees you'll ever need, in a single plugin.
 
 == Description ==
 
-**WooCommerce Smart COD** is a powerful plugin that extends the **WooCommerce Cash on Delivery (COD) Gateway**, enabling you to add **multiple extra fees and restrictions** based on a variety of customer conditions such as location, selected shipping method, and more.
+**Smart COD for WooCommerce** is a powerful plugin that extends the **WooCommerce Cash on Delivery (COD) Gateway**, enabling you to add **multiple extra fees and restrictions** based on a variety of customer conditions such as location, selected shipping method, and more.
 
 Whether you’re managing a small shop or a large e-commerce business, this plugin helps you fine-tune your Cash on Delivery service to cater to a wide range of scenarios and requirements.
 
 A common challenge faced by WooCommerce store owners is the inability to apply an extra fee for the Cash on Delivery (COD) payment method. This is a critical feature for many e-commerce shops, as charging an additional fee for COD is a standard practice.
 This plugin not only addresses this issue but goes even further, offering a wide range of customizable restrictions and flexible extra fees. It’s the all-in-one solution for managing COD payments in your store.
 
-= WooCommerce Smart COD PRO =
-[WooCommerce Smart COD PRO](https://woosmartcod.com), **a business class, cash on delivery management tool**. 
+= Smart COD PRO for WooCommerce =
+[Smart COD PRO for WooCommerce](https://woosmartcod.com), **a business class, cash on delivery management tool**. 
 Reliable, secure and fully customizable, with a highly engaged and **dedicated support team!**
 
 Some of the **additional robust features** are:
