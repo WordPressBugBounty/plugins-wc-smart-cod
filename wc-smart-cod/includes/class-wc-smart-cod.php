@@ -75,18 +75,22 @@ class Wc_Smart_Cod {
 
 	public static $plugin_settings_url;
 
+	const SETTINGS_CACHE = 'wc-smart-cod-settings';
+	const PROMOS_CACHE = 'wc-smart-cod-notifications';
+	const REMOTE_REFRESH_LOCK = 'wc-smart-cod-remote-configuration-refreshing';
+
 	public function __construct() {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.8.4' );
+		define( 'SMART_COD_VER', '1.9.1' );
 
 		self::$version = SMART_COD_VER;
 
 		$this->load_notification_manager();
-
 		$this->load_settings_manager();
 
+		// Frontend requests and gateway construction never wait for remote copy.
 		self::setup_promos();
 
 		self::$plugin_settings_url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=cod' );
@@ -99,6 +103,9 @@ class Wc_Smart_Cod {
 		add_action( 'admin_notices', array( $this, 'show_wsc_notice' ) );
 		add_filter( 'plugin_action_links_wc-smart-cod/wc-smart-cod.php', array( $this, 'plugin_action_links' ) );
 		add_filter( 'experimental_woocommerce_admin_payment_reactify_render_sections', array( $this, 'woocommerce_smart_cod') );
+		if ( is_admin() ) {
+			add_action( 'admin_init', array( __CLASS__, 'refresh_remote_configuration' ) );
+		}
 	}
 
 	public function woocommerce_smart_cod($sections) {
@@ -170,9 +177,9 @@ class Wc_Smart_Cod {
 
 	private static function setup_promos() {
 		
-		$promos = get_transient( 'wc-smart-cod-notifications' );
+		$promos = get_transient( self::PROMOS_CACHE );
 
-		if( $promos ) {
+		if ( self::valid_promos( $promos ) ) {
 			self::$promo_texts = $promos;
 			return;
 		}
@@ -197,19 +204,6 @@ class Wc_Smart_Cod {
 			),
 		);
 
-		try {
-			$notifications = new Wc_Smart_Cod_Notification_Settings(self::$pro_url);
-			$_promos = $notifications->get_settings();
-			if( ! empty( $_promos ) ) {
-				$promos = $_promos;
-			}
-		}
-		catch( Exception $e ) {
-			// Ignore
-		}
-
-		set_transient( 'wc-smart-cod-notifications', $promos, 7200 );
-
 		self::$promo_texts = $promos;
 	}
 
@@ -231,19 +225,84 @@ class Wc_Smart_Cod {
 	}
 
 	public static function get_settings_manager() {
+		$settings = get_transient( self::SETTINGS_CACHE );
 
-		$settings = get_transient( 'wc-smart-cod-settings' );
-
-		if( $settings ) {
+		if ( self::valid_settings_manager( $settings ) ) {
 			return $settings;
 		}
 
-		$settings_manager = new Wc_Smart_Cod_Settings_Manager( self::$pro_url );
-		$settings = $settings_manager->get_settings_manager();
+		// This fallback is used only until an administrator refreshes the remote
+		// configuration. It must never trigger a storefront HTTP request.
+		return array( 'e' => array(), 'd' => array(), 'l' => '' );
+	}
 
-		set_transient( 'wc-smart-cod-settings', $settings, 86400 );
-		
-		return $settings;
+	private static function valid_settings_manager( $settings ) {
+		if ( ! is_array( $settings ) || ! isset( $settings['e'], $settings['d'], $settings['l'] )
+			|| ! is_array( $settings['e'] ) || ! is_array( $settings['d'] ) || ! is_string( $settings['l'] ) ) {
+			return false;
+		}
+		foreach ( array_merge( $settings['e'], $settings['d'] ) as $key ) {
+			if ( ! is_string( $key ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static function valid_promos( $promos ) {
+		if ( ! is_array( $promos ) || ! isset( $promos['generic'], $promos['coupon'], $promos['sidebar'], $promos['features'] )
+			|| ! is_array( $promos['features'] ) ) {
+			return false;
+		}
+		foreach ( array( 'generic', 'coupon', 'sidebar' ) as $key ) {
+			if ( ! is_string( $promos[ $key ] ) ) {
+				return false;
+			}
+		}
+		foreach ( $promos['features'] as $feature ) {
+			if ( ! is_string( $feature ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Refreshes optional remote configuration only in wp-admin. A short lock
+	 * avoids duplicate concurrent refreshes; failures retry on the next eligible
+	 * admin request.
+	 */
+	public static function refresh_remote_configuration() {
+		if ( ! is_admin() || ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || ! current_user_can( 'manage_woocommerce' ) ) {
+			return;
+		}
+
+		$needs_settings = ! self::valid_settings_manager( get_transient( self::SETTINGS_CACHE ) );
+		$needs_promos   = ! self::valid_promos( get_transient( self::PROMOS_CACHE ) );
+		if ( ( ! $needs_settings && ! $needs_promos ) || get_transient( self::REMOTE_REFRESH_LOCK ) ) {
+			return;
+		}
+
+		set_transient( self::REMOTE_REFRESH_LOCK, 1, 3 * MINUTE_IN_SECONDS );
+		try {
+			if ( $needs_settings ) {
+				$settings = ( new Wc_Smart_Cod_Settings_Manager( self::$pro_url ) )->fetch_settings_manager();
+				if ( self::valid_settings_manager( $settings ) ) {
+					set_transient( self::SETTINGS_CACHE, $settings, 12 * HOUR_IN_SECONDS );
+				}
+			}
+
+			if ( $needs_promos ) {
+				$promos = ( new Wc_Smart_Cod_Notification_Settings( self::$pro_url ) )->fetch_settings();
+				if ( self::valid_promos( $promos ) ) {
+					set_transient( self::PROMOS_CACHE, $promos, 12 * HOUR_IN_SECONDS );
+				}
+			}
+		} catch ( Exception $exception ) {
+			// Optional remote settings must never break the merchant admin.
+		} finally {
+			delete_transient( self::REMOTE_REFRESH_LOCK );
+		}
 	}
 
 	public function activate_notice() {
@@ -294,9 +353,6 @@ class Wc_Smart_Cod {
 	}
 
 	public function load_settings_manager() {
-		/**
-		 * Class responsible for settings manager
-		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-settings-manager.php';
 	}
 
@@ -304,6 +360,16 @@ class Wc_Smart_Cod {
 
 		if ( ! class_exists( 'WooCommerce' ) ) {
 			return;
+		}
+
+		// Keep Smart COD AI classes off ordinary storefront requests. They are
+		// loaded only by a cancellation, an Action Scheduler job, or wp-admin.
+		add_action( 'woocommerce_order_status_cancelled', array( $this, 'capture_ai_cancelled_order' ), 10, 1 );
+		add_action( 'wsc_collect_cancelled_cod_orders', array( $this, 'run_ai_history_batch' ) );
+		add_action( 'wsc_send_smart_cod_ai_events', array( $this, 'send_ai_order_ids' ), 10, 1 );
+		add_action( 'init', array( $this, 'maybe_start_ai_history_schedule' ), 20 );
+		if ( is_admin() ) {
+			add_action( 'admin_init', array( $this, 'ensure_ai_history_schedule' ) );
 		}
 
 		/**
@@ -341,6 +407,57 @@ class Wc_Smart_Cod {
 		$this->define_public_hooks();
 		$this->loader->run();
 
+	}
+
+	private function load_ai_collector() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-cancelled-cod-collector.php';
+	}
+
+	private function load_ai_outbox() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-ai-outbox.php';
+	}
+
+	public function capture_ai_cancelled_order( $order_id ) {
+		$this->load_ai_collector();
+		Wc_Smart_Cod_Cancelled_Cod_Collector::capture_cancelled_order( $order_id );
+	}
+
+	public function run_ai_history_batch() {
+		$this->load_ai_collector();
+		Wc_Smart_Cod_Cancelled_Cod_Collector::collect_batch();
+	}
+
+	public function send_ai_order_ids( $order_ids = array() ) {
+		$this->load_ai_collector();
+		$this->load_ai_outbox();
+		Wc_Smart_Cod_Ai_Outbox::send_order_ids( $order_ids );
+	}
+
+	public function ensure_ai_history_schedule() {
+		try {
+			$this->load_ai_collector();
+			Wc_Smart_Cod_Cancelled_Cod_Collector::schedule();
+		} catch ( Exception $exception ) {
+			// A failed local scheduling attempt will be retried on a later request.
+		}
+	}
+
+	public function maybe_start_ai_history_schedule() {
+		$option  = 'wsc_cancelled_cod_collection_started';
+		$started = get_option( $option, false );
+		if ( in_array( $started, array( 'action-scheduler', 'wp-cron', 'complete' ), true )
+			|| ( is_numeric( $started ) && absint( $started ) > time() - 5 * MINUTE_IN_SECONDS ) ) {
+			return;
+		}
+		if ( false === $started ) {
+			// add_option is atomic, so concurrent first visits do not both schedule.
+			if ( ! add_option( $option, time(), '', true ) ) {
+				return;
+			}
+		} else {
+			update_option( $option, time(), true );
+		}
+		$this->ensure_ai_history_schedule();
 	}
 
 	public function dismiss_wsc_notice() {

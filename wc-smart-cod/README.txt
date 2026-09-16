@@ -1,9 +1,10 @@
 === Smart COD for WooCommerce ===
 Contributors: fullstackhouse
 Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD, WooCommerce COD, Multiple Fees
-Requires at least: 3.0.1
-Tested up to: 6.8.3
-Stable tag: 1.8.4
+Requires at least: 4.0
+Requires PHP: 5.6
+Tested up to: 7.1
+Stable tag: 1.9.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -95,6 +96,18 @@ Since the plugin extends the existing WooCommerce Cash on Delivery Gateway, ther
 3. assets/screenshot-3.png
 
 == Changelog ==
+
+= 1.9.1 =
+* Privacy - Tokenise email, telephone, postcode, city and region locally before relay; raw customer identity and location values never leave the store.
+* Privacy - Introduce identity token scheme 1 for deterministic, checkout-compatible matching.
+
+= 1.9.0 =
+* Performance - Remote settings and promotional notices are cached and refreshed only in wp-admin; storefront, AJAX and REST requests no longer make external HTTP requests.
+* Feature - Collect cancelled COD shipment metadata in rate-limited batches.
+* Feature - Queue privacy-minimised Smart COD AI shipment events for secure delivery.
+* Enhancement - Prepare operating-country-scoped customer matching tokens and remove local transport data after central acknowledgement.
+* Reliability - Exclude cancelled COD orders unless a valid courier tracking code provides dispatch evidence.
+* Compatibility - Updated WordPress and WooCommerce compatibility metadata.
 
 = 1.7.3 =
 * Fix - Deprecated creation of dynamic properties

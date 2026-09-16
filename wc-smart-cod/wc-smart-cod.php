@@ -16,15 +16,18 @@
  * Plugin Name:       Smart COD for WooCommerce
  * Plugin URI:        https://wordpress.org/plugins/wc-smart-cod/
  * Description:       A powerful plugin that extends WooCommerce COD (Cash on Delivery) Gateway, supporting multiple extra fees and a multiple factor gateway restriction.
- * Version:           1.8.4
+ * Version:           1.9.1
  * Author:            woosmartcod.com
  * Author URI:        https://woosmartcod.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wc-smart-cod
  * Domain Path:       /languages
+ * Requires at least: 4.0
+ * Tested up to:      7.1
+ * Requires PHP:      5.6
  * WC requires at least: 2.7
- * WC tested up to: 10.2.2
+ * WC tested up to: 11.1.0
  */
 
 // If this file is called directly, abort.

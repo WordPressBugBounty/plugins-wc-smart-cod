@@ -31,6 +31,8 @@ class Wc_Smart_Cod_Activator {
 	 */
 
 	public static function activate() {
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-cancelled-cod-collector.php';
+		Wc_Smart_Cod_Cancelled_Cod_Collector::activate();
 		set_transient( 'wc-smart-cod-activated', true, 30 );
 	}
 

@@ -8,19 +8,30 @@ class Wc_Smart_Cod_Notification_Settings {
         $this->settings_url = $pro_url . '/free-version-notifications/';
     }
 
-    public function get_settings() {
+    /**
+     * Fetches notification copy during an explicitly admin-only refresh.
+     *
+     * @return array|null Null means that no usable response was received.
+     */
+    public function fetch_settings() {
     
 		try {
 
 			$headers = array('Content-Type' => 'application/json; charset=utf-8');
 
-			$res = wp_remote_get(
+			$res = wp_safe_remote_get(
 				$this->settings_url,
-				array( 'timeout' => 5, 'headers' => $headers )
+				array(
+					'timeout'             => 2,
+					'redirection'         => 0,
+					'sslverify'           => true,
+					'limit_response_size' => 262144,
+					'headers'             => $headers,
+				)
 			);
 
 			if( is_wp_error( $res ) ) {
-				return array();
+				return null;
 			}
 
 			$ok = $res
@@ -29,13 +40,14 @@ class Wc_Smart_Cod_Notification_Settings {
 				&& $res['response']['code'] === 200;
 	
 			if($ok) {
-				return json_decode( $res['body'], true );
+				$settings = json_decode( $res['body'], true );
+				return is_array( $settings ) ? $settings : null;
 			}
 		}
-		catch(Exception $e) {
+		catch ( Exception $e ) {
 		} 
 		
-		return array(); 
+		return null;
     }
     
 }
