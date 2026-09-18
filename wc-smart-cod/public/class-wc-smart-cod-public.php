@@ -57,16 +57,14 @@ class Wc_Smart_Cod_Public {
 
 	private $cart_products = false;
 	private $settings_analyzed = false;
-	private $nocharge_amount_mode = false;
 
 	public function __construct( $plugin_name ) {
 
 		$this->plugin_name  = $plugin_name;
 		$this->version      = SMART_COD_VER;
 
-		$this->cart_products        =
-		$this->settings_analyzed    =
-		$this->nocharge_amount_mode = false;
+		$this->cart_products     = false;
+		$this->settings_analyzed = false;
 
 		if ( is_admin() ) {
 			return;
@@ -88,7 +86,6 @@ class Wc_Smart_Cod_Public {
 			$restriction_settings,
 			array(
 				'role_restriction'                 => 0,
-				'amount_restriction'               => 0,
 				'shipping_zone_restrictions'       => 0,
 				'shipping_zone_method_restriction' => 0,
 				'country_restrictions'             => 0,
@@ -119,9 +116,7 @@ class Wc_Smart_Cod_Public {
 			}
 
 			$key = $v === 0 ? 'excludes' : 'includes';
-			if ( $k === 'nocharge_amount' ) {
-				$this->nocharge_amount_mode = $key;
-			} elseif ( $k === 'product_restriction' || $k === 'category_restriction' || $k === 'shipping_class_restriction' ) {
+			if ( $k === 'product_restriction' || $k === 'category_restriction' || $k === 'shipping_class_restriction' ) {
 				$restriction_settings[ $key ][ $k ] = array(
 					'value' => $cod_settings[ $k ],
 					'mode'  => $cod_settings[ $k . '_mode' ],
@@ -143,62 +138,19 @@ class Wc_Smart_Cod_Public {
 	}
 
 	protected function analyze_fee_settings( $fee_settings ) {
-
-		$fee_table = array(
-			'check_overthelimit'  => array(),
-			'check_country'       => array(),
-			'check_zoneandmethod' => array(),
-			'check_zone'          => array(),
-			'check_method'        => array(),
-			'check_normal_fee'    => array(),
-		);
-
-		foreach ( $this->cod_settings as $k => $v ) {
-
-			if ( ( $k === 'extra_fee' || $k === 'nocharge_amount' || strpos( $k, 'different_charge' ) !== false ) && is_numeric( $v ) ) {
-
-				$value = array(
-					'fee'  => $v,
-					'type' => array_key_exists( $k, $fee_settings ) && in_array( $fee_settings[ $k ], array( 'fixed', 'percentage' ) ) ? $fee_settings[ $k ] : 'fixed',
-					'key'  => $k,
-				);
-
-				if ( $k === 'extra_fee' ) {
-					array_push( $fee_table['check_normal_fee'], $value );
-				} elseif ( $k === 'nocharge_amount' ) {
-					array_push( $fee_table['check_overthelimit'], $value );
-				} else {
-					$key = explode( 'different_charge', $k );
-					$key = $key[0];
-
-					switch ( $key ) {
-
-						case '': {
-							array_push( $fee_table['check_zone'], $value );
-							break;
-						}
-
-						case 'zonemethod_': {
-							array_push( $fee_table['check_zoneandmethod'], $value );
-							break;
-						}
-
-						case 'include_country_': {
-							array_push( $fee_table['check_country'], $value );
-							break;
-						}
-
-						case 'method_': {
-							array_push( $fee_table['check_method'], $value );
-							break;
-						}
-
-					}
-				}
+		$fee_settings = is_array( $fee_settings ) ? $fee_settings : array();
+		$fee_table = array();
+		foreach ( array( 'method_different_charge_local_pickup' => 'check_method', 'extra_fee' => 'check_normal_fee' ) as $key => $condition ) {
+			if ( ! isset( $this->cod_settings[ $key ] ) || ! is_numeric( $this->cod_settings[ $key ] ) ) {
+				continue;
 			}
+			$fee_table[ $condition ][] = array(
+				'fee'  => $this->cod_settings[ $key ],
+				'type' => isset( $fee_settings[ $key ] ) && in_array( $fee_settings[ $key ], array( 'fixed', 'percentage' ), true ) ? $fee_settings[ $key ] : 'fixed',
+				'key'  => $key,
+			);
 		}
-
-		return array_filter( array_map( 'array_filter', $fee_table ) );
+		return $fee_table;
 
 	}
 
@@ -341,7 +293,13 @@ class Wc_Smart_Cod_Public {
 		global $woocommerce;
 
 		$packages    = WC()->shipping->get_packages();
-		$chosen_rate = isset( $_POST['shipping_method'] ) ? $_POST['shipping_method'] : false;
+		$chosen_rate = false;
+		// Read-only checkout selection; WooCommerce validates the checkout request nonce.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
+		if ( isset( $_POST['shipping_method'] ) && is_array( $_POST['shipping_method'] ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$chosen_rate = array_map( 'sanitize_text_field', wp_unslash( $_POST['shipping_method'] ) );
+		}
 
 		if ( ! $chosen_rate ) {
 			$chosen_rate = WC()->session->get( 'chosen_shipping_methods' );
@@ -392,7 +350,9 @@ class Wc_Smart_Cod_Public {
 	
 			$this->init_wsc_settings();
 	
-			$payment_gateway = isset( $_POST['payment_method'] ) && $_POST['payment_method'] === 'cod' ? 'cod' : '';
+			// Read-only checkout selection; WooCommerce validates the checkout request nonce.
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$payment_gateway = isset( $_POST['payment_method'] ) && is_scalar( $_POST['payment_method'] ) && 'cod' === sanitize_key( wp_unslash( $_POST['payment_method'] ) ) ? 'cod' : '';
 	
 			if ( ! $payment_gateway ) {
 	
@@ -418,7 +378,6 @@ class Wc_Smart_Cod_Public {
 			global $woocommerce;
 			$cart      = $woocommerce->cart;
 			$settings  = $this->get_cod_settings();
-			$is_new_wc = $this->is_new_wc();
 			$rounding  = array_key_exists( 'percentage_rounding', $settings ) && in_array( $settings['percentage_rounding'], array( 'round_up', 'round_down' ) ) ? $settings['percentage_rounding'] : 'round_up';
 			$has_tax   = false;
 			if ( isset( $settings['extra_fee_tax'] ) && $settings['extra_fee_tax'] === 'enable' ) {
@@ -432,10 +391,6 @@ class Wc_Smart_Cod_Public {
 	
 				foreach ( $group as $fee ) {
 	
-					if ( ! $is_new_wc && ( $condition === 'check_zoneandmethod' || $condition === 'check_zone' ) ) {
-						continue;
-					}
-	
 					if ( is_numeric( $extra_fee = $this->{$condition}( $fee, $cart ) ) ) {
 						if ( $fee['type'] === 'percentage' ) {
 							$extra_fee = $this->calculate_percentage( $extra_fee, $cart, $rounding );
@@ -447,6 +402,8 @@ class Wc_Smart_Cod_Public {
 	
 			$extra_fee = apply_filters( 'wc_smart_cod_fee', is_numeric( $extra_fee ) ? $extra_fee : 0, $this->fee_settings );
 			if ( $apply_fee && $extra_fee > 0 ) {
+				// Keep WooCommerce's translated payment-method label for the fee.
+				// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
 				$woocommerce->cart->add_fee( apply_filters( 'wc_smart_cod_fee_title', __( 'Cash on delivery', 'woocommerce' ) ), $extra_fee, $has_tax );
 			} else {
 				return $extra_fee;
@@ -455,37 +412,6 @@ class Wc_Smart_Cod_Public {
 		catch( Exception $e ) {
 			$this->log_wsc_error( $e->getMessage() );
 		}
-	}
-
-	protected function get_actual_total( $cart = false ) {
-
-		if ( ! $cart ) {
-			global $woocommerce;
-			$cart = $woocommerce->cart;
-		}
-
-		$total = $cart->cart_contents_total;
-		if ( ! $total ) {
-			return false;
-		}
-
-		$settings = $this->get_cod_settings();
-		if ( array_key_exists( 'cart_amount_mode', $settings ) && ! empty( $settings['cart_amount_mode'] ) ) {
-			if ( wc_tax_enabled() ) {
-				if ( in_array( 'tax', $settings['cart_amount_mode'] ) ) {
-					$taxes = $cart->get_taxes();
-					foreach ( $taxes as $tax ) {
-						$total = $total + $tax;
-					}
-				}
-			}
-			if ( in_array( 'shipping', $settings['cart_amount_mode'] ) ) {
-				$total = $total + floatval( $cart->shipping_total );
-			}
-		}
-
-		return $total;
-
 	}
 
 	protected function calculate_percentage( $percentage, $cart, $rounding ) {
@@ -737,28 +663,6 @@ class Wc_Smart_Cod_Public {
 
 	}
 
-	protected function check_cart_amount_restriction( $restriction, $enable, $has_cod_available ) {
-
-		$total = $this->get_actual_total();
-
-		if ( ! $total ) {
-			return $has_cod_available;
-		}
-
-		if ( $enable ) {
-			if ( $total < $restriction ) {
-				return false;
-			}
-		} else {
-			if ( $total >= $restriction ) {
-				return false;
-			}
-		}
-
-		return $has_cod_available;
-
-	}
-
 	protected function check_product_restriction( $restriction, $enable, $has_cod_available ) {
 
 		global $woocommerce;
@@ -990,96 +894,6 @@ class Wc_Smart_Cod_Public {
 	 * start
 	 */
 
-	private function check_country( $settings, $cart ) {
-
-		// check if we have a specific
-		// country amount set. ( include mode )
-
-		$extra_fee = false;
-		$key       = $settings['key'];
-		global $woocommerce;
-		$customer_country = $woocommerce->customer->get_shipping_country();
-
-		if ( $key === 'include_country_different_charge_' . $customer_country ) {
-			$extra_fee = $settings['fee'];
-		}
-
-		return $extra_fee;
-
-	}
-
-	private function check_overthelimit( $settings, $cart ) {
-
-		// check if customer is over the limit ( if any )
-		// and charge him nothing
-
-		$extra_fee = false;
-		$key       = $settings['key'];
-
-		if ( ! $this->nocharge_amount_mode ) {
-			$this->nocharge_amount_mode = 'excludes';
-		}
-
-		if ( $key === 'nocharge_amount' ) {
-
-			$total = $this->get_actual_total();
-			if ( $this->nocharge_amount_mode === 'excludes' ) {
-				if ( $total >= $settings['fee'] ) {
-					$extra_fee = 0;
-				}
-			} elseif ( $this->nocharge_amount_mode === 'includes' ) {
-				if ( $total < $settings['fee'] ) {
-					$extra_fee = 0;
-				}
-			}
-		}
-
-		return $extra_fee;
-
-	}
-
-	private function check_zoneandmethod( $settings, $cart ) {
-
-		// check for specific shipping zones
-		// & methods different charges
-
-		$extra_fee       = false;
-		$key             = $settings['key'];
-		$zone_id         = $this->get_customer_shipping_zone( $cart );
-		$shipping_method = $this->get_customer_shipping_method( true );
-
-		if ( $shipping_method === false || $zone_id === false ) {
-			return $extra_fee;
-		}
-
-		if ( $key === 'zonemethod_different_charge_' . $zone_id . '_method_' . $shipping_method ) {
-			$extra_fee = $settings['fee'];
-		}
-
-		return $extra_fee;
-	}
-
-	private function check_zone( $settings, $cart ) {
-
-		// check for specific shipping zones
-		// different charges
-
-		$extra_fee = false;
-		$key       = $settings['key'];
-		$zone_id   = $this->get_customer_shipping_zone( $cart );
-
-		if ( $zone_id === false ) {
-			return $extra_fee;
-		}
-
-		if ( $key === 'different_charge_' . $zone_id ) {
-			$extra_fee = $settings['fee'];
-		}
-
-		return $extra_fee;
-
-	}
-
 	private function check_method( $settings, $cart ) {
 
 		// check for specific shipping methods
@@ -1093,7 +907,7 @@ class Wc_Smart_Cod_Public {
 			return $extra_fee;
 		}
 
-		if ( $key === 'method_different_charge_' . $shipping_method ) {
+		if ( 'local_pickup' === $shipping_method && 'method_different_charge_local_pickup' === $key ) {
 			$extra_fee = $settings['fee'];
 		}
 
@@ -1138,7 +952,7 @@ class Wc_Smart_Cod_Public {
 		 * class.
 		 */
 		if ( function_exists( 'is_checkout' ) && is_checkout() ) {
-			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-smart-cod-public.min.js', array( 'jquery' ), $this->version, false );
+			wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-smart-cod-public.js', array( 'jquery' ), $this->version, false );
 		}
 
 	}

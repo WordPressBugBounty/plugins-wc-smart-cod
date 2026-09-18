@@ -56,8 +56,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	private $prepared_fields = array();
 
-	private $settings_manager = array();
-
 	public function __construct() {
 
 		parent::__construct();
@@ -66,12 +64,9 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		$this->normalize_settings();
 
-		$this->settings_manager = (object)Wc_Smart_Cod::get_settings_manager();
-
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'woocommerce_settings_api_form_fields_cod', array( $this, 'extend_cod' ) );
-		add_action( 'woocommerce_settings_api_sanitized_fields_cod', array( $this, 'clean_up_settings' ) );
-		add_action( 'woocommerce_delete_shipping_zone', array( $this, 'clean_up_gateway' ) );
+		add_action( 'update_option_woocommerce_cod_settings', array( $this, 'handle_ai_data_sharing_change' ), 10, 3 );
 	}
 
 	private function normalize_settings() {
@@ -85,14 +80,18 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 	public static function ajax_search_categories() {
 
 		check_ajax_referer( 'search-categories', 'security' );
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
+			wp_die( '', '', array( 'response' => 403 ) );
+		}
 
-		$term = wc_clean( empty( $term ) ? stripslashes( $_GET[ 'term' ] ) : $term );
+		$term = isset( $_GET['term'] ) && is_scalar( $_GET['term'] ) ? sanitize_text_field( wp_unslash( $_GET['term'] ) ) : '';
 
 		if ( empty( $term ) ) {
 			wp_die();
 		}
 
-		$categories = get_terms( 'product_cat', array(
+		$categories = get_terms( array(
+			'taxonomy' => 'product_cat',
 			'hide_empty' => false,
 			'search' => $term
 		));
@@ -120,13 +119,18 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		global $wpdb;
 
-		$products = $settings[ 'product_restriction' ];
-		$placeholders = array_fill( 0, count( $products ), '%s' );
+		$products = array_values( array_filter( array_map( 'absint', (array) $settings[ 'product_restriction' ] ) ) );
+		if ( empty( $products ) ) {
+			return array();
+		}
+		$placeholders = array_fill( 0, count( $products ), '%d' );
 		$format = implode(', ', $placeholders );
-		$query = "SELECT ID, post_title FROM {$wpdb->prefix}posts WHERE {$wpdb->prefix}posts.ID IN ( $format )";
+		$query = "SELECT ID, post_title FROM {$wpdb->posts} WHERE ID IN ( $format )";
 
+		// Only the WordPress table name and generated placeholders are interpolated; IDs use prepare().
 		$_products = $wpdb->get_results(
-			 $wpdb->prepare( $query, $products )
+			// phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$wpdb->prepare( $query, $products )
 		);
 
 		$response = array();
@@ -160,16 +164,15 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 	public function admin_options() {
 		
 		echo '<h2>' . esc_html( $this->get_method_title() );
+		// Reuse WooCommerce's own translated payment-settings label.
+		// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
 		wc_back_link( __( 'Return to payments', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=checkout' ) );
 		echo '</h2>';
 		echo wp_kses_post( wpautop( $this->get_method_description() ) );
 		
 		$template_data = array(
-			'promo_texts' => WC_Smart_Cod::$promo_texts,
 			'version' => WC_Smart_Cod::$version,
-			'coupon' => WC_Smart_Cod::get_promo( 'user-upgrade', 'coupon' ),
-			'settings_html' => $this->generate_settings_html( $this->get_form_fields(), false ),
-			'pro_url' => WC_Smart_Cod::$pro_url
+			'settings_html' => $this->generate_settings_html( $this->get_form_fields(), false )
 		);
 		require_once plugin_dir_path( __FILE__ ) . 'partials/wc-smart-cod-admin-display.php';
 	}
@@ -180,7 +183,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		$categories = $settings[ 'category_restriction' ];
 
-		$_categories = get_terms( 'product_cat', array(
+		$_categories = get_terms( array(
+			'taxonomy' => 'product_cat',
 			'hide_empty' => false,
 			'include' => $settings[ 'category_restriction' ]
 		));
@@ -216,7 +220,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	protected function get_product_categories() {
 
-		$product_categories = get_terms( 'product_cat', array(
+		$product_categories = get_terms( array(
+			'taxonomy' => 'product_cat',
 			'hide_empty' => false
 		));
 
@@ -233,27 +238,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	}
 
-	public function migrate_shipping_zone_methods( $unset_array ) {
-
-		foreach( $unset_array as $key ) {
-			unset( $this->settings[ $key ] );
-		}
-
-	}
-
-	public function get_field_value($key, $field, $post_data = array())
-	{
-		if ($this->has_prefix_in_array($key, $this->settings_manager->e)) {
-			if (!in_array($key, $this->settings_manager->d)) {
-				if (isset($this->settings[$key]) && $this->settings[$key] !== '') {
-					return $this->settings[$key];
-				}
-				return '';
-			}
-		}
-		return parent::get_field_value($key, $field, $post_data);
-	}
-	
 	private function update_wc_smart_cod( $settings, $restriction_settings ) {
 
 		$mode = $settings[ 'restriction_mode' ];
@@ -291,26 +275,13 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	}
 
-	/**
-	 * Check if a string starts with any of the prefixes in an array.
-	 *
-	 * @param string $haystack   The string to check.
-	 * @param array  $prefixes   Array of possible prefixes.
-	 * @return bool              True if any prefix matches the start of the string.
-	 */
-	protected function has_prefix_in_array($haystack, $prefixes) {
-		foreach ($prefixes as $prefix) {
-			if (strncmp($haystack, $prefix, strlen($prefix)) === 0) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	protected function analyze_fields( $form_fields, $settings, $restriction_settings, $old_wc_smart_cod ) {
 
 		$fee_settings = array_key_exists( 'fee_settings', $settings ) ? $settings[ 'fee_settings' ] : false;
 		$fee_settings = $fee_settings ? json_decode( $fee_settings, true ) : array();
+		if ( ! is_array( $fee_settings ) ) {
+			$fee_settings = array();
+		}
 		$update_fee = $update_restriction = $needs_update = false;
 
 		foreach( $form_fields as $key => $field ) {
@@ -370,17 +341,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 			}
 
-			if ($this->settings_manager && count($this->settings_manager->e) > 0) {
-				if ($this->has_prefix_in_array($key, $this->settings_manager->e)) {
-				
-					if(!in_array($key, $this->settings_manager->d)) {
-						$needle = $this->get_dsb_key(true);
-						$form_fields[ $key ][ $this->get_dsb_key() ] = true;
-						$form_fields[ $key ][ $needle ] = $field[ $needle ] . ' wc-smart-cod-pro-field';
-					}
-					
-				}
-			}
 		}
 
 		if( $update_restriction ) {
@@ -404,10 +364,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		return $form_fields;
 
-	}
-
-	private function get_dsb_key( $needle = false ) {
-		return $needle ? "class" : "disabled";
 	}
 
 	public function extend_cod( $form_fields ) {
@@ -472,6 +428,9 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 		$restriction_settings = array_key_exists( 'restriction_settings', $existing_settings ) ? $existing_settings[ 'restriction_settings' ] : false;
 		$restriction_settings = $restriction_settings !== false ? json_decode( $restriction_settings, true ) : array();
+		if ( ! is_array( $restriction_settings ) ) {
+			$restriction_settings = array();
+		}
 
 		$old_wc_smart_cod = array_key_exists( 'restriction_mode', $existing_settings ) ? true : false;
 
@@ -526,6 +485,8 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		}
 
 		if( ! empty( $shipping_zones ) ) {
+			// Reuse WooCommerce's translated shipping-zone label.
+			// phpcs:ignore WordPress.WP.I18n.TextDomainMismatch
 			$shipping_zones[ 0 ] = __( 'Rest of the World', 'woocommerce' );
 		}
 
@@ -593,18 +554,6 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'description' => __( 'Add the cities you want to restrict the COD method. Seperate with a comma. This cannot guarantee the cod restriction at all times, because the city field on checkout is a free text field and the user can make typos or use different characters / spelling for his city.', 'wc-smart-cod' ),
 			'custom_attributes' => array(
 				'data-name' => 'city_restrictions'
-			),
-			'disabled' => false
-		);
-
-		$form_fields[ 'cart_amount_restriction' ] = array(
-			'title' => __( 'Disable if cart amount is greater or equal than', 'wc-smart-cod' ),
-			'type' => 'price',
-			'class' => 'wc-smart-cod-group wc-smart-cod-restriction',
-			'description' => __( 'Add a price limit to restrict the COD method, if the customer\'s cart amount is greater or lower than this limit.', 'wc-smart-cod' ),
-			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-			'custom_attributes' => array(
-				'data-name' => 'cart_amount_restriction'
 			),
 			'disabled' => false
 		);
@@ -772,160 +721,19 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'disabled' => false
 		);
 
-		$form_fields[ 'nocharge_amount' ] = array(
-			'title' => __( 'Disable extra fee if cart amount is greater or equal than this limit.', 'wc-smart-cod' ),
-			'type' => 'price',
-			'class' => 'wc-smart-cod-group wc-smart-cod-restriction',
-			'description' => __( 'Leave blank or zero if you want to charge for any amount', 'wc-smart-cod' ),
-			'desc_tip' => true,
-			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-			'custom_attributes' => array(
-				'data-name' => 'nocharge_amount'
-			),
-			'disabled' => false
-		);
-
-		$ca_options = array(
-			array( 'shipping' => 'Shipping' )
-		);
-
-		if( wc_tax_enabled() ) {
-			array_unshift( $ca_options, array( 'tax' => 'Tax' ) );
-		}
-
-		$form_fields[ 'cart_amount_mode' ] = array(
-			'title' => __( 'Select what should be included to the cart amount total', 'wc-smart-cod' ),
-			'type' => 'checkboxes',
-			'class' => 'wc-smart-cod-group',
-			'options' => array(
-				'tax' => 'Taxes',
-				'shipping' => 'Shipping Costs'
-			),
-			'default' => array( 'tax', 'shipping' ),
-			'description' => __( 'This setting affect those settings: "Disable extra fee if cart amount is greater than this limit." and "Disable if cart amount is greater than". <strong>It defines what is finally calculated as the cart amount.</strong>', 'wc-smart-cod' ),
-			'desc_tip' => false,
-			'disabled' => false
-		);
-
-		foreach( $shipping_methods as $key => $shipping_method ) {
-
-			if( empty( $existing_settings[ 'enable_for_methods' ] ) || in_array( $key, $existing_settings[ 'enable_for_methods' ] ) ) {
-				$form_fields[ 'method_different_charge_' . $key ] = array(
-					'title' => __( 'Charge extra fee differently for shipping method: ', 'wc-smart-cod' ) . '<span class="bold">' . $shipping_method . '</span>',
-					'type' => 'price',
-					'description' =>  __( 'Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount', 'wc-smart-cod' ),
-					'desc_tip' => true,
-					'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
-					'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-					'disabled' => false
-				);
-			}
-
-		}
-
-		// conditional for include countries
-
-		if( array_key_exists( 'country_restrictions', $restriction_settings ) && $restriction_settings[ 'country_restrictions' ] === 1 ) {
-
-			if( array_key_exists( 'country_restrictions', $existing_settings ) && ! empty( $existing_settings[ 'country_restrictions' ] ) ) {
-
-				foreach( $existing_settings[ 'country_restrictions' ] as $country ) {
-					if( ! isset ( $countries[ $country ] ) )
-						continue;
-
-					$country_name = $countries[ $country ];
-
-					$form_fields[ 'include_country_different_charge_' . $country ] = array(
-						'title' => __( 'Charge extra fee differently for country: ', 'wc-smart-cod' ) . '<span class="bold">' . $country_name . '</span>',
-						'type' => 'price',
-						'description' =>  __( 'Enter Amount to charge differently in this country or leave it empty to charge the normal amount. Use this field only if you want to have separate prices per country in the same shipping zone, otherwise enter the amount on the shipping zone field', 'wc-smart-cod' ),
-						'desc_tip' => true,
-						'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
-						'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-						'disabled' => false
-					);
-
-				}
-
-			}
-
-		}
-
-		$unset_zone_methods_fees = array();
-
-		if( ! empty( $wc_shipping_zones ) ) {
-			foreach( $wc_shipping_zones as $zone ) {
-
-				if( $zone[ $zone_key ] === 0 )
-					continue;
-
-				if( array_key_exists( 'shipping_zone_restrictions', $existing_settings ) && is_array( $existing_settings[ 'shipping_zone_restrictions' ] ) && ! empty( $existing_settings[ 'shipping_zone_restrictions' ] ) ) {
-					$mode = 'exclude';
-					if( array_key_exists( 'shipping_zone_restrictions', $restriction_settings ) && $restriction_settings[ 'shipping_zone_restrictions' ] === 1 ) {
-						$mode = 'include';
-					}
-				}
-
-				if( isset( $mode ) && $mode === 'exclude' && in_array( $zone[ $zone_key ], $existing_settings[ 'shipping_zone_restrictions' ] ) ) {
-					continue;
-				}
-
-				if( isset( $mode ) && $mode === 'include' && ! in_array( $zone[ $zone_key ], $existing_settings[ 'shipping_zone_restrictions' ] ) ) {
-					continue;
-				}
-
-				$form_fields[ 'different_charge_' . $zone[ $zone_key ] ] = array(
-					'title' => __( 'Charge extra fee differently for shipping zone: ', 'wc-smart-cod' ) . '<span class="bold">' . $zone[ 'zone_name' ] . '</span>',
-					'type' => 'price',
-					'description' =>  __( 'Enter Amount to charge differently in this shipping zone or leave it empty to charge the normal amount', 'wc-smart-cod' ),
-					'desc_tip' => true,
-					'class' => 'wc-smart-cod-group wc-smart-cod-fee wc-smart-cod-percentage',
-					'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-					'disabled' => false
-				);
-
-				foreach( $zone[ 'shipping_methods' ] as $shipping_method ) {
-
-					if( empty( $existing_settings[ 'enable_for_methods' ] ) || in_array( $shipping_method->id, $existing_settings[ 'enable_for_methods' ] ) ) {
-
-						if( isset( $existing_settings[ 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->id ] ) && is_numeric(
-							$existing_settings[ 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->id ] ) ) {
-							/**
-							 * migrate to 1.4.7
-							 */
-							$this->settings[ 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->instance_id ] = $existing_settings[ 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->id ];
-							if( ! in_array( 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->id, $unset_zone_methods_fees ) ) {
-								array_push( $unset_zone_methods_fees, 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->id );
-							}
-						}
-
-						if( isset( $existing_settings[ 'shipping_zone_method_restriction' ] ) && ! empty( $existing_settings[ 'shipping_zone_method_restriction' ] ) ) {
-							$zmode = 'exclude';
-							if( array_key_exists( 'shipping_zone_method_restriction', $restriction_settings ) && $restriction_settings[ 'shipping_zone_method_restriction' ] === 1 ) {
-								$zmode = 'include';
-							}
-
-							if( $zmode === 'exclude' && in_array( $zone[ $zone_key ] . '_' . $shipping_method->instance_id, $existing_settings[ 'shipping_zone_method_restriction' ] ) ) {
-								continue;
-							}
-
-							if( $zmode === 'include' && ! in_array( $zone[ $zone_key ] . '_' . $shipping_method->instance_id, $existing_settings[ 'shipping_zone_method_restriction' ] ) ) {
-								continue;
-							}
-						}
-
-						$form_fields[ 'zonemethod_different_charge_' . $zone[ $zone_key ] . '_method_' . $shipping_method->instance_id ] = array(
-							'title' => __( 'Charge extra fee differently for shipping zone: ', 'wc-smart-cod' ) . '<span class="bold">' . $zone[ 'zone_name' ] . '</span>' . ' ' . __( 'and shipping method: ', 'wc-smart-cod' ) . '<span class="bold">' . $shipping_method->title . '</span>',
-							'type' => 'price',
-							'description' =>  __( 'Enter Amount to charge differently in this shipping zone with this shipping method or leave it empty to charge the normal amount', 'wc-smart-cod' ),
-							'desc_tip' => true,
-							'class' => 'wc-smart-cod-group wc-smart-cod-fee wc-smart-cod-percentage',
-							'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-							'disabled' => false
-						);
-					}
-				}
-			}
+		// Local pickup has always been available in Free; other conditional fees
+		// belong exclusively to the separately distributed Pro plugin.
+		if ( isset( $shipping_methods['local_pickup'] ) &&
+			( empty( $existing_settings['enable_for_methods'] ) || in_array( 'local_pickup', $existing_settings['enable_for_methods'], true ) ) ) {
+			$form_fields['method_different_charge_local_pickup'] = array(
+				'title'       => __( 'Charge extra fee differently for shipping method: ', 'wc-smart-cod' ) . '<span class="bold">' . $shipping_methods['local_pickup'] . '</span>',
+				'type'        => 'price',
+				'description' => __( 'Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount', 'wc-smart-cod' ),
+				'desc_tip'    => true,
+				'class'       => 'wc-smart-cod-group wc-smart-cod-percentage',
+				'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
+				'disabled'    => false,
+			);
 		}
 
 		$form_fields[ 'restriction_settings' ] = array(
@@ -936,22 +744,18 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			'type' => 'hidden'
 		);
 
-		$form_fields[ 'risk_free_advance_payment' ] = array(
-			'title' => __( 'Partial payment amount for COD orders', 'wc-smart-cod' ),
-			'type' => 'price',
-			'class' => 'wc-smart-cod-group wc-smart-cod-percentage',
-			'description' => __( 'Require customers to pay a portion of the order in advance, before processing a Cash on Delivery order.', 'wc-smart-cod' ),
-			'desc_tip' => true,
-			'placeholder' => __( 'Enter Amount', 'wc-smart-cod' ),
-			'disabled' => true
-		);
+		/* translators: %s: URL to the cancelled COD data-sharing information page. */
+		$sharing_description = __( 'Help build future tools to spot patterns linked to COD orders that may go uncollected. Optional and off by default: if enabled, eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders from this shop, and pseudonymized customer/location identifiers are sent to api.woosmartcod.com and may be analysed with data from other participating shops in the same operating country. This does not change checkout or provide a risk decision today. Turning it off stops future collection and sending. <a href="%s" target="_blank" rel="noopener">Read the data-sharing details.</a>', 'wc-smart-cod' );
+		$sharing_description = sprintf( $sharing_description, esc_url( 'https://woosmartcod.com/cancelled-cod-data-sharing/' ) );
 
-		if( ! empty( $unset_zone_methods_fees ) ) {
-			/**
-			 * migrate to 1.4.7
-			 */
-			$this->migrate_shipping_zone_methods( $unset_zone_methods_fees );
-		}
+		$form_fields[ 'enable_smart_cod_ai_data_sharing' ] = array(
+			'title'       => __( 'COD Delivery-Refusal Data Sharing', 'wc-smart-cod' ),
+			'type'        => 'checkbox',
+			'label'       => __( 'I choose to enable collection and sharing of eligible cancelled Cash on Delivery orders with woosmartcod.com.', 'wc-smart-cod' ),
+			'description' => $sharing_description,
+			'default'     => 'no',
+			'disabled'    => false,
+		);
 
 
 		$form_fields = $this->analyze_fields( $form_fields, $existing_settings, $restriction_settings, $old_wc_smart_cod );
@@ -1008,30 +812,34 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<?php echo $this->get_tooltip_html( $data ); ?>
+				<?php echo wp_kses( $this->get_tooltip_html( $data ), array( 'span' => array( 'class' => true, 'tabindex' => true, 'aria-label' => true, 'data-tip' => true ) ) ); ?>
 				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data['title'] ); ?></label>
 			</th>
 			<td class="forminp">
 				<select class="select wsc-message-switcher" name="wsc-message-switcher">
 					<?php
 					foreach( $restrictions as $value => $label ) {
-						echo sprintf( '<option value="%s">%s</option>', $value, $label );
+						echo '<option value="' . esc_attr( $value ) . '">' . esc_html( $label ) . '</option>';
 					}
 					?>
 				</select>
 				<?php
 				$index = 0;
 				foreach( $restrictions as $value => $label ) :
-					$textarea_value = array_key_exists( $value, $tvalue ) ? esc_textarea( $tvalue[ $value ] ) : '';
+					$textarea_value = array_key_exists( $value, $tvalue ) ? $tvalue[ $value ] : '';
 					?>
-					<fieldset class="wsc-message<?php echo $index > 0 ? ' hidden' : ''; ?>" data-restriction="<?php echo $value; ?>">
+					<fieldset class="<?php echo esc_attr( $index > 0 ? 'wsc-message hidden' : 'wsc-message' ); ?>" data-restriction="<?php echo esc_attr( $value ); ?>">
 						<legend class="screen-reader-text"><span><?php echo wp_kses_post( $data['title'] ); ?></span></legend>
-						<textarea rows="5" cols="20" class="input-text wide-input <?php echo esc_attr( $data['class'] ); ?>" type="<?php echo esc_attr( $data['type'] ); ?>" name="<?php echo esc_attr( $field_key ) . '[' . esc_attr( $value ) . ']' ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'], true ); ?> <?php echo $this->get_custom_attribute_html( $data ); ?>><?php echo $textarea_value; ?></textarea>
+						<textarea rows="5" cols="20" class="input-text wide-input <?php echo esc_attr( $data['class'] ); ?>" type="<?php echo esc_attr( $data['type'] ); ?>" name="<?php echo esc_attr( $field_key . '[' . $value . ']' ); ?>" id="<?php echo esc_attr( $field_key ); ?>" style="<?php echo esc_attr( $data['css'] ); ?>" placeholder="<?php echo esc_attr( $data['placeholder'] ); ?>" <?php disabled( $data['disabled'], true ); ?> <?php
+						// WooCommerce's get_custom_attribute_html() escapes every attribute name and value.
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+						echo $this->get_custom_attribute_html( $data );
+						?>><?php echo esc_textarea( $textarea_value ); ?></textarea>
 					</fieldset>
 				<?php
 				$index++;
 				endforeach;
-				echo $this->get_description_html( $data ); ?>
+				echo wp_kses_post( $this->get_description_html( $data ) ); ?>
 			</td>
 		</tr>
 		<?php
@@ -1078,10 +886,10 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		ob_start(); ?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<?php echo $this->get_tooltip_html( $data ); ?>
+				<?php echo wp_kses( $this->get_tooltip_html( $data ), array( 'span' => array( 'class' => true, 'tabindex' => true, 'aria-label' => true, 'data-tip' => true ) ) ); ?>
 				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data[ 'title' ] ); ?></label>
 			</th>
-			<td class="forminp forminp-<?php echo sanitize_title( $data['type'] ); ?><?php echo $data[ 'parent_class' ] ? ' ' . esc_attr( $data[ 'parent_class' ] ) : ''; ?>">
+			<td class="<?php echo esc_attr( 'forminp forminp-' . sanitize_title( $data['type'] ) . ( $data['parent_class'] ? ' ' . $data['parent_class'] : '' ) ); ?>">
 				<fieldset>
 					<ul>
 					<?php
@@ -1090,11 +898,15 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 							<li>
 								<label><input
 									name="<?php echo esc_attr( $field_key ); ?>[]"
-									value="<?php echo $option_key; ?>"
+									value="<?php echo esc_attr( $option_key ); ?>"
 									type="checkbox"
 									style="<?php echo esc_attr( $data['css'] ); ?>"
 									class="<?php echo esc_attr( $data['class'] ); ?>"
-									<?php echo $this->get_custom_attribute_html( $data ); ?>
+									<?php
+									// WooCommerce's get_custom_attribute_html() escapes every attribute name and value.
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									echo $this->get_custom_attribute_html( $data );
+									?>
 									<?php checked( $option_key, in_array( $option_key, $value ) ? $option_key : false ); ?>
 									/> <?php echo esc_attr( $option_value ); ?></label>
 							</li>
@@ -1102,7 +914,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 						}
 					?>
 					</ul>
-					<?php echo $this->get_description_html( $data ); ?>
+					<?php echo wp_kses_post( $this->get_description_html( $data ) ); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -1141,10 +953,10 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		ob_start(); ?>
 		<tr valign="top">
 			<th scope="row" class="titledesc">
-				<?php echo $this->get_tooltip_html( $data ); ?>
+				<?php echo wp_kses( $this->get_tooltip_html( $data ), array( 'span' => array( 'class' => true, 'tabindex' => true, 'aria-label' => true, 'data-tip' => true ) ) ); ?>
 				<label for="<?php echo esc_attr( $field_key ); ?>"><?php echo wp_kses_post( $data[ 'title' ] ); ?></label>
 			</th>
-			<td class="forminp forminp-<?php echo sanitize_title( $data['type'] ); ?><?php echo $data[ 'parent_class' ] ? ' ' . esc_attr( $data[ 'parent_class' ] ) : ''; ?>">
+			<td class="<?php echo esc_attr( 'forminp forminp-' . sanitize_title( $data['type'] ) . ( $data['parent_class'] ? ' ' . $data['parent_class'] : '' ) ); ?>">
 				<fieldset>
 					<ul>
 					<?php
@@ -1153,11 +965,15 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 							<li>
 								<label><input
 									name="<?php echo esc_attr( $field_key ); ?>"
-									value="<?php echo $option_key; ?>"
+									value="<?php echo esc_attr( $option_key ); ?>"
 									type="radio"
 									style="<?php echo esc_attr( $data['css'] ); ?>"
 									class="<?php echo esc_attr( $data['class'] ); ?>"
-									<?php echo $this->get_custom_attribute_html( $data ); ?>
+									<?php
+									// WooCommerce's get_custom_attribute_html() escapes every attribute name and value.
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+									echo $this->get_custom_attribute_html( $data );
+									?>
 									<?php checked( $option_key, $value ); ?>
 									/> <?php echo esc_attr( $option_value ); ?></label>
 							</li>
@@ -1165,7 +981,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 						}
 					?>
 					</ul>
-					<?php echo $this->get_description_html( $data ); ?>
+					<?php echo wp_kses_post( $this->get_description_html( $data ) ); ?>
 				</fieldset>
 			</td>
 		</tr>
@@ -1189,44 +1005,34 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		return $_value;
 	}
 
-	public function clean_up_gateway( $zone_id ) {
+	/**
+	 * Starts collection only on an explicit opt-in. Revocation stops pending
+	 * collection and delivery work immediately.
+	 *
+	 * @param mixed  $old_value Previous COD settings.
+	 * @param mixed  $value     Updated COD settings.
+	 * @param string $option    Option name.
+	 * @return void
+	 */
+	public function handle_ai_data_sharing_change( $old_value, $value, $option ) {
+		$setting = 'enable_smart_cod_ai_data_sharing';
+		$was_enabled = is_array( $old_value ) && isset( $old_value[ $setting ] ) && 'yes' === $old_value[ $setting ];
+		$is_enabled  = is_array( $value ) && isset( $value[ $setting ] ) && 'yes' === $value[ $setting ];
 
-		$settings = get_option( 'woocommerce_cod_settings' );
-		foreach( $settings as $key => $setting ) {
-			if( $key === 'different_charge_' . $zone_id || strpos( $key, 'zonemethod_different_charge_' . $zone_id ) === 0 )
-				unset( $settings [ $key ] );
+		if ( $was_enabled === $is_enabled ) {
+			return;
 		}
 
-		update_option( 'woocommerce_cod_settings', $settings );
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-cancelled-cod-collector.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-ai-outbox.php';
 
-	}
-
-	public function clean_up_settings( $settings ) {
-
-		if( $settings[ 'fee_settings' ] ) {
-			$fee_settings = json_decode( $settings[ 'fee_settings' ], true );
-			$needs_update = false;
-			foreach( $fee_settings as $k => $v ) {
-				if( ! isset( $this->prepared_fields[ $k ] ) ) {
-					$has_update = true;
-					unset( $fee_settings[ $k ] );
-				}
-			}
-			if( $needs_update ) {
-				$settings[ 'fee_settings' ] = json_encode( $fee_settings );
-			}
+		if ( ! $is_enabled ) {
+			Wc_Smart_Cod_Cancelled_Cod_Collector::stop_scheduled_work();
+			Wc_Smart_Cod_Ai_Outbox::cancel_scheduled_work();
+			return;
 		}
 
-		foreach( $settings as $key => $setting ) {
-
-			if( strpos( $key, 'different_charge_' ) === 0 || strpos( $key, 'zonemethod_different_charge_' ) === 0 || strpos( $key, 'method_different_charge_' ) === 0 ) {
-				if( ! is_numeric( $setting ) )
-					unset( $settings [ $key ] );
-			}
-		}
-
-		return $settings;
-
+		Wc_Smart_Cod_Cancelled_Cod_Collector::restart_history_scan();
 	}
 
 	protected function get_json_settings( $key ) {
@@ -1268,7 +1074,9 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		 */
 
 		$screen = get_current_screen();
-		$current_section = isset( $_GET['section'] ) ? $_GET['section'] : '';
+		// This GET parameter only controls which settings-page assets load.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$current_section = isset( $_GET['section'] ) && is_scalar( $_GET['section'] ) ? sanitize_key( wp_unslash( $_GET['section'] ) ) : '';
 
 		if( isset( $screen->base ) && $screen->base === 'woocommerce_page_wc-settings' && $current_section === 'cod' ) {
 
@@ -1277,8 +1085,10 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'please_save_msg' => __( 'Please save the changes to see the new settings', 'wc-smart-cod' ),
 			);
 
-			wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-smart-cod-admin.min.js', array( 'jquery' ), $this->version, false );
+			wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-smart-cod-admin.js', array( 'jquery', 'select2' ), $this->version, false );
 
+			// WooCommerce supplies maintained translations for the Select2 UI.
+			// phpcs:disable WordPress.WP.I18n.TextDomainMismatch
 			$enhanced_select_variables = array(
 				'i18n_no_matches'           => _x( 'No matches found', 'enhanced select', 'woocommerce' ),
 				'i18n_ajax_error'           => _x( 'Loading failed', 'enhanced select', 'woocommerce' ),
@@ -1294,26 +1104,14 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 				'search_products_nonce'		=> wp_create_nonce( 'search-products' ),
 				'search_categories_nonce'   => wp_create_nonce( 'search-categories' )
 			);
+			// phpcs:enable WordPress.WP.I18n.TextDomainMismatch
 
 			$variables = array(
 				'messages' => $messages,
 				'enhanced_select' => $enhanced_select_variables,
 				'restriction_settings' => ( object ) $this->get_json_settings( 'restriction_settings' ),
-				'fee_settings' => ( object ) $this->get_json_settings( 'fee_settings' ),
-				'pro_site_url' => $this->settings_manager->l
+				'fee_settings' => ( object ) $this->get_json_settings( 'fee_settings' )
 			);
-
-			global $wp_scripts;
-			$select2 = array_key_exists( 'select2', $wp_scripts->registered ) ? $wp_scripts->registered[ 'select2' ] : false;
-			$select2_ver = $select2 === false ? false : ( property_exists( $select2, 'ver' ) ? $select2->ver : false );
-
-			if( ! $select2 || ! $select2_ver || version_compare( $select2_ver, '4.0.3' ) === -1 ) {
-				// compatibility with older WooCommerce.
-				wp_deregister_script( 'select2' );
-				wp_register_script( 'select2', plugin_dir_url( __FILE__ ) . 'js/select2.full.min.js', array( 'jquery' ), '4.0.3', false );
-				wp_enqueue_style( 'select2', plugin_dir_url( __FILE__ ) . 'css/wc-smart-cod-select2.css', array(), '4.0.3', 'all' );
-				wp_enqueue_script( 'select2' );
-			}
 
 			wp_localize_script( $this->plugin_name, 'smart_cod_variables', $variables );
 			wp_enqueue_script( $this->plugin_name );

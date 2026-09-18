@@ -1,5 +1,9 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Provide a admin area view for the plugin
  *
@@ -17,27 +21,19 @@
 <div class="wsc-columns">
 	<div class="wsc-content">
 		<div class="wc-smart-cod-info">
-			<h4><?php echo WC_Smart_Cod::$plugin_friendly_name; ?></h4>
-			<p>Version: <strong><?php echo WC_Smart_Cod::$version; ?></strong></p>
+			<h4><?php echo esc_html( WC_Smart_Cod::$plugin_friendly_name ); ?></h4>
+			<p>Version: <strong><?php echo esc_html( WC_Smart_Cod::$version ); ?></strong></p>
 		</div>
 		<table class="form-table">
-			<?php echo $template_data['settings_html']; ?>
+			<?php
+			// WooCommerce generates this form markup; escaping the whole fragment would break its controls.
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $template_data['settings_html'];
+			?>
 		</table>
-	</div>
-	<div class="wsc-sidebar">
-		<div class="card">
-			<h2>Smart COD PRO for WooCommerce</h2>
-			<p><?php echo $template_data['promo_texts']['sidebar']; ?></p>
-			<p><strong><?php echo $template_data['coupon']; ?></strong></p>
-			<ul>
-				<?php foreach( $template_data['promo_texts']['features'] as $feature ) : ?>
-					<li><?php echo $feature; ?></li>
-				<?php endforeach; ?>
-			</ul>
-			<p>and many more</p>
-				<a class="button button-primary" target="_blank" rel="noopener" href="<?php echo esc_url( $template_data['pro_url'] ); ?>?utm_source=plugin&utm_medium=settings">
-					Learn more                        
-				</a>
-		</div>
+		<p class="description wsc-pro-features">
+			<?php esc_html_e( 'A separate Smart COD PRO plugin offers advance-payment COD, multiple conditional extra fees, order-pay fee handling, CSV restriction imports, and additional cart, customer, stock, backorder and coupon rules. These features are not part of the Free plugin.', 'wc-smart-cod' ); ?>
+			<a href="<?php echo esc_url( 'https://woosmartcod.com/product/woocommerce-smart-cod-pro/' ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Explore PRO features', 'wc-smart-cod' ); ?></a>.
+		</p>
 	</div>
 </div>

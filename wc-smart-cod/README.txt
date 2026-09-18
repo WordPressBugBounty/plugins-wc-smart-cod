@@ -1,47 +1,25 @@
 === Smart COD for WooCommerce ===
 Contributors: fullstackhouse
-Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD, WooCommerce COD, Multiple Fees
-Requires at least: 4.0
+Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD
+Requires at least: 4.5
 Requires PHP: 5.6
 Tested up to: 7.1
-Stable tag: 1.9.1
+Stable tag: 1.9.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-All the COD restrictions and extra fees you'll ever need, in a single plugin.
+Configure Cash on Delivery restrictions and an optional extra fee in WooCommerce.
 
 == Description ==
 
-**Smart COD for WooCommerce** is a powerful plugin that extends the **WooCommerce Cash on Delivery (COD) Gateway**, enabling you to add **multiple extra fees and restrictions** based on a variety of customer conditions such as location, selected shipping method, and more.
+**Smart COD for WooCommerce** extends the **WooCommerce Cash on Delivery (COD) Gateway** with an optional extra fee and restrictions based on customer conditions such as location and selected shipping method.
 
 Whether you’re managing a small shop or a large e-commerce business, this plugin helps you fine-tune your Cash on Delivery service to cater to a wide range of scenarios and requirements.
 
 A common challenge faced by WooCommerce store owners is the inability to apply an extra fee for the Cash on Delivery (COD) payment method. This is a critical feature for many e-commerce shops, as charging an additional fee for COD is a standard practice.
-This plugin not only addresses this issue but goes even further, offering a wide range of customizable restrictions and flexible extra fees. It’s the all-in-one solution for managing COD payments in your store.
+The plugin also offers configurable restrictions so merchants can decide when COD is available.
 
-= Smart COD PRO for WooCommerce =
-[Smart COD PRO for WooCommerce](https://woosmartcod.com), **a business class, cash on delivery management tool**. 
-Reliable, secure and fully customizable, with a highly engaged and **dedicated support team!**
-
-Some of the **additional robust features** are:
-
-* **Risk Free COD (advance payment to secure COD)**
-* **Unlimited extra fees (as many combination scenarios, as you need)**
-* **Adjustable COD fee, on order-pay page (after failed order)**
-* **Upload restrictions with CSV**
-* **Restrict by cart amount range**
-* **Restrict by product weight**
-* **Restrict by customer**
-* **Restrict by customer email**
-* **Restrict by customer phone**
-* **Restrict by stock**
-* **Restrict by coupon**
-* **Restrict on backorders**
-* **Restrict by cart quantity range**
-* **All available restrictions, now applicable on extra fees**
-* **Hide/show fee on cart**
-
-With our [PRO version](https://woosmartcod.com), you can manage cash on delivery payment gateway, securely and effectively. 
+A separate [Smart COD PRO plugin](https://woosmartcod.com/) is available outside the WordPress.org directory. It adds advance-payment COD, multiple conditional extra fees (including country, shipping-zone and shipping-method pricing, cart-amount thresholds and order-pay handling), CSV restriction imports, and cart amount, product quantity, customer-role, stock, backorder and coupon rules. These features are part of the separate PRO plugin, not locked options in this Free plugin.
 
 = Restrictions =
 Each restriction can be easily toggled between Enable and Disable. When set to Enable, the restriction will allow the Cash on Delivery (COD) payment option only for the specified selections. On the other hand, when set to Disable, the restriction will disable the COD option for the specified selections, making it unavailable for them.
@@ -55,21 +33,14 @@ Each restriction can be easily toggled between Enable and Disable. When set to E
 * User Role
 * Products in cart (Supports Variations)
 * Categories of the products in cart
-* Cart Amount
 * Shipping Class
 
 You can define an informational message to display before the payment methods, when the COD method is not available for a customer.
 You can define different messages per restrict reason.
 
 = Extra Fees =
-The extra fee is flexible, and in addition to the "standard" fee, you can define fees based on the following criteria:
+You can configure a standard extra fee and a separate fee for local pickup.
 
-* Shipping Zone
-* Country
-* Shipping Method
-* Shipping Zone and Shipping Method (combined)
-
-You can enable or disable this extra fee based on the customer's cart amount.
 You can use a fixed price or a percentage of the customer's cart amount.
 You also have a nice rounding option.
 You can enable tax for this fee.
@@ -89,6 +60,12 @@ Since the plugin extends the existing WooCommerce Cash on Delivery Gateway, ther
 2. Go as always to WooCommerce / Settings / Checkout / Cash On Delivery
 3. Setup your desired settings, click 'Save Changes', and you are ready to go!
 
+== External services ==
+
+Cancelled COD data sharing is optional and off by default. Only after an administrator explicitly enables it in the Cash on Delivery settings, Smart COD connects to api.woosmartcod.com to register the installation and send eligible historical and future cancelled COD events in small batches. Registration includes a generated installation identifier, shop domain, operating country and public signing key. Events can include pseudonymized customer and location identifiers, a non-reversible order reference, cancellation time, order amounts/currency and shipping information, including courier name and tracking code where available. An event may also include a capped count of earlier completed COD orders with tracking for the same shopper at that shop. The external service validates signed submissions, deduplicates events, applies an additional secret-keyed transformation to identity tokens, and stores evidence from participating shops for country-level analysis. No individual shop could perform that cross-shop processing locally. This supports development and operation of COD reliability features; this version receives no risk decision from the service and does not change checkout. Checkout continues to work when sharing is off. Turning the option off stops future collection and transmission. The plugin does not call courier APIs.
+
+Service information: [cancelled COD service privacy details](https://woosmartcod.com/cancelled-cod-data-sharing/), [Terms and Conditions](https://woosmartcod.com/terms-conditions/) and [Privacy Policy](https://woosmartcod.com/privacy-policy/).
+
 == Screenshots ==
 
 1. assets/screenshot-1.png
@@ -96,6 +73,26 @@ Since the plugin extends the existing WooCommerce Cash on Delivery Gateway, ther
 3. assets/screenshot-3.png
 
 == Changelog ==
+
+= 1.9.3 =
+* Compatibility - Replace deprecated product-category queries with the current WordPress API; minimum WordPress version is now 4.5.
+* Security - Prevent direct access to the admin display template.
+* Transparency - Ship the checkout JavaScript in readable, uncompressed form and clarify optional country-level data pooling.
+* Compatibility - Declare WooCommerce as a required plugin.
+* Security - Harden the category search endpoint and escape merchant-facing admin values.
+* Reliability - Safely handle malformed saved settings and sanitize checkout selections used by COD rules.
+
+= 1.9.2 =
+* Privacy - Make cancelled COD data sharing an explicit, default-off merchant opt-in; existing opt-out values do not count as consent.
+* Admin - Remove remote promotional notifications and prominent PRO promotions from the Free plugin.
+* Admin - Remove the remote settings-manager request and PRO-only locked fields; retain the existing local-pickup fee option.
+* Admin - Use the Select2 script supplied by WooCommerce instead of bundling a second copy.
+* Performance - Collect and transmit eligible order evidence only through small, rate-limited background batches; checkout and ordinary storefront requests remain unaffected.
+* Enhancement - Recognise shipment data from supported tracking integrations and preserve custom fulfilment-status evidence without storing customer data in scheduled jobs.
+* Enhancement - Add a conservative fallback for physical COD orders only on shops without a recognised tracking integration, after a minimum one-day order lifetime.
+* Reliability - Re-scan historical eligible orders gradually after this upgrade and enrich the existing central event row without creating duplicate orders.
+* Reliability - Include a bounded snapshot of earlier completed, tracked COD orders for the same shopper at the same shop.
+* Privacy - Stop pending collection and delivery work when the merchant turns sharing off.
 
 = 1.9.1 =
 * Privacy - Tokenise email, telephone, postcode, city and region locally before relay; raw customer identity and location values never leave the store.
