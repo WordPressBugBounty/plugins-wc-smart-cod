@@ -1,0 +1,37 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart COD for WooCommerce\n"
+"Language: el\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/class-wc-smart-cod.php
+msgid "Smart COD for WooCommerce"
+msgstr "Smart COD for WooCommerce"
+
+#: includes/class-wc-smart-cod.php
+msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
+msgstr ": Μειώστε τις επαναλαμβανόμενες παραγγελίες αντικαταβολής που δεν παραλαμβάνονται. Η Προστασία Αντικαταβολής μπορεί να απενεργοποιεί την αντικαταβολή όταν ο ίδιος πελάτης αντιστοιχεί σε επιλέξιμη παραγγελία που είχε αποσταλεί και στη συνέχεια ακυρώθηκε στο κατάστημά σας. Η υπηρεσία είναι προαιρετική και απενεργοποιημένη από προεπιλογή."
+
+#: includes/class-wc-smart-cod.php
+msgid "Enable COD Protection"
+msgstr "Ενεργοποίηση Προστασίας Αντικαταβολής"
+
+#: includes/class-wc-smart-cod.php
+msgid "How data is used"
+msgstr "Πώς χρησιμοποιούνται τα δεδομένα"
+
+#: admin/class-wc-smart-cod-admin.php
+msgid "COD Protection"
+msgstr "Προστασία Αντικαταβολής"
+
+#: admin/class-wc-smart-cod-admin.php
+msgid "Enable COD protection and cancelled COD data sharing"
+msgstr "Ενεργοποιήστε την προστασία αντικαταβολής και την κοινοποίηση δεδομένων ακυρωμένων παραγγελιών αντικαταβολής"
+
+#: admin/class-wc-smart-cod-admin.php
+#, php-format
+msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
+msgstr "Απενεργοποιήστε αυτόματα την αντικαταβολή όταν το email ή το τηλέφωνο στο checkout αντιστοιχεί σε επιλέξιμη παραγγελία αντικαταβολής που είχε αποσταλεί και στη συνέχεια ακυρώθηκε στο κατάστημά σας. Η λειτουργία είναι προαιρετική και απενεργοποιημένη από προεπιλογή. Η ενεργοποίησή της ξεκινά επίσης τη συλλογή και κοινοποίηση στο api.woosmartcod.com επιλέξιμων παλαιότερων και μελλοντικών ακυρωμένων παραγγελιών αντικαταβολής, κωδικών αποστολής όπου υπάρχουν, στοιχείων παραγγελίας, ενός περιορισμένου πλήθους προηγούμενων ολοκληρωμένων παραγγελιών αντικαταβολής με tracking και ψευδωνυμοποιημένων αναγνωριστικών πελάτη/τοποθεσίας. Οι πραγματικές τιμές email και τηλεφώνου δεν αποστέλλονται. Η απενεργοποίηση σταματά τη μελλοντική συλλογή, κοινοποίηση και τους ελέγχους στο checkout. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Διαβάστε πώς χρησιμοποιεί η υπηρεσία τα δεδομένα.</a>"

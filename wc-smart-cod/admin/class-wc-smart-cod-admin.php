@@ -368,7 +368,28 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 	public function extend_cod( $form_fields ) {
 		$this->prepared_fields = $this->get_prepared_fields();
-		return array_merge( $form_fields, $this->prepared_fields );
+		$key = 'enable_smart_cod_ai_data_sharing';
+		if ( ! isset( $this->prepared_fields[ $key ] ) ) {
+			return array_merge( $form_fields, $this->prepared_fields );
+		}
+
+		// Put the concrete protection benefit directly below WooCommerce's main
+		// enable switch instead of burying the opt-in below every advanced rule.
+		$protection = $this->prepared_fields[ $key ];
+		unset( $this->prepared_fields[ $key ] );
+		$ordered = array();
+		$inserted = false;
+		foreach ( $form_fields as $field_key => $field ) {
+			$ordered[ $field_key ] = $field;
+			if ( 'enabled' === $field_key ) {
+				$ordered[ $key ] = $protection;
+				$inserted = true;
+			}
+		}
+		if ( ! $inserted ) {
+			$ordered = array( $key => $protection ) + $ordered;
+		}
+		return array_merge( $ordered, $this->prepared_fields );
 	}
 
 	protected function prepare_states( $countries, $states ) {
@@ -745,15 +766,16 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		);
 
 		/* translators: %s: URL to the cancelled COD data-sharing information page. */
-		$sharing_description = __( 'Help build future tools to spot patterns linked to COD orders that may go uncollected. Optional and off by default: if enabled, eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders from this shop, and pseudonymized customer/location identifiers are sent to api.woosmartcod.com and may be analysed with data from other participating shops in the same operating country. This does not change checkout or provide a risk decision today. Turning it off stops future collection and sending. <a href="%s" target="_blank" rel="noopener">Read the data-sharing details.</a>', 'wc-smart-cod' );
+		$sharing_description = __( 'Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href="%s" target="_blank" rel="noopener">Read how the service uses data.</a>', 'wc-smart-cod' );
 		$sharing_description = sprintf( $sharing_description, esc_url( 'https://woosmartcod.com/cancelled-cod-data-sharing/' ) );
 
 		$form_fields[ 'enable_smart_cod_ai_data_sharing' ] = array(
-			'title'       => __( 'COD Delivery-Refusal Data Sharing', 'wc-smart-cod' ),
+			'title'       => __( 'COD Protection', 'wc-smart-cod' ),
 			'type'        => 'checkbox',
-			'label'       => __( 'I choose to enable collection and sharing of eligible cancelled Cash on Delivery orders with woosmartcod.com.', 'wc-smart-cod' ),
+			'label'       => __( 'Enable COD protection and cancelled COD data sharing', 'wc-smart-cod' ),
 			'description' => $sharing_description,
 			'default'     => 'no',
+			'class'       => 'wc-smart-cod-protection-opt-in',
 			'disabled'    => false,
 		);
 

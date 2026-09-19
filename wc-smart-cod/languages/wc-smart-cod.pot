@@ -326,3 +326,32 @@ msgstr ""
 #: ../admin/class-wc-smart-cod-admin.php:1051
 msgid "Please save the changes to see the new settings"
 msgstr ""
+
+#: ../includes/class-wc-smart-cod.php
+msgid "Smart COD for WooCommerce"
+msgstr ""
+
+#: ../includes/class-wc-smart-cod.php
+msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
+msgstr ""
+
+#: ../includes/class-wc-smart-cod.php
+msgid "Enable COD Protection"
+msgstr ""
+
+#: ../includes/class-wc-smart-cod.php
+msgid "How data is used"
+msgstr ""
+
+#: ../admin/class-wc-smart-cod-admin.php
+msgid "COD Protection"
+msgstr ""
+
+#: ../admin/class-wc-smart-cod-admin.php
+msgid "Enable COD protection and cancelled COD data sharing"
+msgstr ""
+
+#: ../admin/class-wc-smart-cod-admin.php
+#, php-format
+msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
+msgstr ""

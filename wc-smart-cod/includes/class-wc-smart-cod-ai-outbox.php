@@ -111,6 +111,88 @@ class Wc_Smart_Cod_Ai_Outbox {
 	}
 
 	/**
+	 * Checks only this installation's previously shared cancelled-COD events.
+	 * Raw checkout identity never leaves WordPress; transport or service errors
+	 * return null so the checkout always fails open.
+	 *
+	 * @param string $email Billing email from the current checkout.
+	 * @param string $phone Billing telephone from the current checkout.
+	 * @return array|null Strict service result, or null when no decision is safe.
+	 */
+	public static function lookup_own_shop_cod_risk( $email, $phone ) {
+		if ( ! self::is_data_sharing_enabled() ) {
+			return null;
+		}
+
+		$country = self::get_operating_country();
+		$email   = strtolower( trim( sanitize_email( (string) $email ) ) );
+		if ( '' !== $email && ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
+			$email = '';
+		}
+		$phone = self::normalise_network_phone( $phone, $country );
+		$identity = array(
+			'country'     => $country,
+			'email_token' => '' !== $email ? self::identity_token( $email ) : '',
+			'phone_token' => strlen( preg_replace( '/\D/', '', $phone ) ) >= 5 ? self::identity_token( $phone ) : '',
+		);
+		if ( '' === $country || ( '' === $identity['email_token'] && '' === $identity['phone_token'] ) ) {
+			return null;
+		}
+
+		// Enrollment happens in the background after opt-in. Never add its longer
+		// registration request to a shopper's checkout path.
+		$enrollment = get_option( self::ENROLLED_OPTION );
+		if ( ! is_array( $enrollment ) || ! isset( $enrollment['site_domain'], $enrollment['operating_country'] )
+			|| ! self::safe_equals( self::get_site_domain(), (string) $enrollment['site_domain'] )
+			|| ! self::safe_equals( $country, (string) $enrollment['operating_country'] ) ) {
+			return null;
+		}
+
+		$body = self::encode_json(
+			array(
+				'schema_version'        => '1.0',
+				'installation_id'       => self::installation_id(),
+				'identity_token_scheme' => 1,
+				'network_identity'       => $identity,
+			)
+		);
+		$endpoint = self::lookup_endpoint();
+		if ( false === $body || ! self::is_allowed_endpoint( $endpoint ) ) {
+			return null;
+		}
+
+		try {
+			$response = wp_safe_remote_post(
+				$endpoint,
+				array(
+					'timeout'             => 1,
+					'redirection'         => 0,
+					'sslverify'           => true,
+					'limit_response_size' => 4096,
+					'headers'             => self::signed_headers( $body ),
+					'body'                => $body,
+				)
+			);
+		} catch ( Exception $exception ) {
+			return null;
+		}
+
+		if ( is_wp_error( $response ) || 200 !== absint( wp_remote_retrieve_response_code( $response ) ) ) {
+			return null;
+		}
+		$result = json_decode( wp_remote_retrieve_body( $response ), true );
+		$count  = is_array( $result ) && isset( $result['own_shop_qualifying_cancelled_cod_count'] ) && is_int( $result['own_shop_qualifying_cancelled_cod_count'] )
+			? $result['own_shop_qualifying_cancelled_cod_count']
+			: -1;
+		$decision = is_array( $result ) && isset( $result['decision'] ) ? (string) $result['decision'] : '';
+		if ( $count < 0 || ! in_array( $decision, array( 'allow_cod', 'disable_cod' ), true ) || ( $count > 0 ) !== ( 'disable_cod' === $decision ) ) {
+			return null;
+		}
+
+		return array( 'disable_cod' => 'disable_cod' === $decision, 'count' => min( 50, $count ) );
+	}
+
+	/**
 	 * Sends at most one small batch. The installation enrolls itself once using
 	 * a locally generated public key; there is no API key to provision or enter.
 	 */
@@ -732,6 +814,12 @@ class Wc_Smart_Cod_Ai_Outbox {
 	private static function registration_endpoint() {
 		$endpoint = defined( 'WSC_SMART_COD_AI_REGISTRATION_ENDPOINT' ) ? WSC_SMART_COD_AI_REGISTRATION_ENDPOINT : 'https://api.woosmartcod.com/v1/installations';
 		return esc_url_raw( apply_filters( 'wsc_smart_cod_ai_registration_endpoint', $endpoint ) );
+	}
+
+	/** @return string */
+	private static function lookup_endpoint() {
+		$endpoint = defined( 'WSC_SMART_COD_AI_LOOKUP_ENDPOINT' ) ? WSC_SMART_COD_AI_LOOKUP_ENDPOINT : 'https://api.woosmartcod.com/v1/cod-protection-check';
+		return esc_url_raw( apply_filters( 'wsc_smart_cod_ai_lookup_endpoint', $endpoint ) );
 	}
 
 	/**

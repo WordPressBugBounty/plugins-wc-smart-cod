@@ -4,7 +4,7 @@ Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD
 Requires at least: 4.5
 Requires PHP: 5.6
 Tested up to: 7.1
-Stable tag: 1.9.3
+Stable tag: 1.9.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,7 +62,9 @@ Since the plugin extends the existing WooCommerce Cash on Delivery Gateway, ther
 
 == External services ==
 
-Cancelled COD data sharing is optional and off by default. Only after an administrator explicitly enables it in the Cash on Delivery settings, Smart COD connects to api.woosmartcod.com to register the installation and send eligible historical and future cancelled COD events in small batches. Registration includes a generated installation identifier, shop domain, operating country and public signing key. Events can include pseudonymized customer and location identifiers, a non-reversible order reference, cancellation time, order amounts/currency and shipping information, including courier name and tracking code where available. An event may also include a capped count of earlier completed COD orders with tracking for the same shopper at that shop. The external service validates signed submissions, deduplicates events, applies an additional secret-keyed transformation to identity tokens, and stores evidence from participating shops for country-level analysis. No individual shop could perform that cross-shop processing locally. This supports development and operation of COD reliability features; this version receives no risk decision from the service and does not change checkout. Checkout continues to work when sharing is off. Turning the option off stops future collection and transmission. The plugin does not call courier APIs.
+COD Protection and cancelled COD data sharing are optional and off by default. Only after an administrator explicitly enables the option in the Cash on Delivery settings, Smart COD connects to api.woosmartcod.com. It registers the installation and sends eligible historical and future cancelled COD events in small background batches. Registration includes a generated installation identifier, shop domain, operating country and public signing key. Events can include pseudonymized customer and location identifiers, a non-reversible order reference, cancellation time, order amounts/currency and shipping information, including courier name and tracking code where available. An event may also include a capped count of earlier completed COD orders with tracking for the same shopper at that shop. The external service validates signed submissions, deduplicates events, applies an additional secret-keyed transformation to identity tokens, and stores evidence from participating shops for country-level analysis. No individual shop could perform that cross-shop processing locally.
+
+When COD Protection is enabled and checkout contains an email address or telephone number, the plugin sends locally generated SHA-256 identity tokens, the installation identifier and operating country to the COD Protection endpoint. Raw email and telephone values are not sent. The service checks only eligible events belonging to that same installation and returns an allow/disable signal and a capped shop-local match count. The service does not persist checkout lookup requests or create a checkout customer profile. A timeout, invalid response or unavailable service leaves Cash on Delivery available. Turning the option off stops future collection, transmission and checkout lookups. The plugin does not call courier APIs.
 
 Service information: [cancelled COD service privacy details](https://woosmartcod.com/cancelled-cod-data-sharing/), [Terms and Conditions](https://woosmartcod.com/terms-conditions/) and [Privacy Policy](https://woosmartcod.com/privacy-policy/).
 
@@ -73,6 +75,13 @@ Service information: [cancelled COD service privacy details](https://woosmartcod
 3. assets/screenshot-3.png
 
 == Changelog ==
+
+= 1.9.4 =
+* Feature - Add optional COD Protection that can hide Cash on Delivery when checkout identity matches an eligible dispatched-then-cancelled COD order from the same store.
+* Privacy - Send only locally generated SHA-256 identity tokens during checkout lookups; raw email and telephone values are never sent and lookup requests are not persisted by the service.
+* Reliability - Keep checkout fail-open with a one-second timeout, strict response validation and short session caching.
+* Admin - Place the opt-in directly below the main COD switch and show a one-time dismissible admin reminder.
+* Localization - Add Greek translations for COD Protection and its data-sharing disclosure.
 
 = 1.9.3 =
 * Compatibility - Replace deprecated product-category queries with the current WordPress API; minimum WordPress version is now 4.5.

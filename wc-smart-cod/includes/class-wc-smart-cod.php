@@ -75,7 +75,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.9.3' );
+		define( 'SMART_COD_VER', '1.9.4' );
 
 		self::$version = SMART_COD_VER;
 
@@ -108,21 +108,22 @@ class Wc_Smart_Cod {
 		return array_merge( $plugin_links, $links );
 	}
 
-	/** Displays a concise, one-time transparency notice to each store admin. */
+	/** Displays the one-time optional protection notice throughout wp-admin. */
 	public function data_sharing_notice() {
 		if ( ! $this->should_show_data_sharing_notice() ) {
 			return;
 		}
 
-		$settings_url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=cod' );
+		$settings_url = admin_url( 'admin.php?page=wc-settings&tab=checkout&section=cod' ) . '#woocommerce_cod_enable_smart_cod_ai_data_sharing';
 		?>
 		<div class="notice notice-info is-dismissible wsc-data-sharing-notice" data-wsc-dismiss-nonce="<?php echo esc_attr( wp_create_nonce( 'wsc_dismiss_data_sharing_notice' ) ); ?>">
-			<p><?php esc_html_e( 'Smart COD for WooCommerce: help build future tools to spot patterns linked to COD orders that may go uncollected. Sharing eligible cancelled COD events is optional, off by default, and does not change checkout today.', 'wc-smart-cod' ); ?> <a href="https://woosmartcod.com/cancelled-cod-data-sharing/" target="_blank" rel="noopener"><?php esc_html_e( 'Learn what is shared', 'wc-smart-cod' ); ?></a> <?php esc_html_e( 'or', 'wc-smart-cod' ); ?> <a href="<?php echo esc_url( $settings_url ); ?>"><?php esc_html_e( 'review the optional setting', 'wc-smart-cod' ); ?></a>.</p>
+			<p><strong><?php esc_html_e( 'Smart COD for WooCommerce', 'wc-smart-cod' ); ?></strong><?php esc_html_e( ': Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default.', 'wc-smart-cod' ); ?></p>
+			<p><a class="button button-primary" href="<?php echo esc_url( $settings_url ); ?>"><?php esc_html_e( 'Enable COD Protection', 'wc-smart-cod' ); ?></a> <a href="https://woosmartcod.com/cancelled-cod-data-sharing/" target="_blank" rel="noopener"><?php esc_html_e( 'How data is used', 'wc-smart-cod' ); ?></a></p>
 		</div>
 		<?php
 	}
 
-	/** Permanently dismisses the data-sharing notice for the current admin user. */
+	/** Permanently stores the notice dismissal for the current administrator. */
 	public function dismiss_data_sharing_notice() {
 		check_ajax_referer( 'wsc_dismiss_data_sharing_notice', 'nonce' );
 
@@ -130,7 +131,7 @@ class Wc_Smart_Cod {
 			wp_send_json_error();
 		}
 
-		update_user_meta( get_current_user_id(), 'wsc_data_sharing_notice_dismissed_v2', 1 );
+		update_user_meta( get_current_user_id(), 'wsc_cod_protection_notice_dismissed', 1 );
 		wp_send_json_success();
 	}
 
@@ -143,18 +144,15 @@ class Wc_Smart_Cod {
 	}
 
 	private function should_show_data_sharing_notice() {
-		if ( ! current_user_can( 'manage_woocommerce' ) || get_user_meta( get_current_user_id(), 'wsc_data_sharing_notice_dismissed_v2', true ) ) {
+		$dismissed = (bool) get_user_meta( get_current_user_id(), 'wsc_cod_protection_notice_dismissed', true );
+		if ( ! current_user_can( 'manage_woocommerce' ) || $dismissed ) {
 			return false;
 		}
 		$settings = get_option( 'woocommerce_cod_settings', array() );
 		if ( is_array( $settings ) && isset( $settings['enable_smart_cod_ai_data_sharing'] ) && 'yes' === $settings['enable_smart_cod_ai_data_sharing'] ) {
 			return false;
 		}
-		$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-		// This GET parameter only selects where the notice is displayed; it changes no state.
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$section = isset( $_GET['section'] ) && is_scalar( $_GET['section'] ) ? sanitize_key( wp_unslash( $_GET['section'] ) ) : '';
-		return $screen && ( 'plugins' === $screen->id || ( 'woocommerce_page_wc-settings' === $screen->id && 'cod' === $section ) );
+		return true;
 	}
 
 	public static function wc_version_check( $version = '3.4' ) {
