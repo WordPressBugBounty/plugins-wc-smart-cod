@@ -22,6 +22,20 @@
  */
 class Wc_Smart_Cod_Public {
 
+    /** Reset only mutable cart/customer caches. Configuration and licence sources are unchanged. */
+    public function reset_checkout_state() {
+        $this->has_cod_available = null;
+        $this->cart_products = false;
+        $this->reason = null;
+    }
+
+    public function blocks_checkout_data() {
+        $this->init_wsc_settings();
+        $allowed = $this->has_cod_available();
+        $message = $allowed ? '' : $this->get_cod_message($this->reason, $this->get_cod_settings());
+        return array('cod_available' => $allowed, 'message' => html_entity_decode(wp_strip_all_tags((string) $message), ENT_QUOTES, 'UTF-8'));
+    }
+
 	/**
 	 * The ID of this plugin.
 	 *
@@ -345,7 +359,7 @@ class Wc_Smart_Cod_Public {
 
 		try {
 			
-			if ( $apply_fee && ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
+			if ( $apply_fee && !(class_exists('Wc_Smart_Cod_Blocks') && Wc_Smart_Cod_Blocks::is_store_api_request()) && (!defined('DOING_AJAX') || !DOING_AJAX) ) {
 				return;
 			}
 	
@@ -373,6 +387,12 @@ class Wc_Smart_Cod_Public {
 			}
 	
 			if ( ( $payment_gateway !== 'cod' || $this->has_cod_available() === false ) && $apply_fee ) {
+				return;
+			}
+
+			// Shipping can remove COD through WooCommerce or another plugin while
+			// this request still carries the previous COD selection. Quotes are unaffected.
+			if ( $apply_fee && ! isset( WC()->payment_gateways->get_available_payment_gateways()['cod'] ) ) {
 				return;
 			}
 	
@@ -502,7 +522,8 @@ class Wc_Smart_Cod_Public {
 			return false;
 		}
 
-		$fingerprint = hash( 'sha256', $identity['email'] . '|' . $identity['phone'] );
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-lifecycle.php';
+		$fingerprint = hash( 'sha256', 'own-shop-decision-v1|' . wp_json_encode( Wc_Smart_Cod_Lifecycle::policy() ) . '|' . $identity['email'] . '|' . $identity['phone'] );
 		if ( isset( $this->cod_protection_checks[ $fingerprint ] ) ) {
 			return $this->cod_protection_checks[ $fingerprint ];
 		}
@@ -533,6 +554,7 @@ class Wc_Smart_Cod_Public {
 				array(
 					'fingerprint' => $fingerprint,
 					'disable_cod' => $result,
+					'decision_id' => is_array( $lookup ) ? $lookup['decision_id'] : '',
 					'expires'     => time() + $ttl,
 				)
 			);
@@ -987,7 +1009,7 @@ class Wc_Smart_Cod_Public {
 	public function apply_smart_cod_settings( $available_gateways ) {
 
 		try {
-			if ( ! function_exists( 'is_checkout' ) || ! is_checkout() && ! is_wc_endpoint_url( 'order-pay' ) ) {
+			if ( !(class_exists('Wc_Smart_Cod_Blocks') && Wc_Smart_Cod_Blocks::is_store_api_request()) && (! function_exists( 'is_checkout' ) || ! is_checkout() && ! is_wc_endpoint_url( 'order-pay' )) ) {
 				return $available_gateways;
 			}
 	
@@ -1054,6 +1076,8 @@ class Wc_Smart_Cod_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
+
+        if (class_exists('Wc_Smart_Cod_Blocks') && Wc_Smart_Cod_Blocks::is_block_page()) return;
 
 		/**
 		 * This function is provided for demonstration purposes only.

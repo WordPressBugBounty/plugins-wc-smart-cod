@@ -613,7 +613,7 @@ class Wc_Smart_Cod_Cancelled_Cod_Collector {
 	 *
 	 * @return bool
 	 */
-	private static function store_has_known_tracking_capability() {
+	public static function store_has_known_tracking_capability() {
 		static $has_capability = null;
 		if ( null !== $has_capability ) {
 			return $has_capability;
@@ -664,7 +664,7 @@ class Wc_Smart_Cod_Cancelled_Cod_Collector {
 	 * @param WC_Order $order WooCommerce order.
 	 * @return array
 	 */
-	private static function get_tracking_data( $order ) {
+	public static function get_tracking_data( $order ) {
 		$tracking = array();
 		$providers = array();
 		self::extract_known_tracking_adapters( $order, $tracking );

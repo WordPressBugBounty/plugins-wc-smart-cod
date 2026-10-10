@@ -90,7 +90,7 @@ jQuery(document).ready(function($) {
 
       restrictionSettings[dataName] = newMode === "enable" ? 1 : 0;
       restrictionSettingsInput.val(JSON.stringify(restrictionSettings));
-      $this.html(newMode);
+      $this.text(smart_cod_variables.messages[newMode]);
       $this.data("mode", newMode);
     },
 
@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
     enablePercentage: function(element) {
       var fieldset = element.parents("fieldset"),
         select = $(
-          '<select class="wc-smart-cod-percantage-switcher"><option value="fixed">Fixed</option><option value="percentage">%</option></select>'
+          '<select class="wc-smart-cod-percantage-switcher"><option value="fixed"></option><option value="percentage">%</option></select>'
         ),
         value = "0",
         name = element.attr("name").slice(16);
@@ -124,46 +124,28 @@ jQuery(document).ready(function($) {
         feeSettings[name] = value = "fixed";
       }
 
+      select.find('option[value="fixed"]').text(smart_cod_variables.messages.fixed);
       select.val(value);
       fieldset.append(select);
     },
 
-    enableConditional: function(element) {
-      var tr = element.parents("tr"),
-        th = tr.find("th"),
-        label = th.find("label");
-
-      if (label.length > 0) {
-        var originalValue = label.contents().get(0).nodeValue;
-        var splitLabel = originalValue.trim().split(" ");
-        if (splitLabel[0]) {
-          var needle = splitLabel[0].toLowerCase();
-          switch (needle) {
-            case "enable":
-            case "disable": {
-              var inputName = element.attr("name");
-              var dataName = element.data("name");
-              label.contents().get(0).nodeValue = label
-                .text()
-                .replace(originalValue, "");
-              splitLabel.shift();
-              label.prepend(
-                '<a class="wc-smart-cod-mode" href="#" data-mode="' +
-                  needle +
-                  '" data-input-name="' +
-                  inputName +
-                  '">' +
-                  needle +
-                  "</a> " +
-                  splitLabel.join(" ")
-              );
-              if (!restrictionSettings.hasOwnProperty(dataName)) {
-                restrictionSettings[dataName] = needle === "enable" ? 1 : 0;
-              }
-              break;
-            }
-          }
-        }
+    enableConditional: function (element) {
+      if (element.data("disable-switch") === 1) return;
+      var mode = element.data("mode");
+      if (mode !== "enable" && mode !== "disable") return;
+      var label = element.closest("tr").find("th label").first();
+      var textNode = label.contents().get(0);
+      if (!textNode || textNode.nodeType !== 3) return;
+      var remainder = textNode.nodeValue.trim().replace(/^\S+\s*/, "");
+      textNode.nodeValue = "";
+      var toggle = $("<a>", {
+        "class": "wc-smart-cod-mode", href: "#", "data-mode": mode,
+        "data-input-name": element.attr("name")
+      }).text(smart_cod_variables.messages[mode]);
+      label.prepend(toggle, document.createTextNode(" " + remainder));
+      var dataName = element.data("name");
+      if (!restrictionSettings.hasOwnProperty(dataName)) {
+        restrictionSettings[dataName] = mode === "enable" ? 1 : 0;
       }
     },
 

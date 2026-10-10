@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/class-wc-smart-cod-lifecycle.php';
 
 /**
  * Relays cancelled-COD shipment events to Smart COD AI in deliberately small,
@@ -8,6 +9,52 @@
  * only when its small scheduled batch runs.
  */
 class Wc_Smart_Cod_Ai_Outbox {
+
+	public static function lifecycle_identity( $order ) { return self::network_identity( $order ); }
+	public static function lifecycle_reference( $id ) { return self::order_reference( $id ); }
+	public static function lifecycle_trackings( $order ) {
+		require_once __DIR__ . '/class-wc-smart-cod-cancelled-cod-collector.php';
+		$items = self::tracking_payload( Wc_Smart_Cod_Cancelled_Cod_Collector::get_tracking_data( $order ) );
+		$valid = array();
+		foreach ( $items as $item ) {
+			$code = trim( $item['tracking_code'] );
+			// Optional shipment metadata must not wedge the entire lifecycle queue.
+			if ( ! preg_match( '/^[A-Za-z0-9][A-Za-z0-9 ._\/-]{0,190}$/D', $code ) ) continue;
+			$courier = trim( $item['courier'] );
+			if ( strlen( $courier ) > 191 || preg_match( '/[\x00-\x1f\x7f]/', $courier ) ) $courier = '';
+			$key = 'code:' . $code;
+			if ( isset( $valid[ $key ] ) && $valid[ $key ]['courier'] !== $courier ) $courier = '';
+			$valid[ $key ] = array( 'courier' => $courier, 'tracking_code' => $code );
+		}
+		ksort( $valid, SORT_STRING );
+		return array_slice( array_values( $valid ), 0, 10 );
+	}
+	public static function send_lifecycle_events( $events ) {
+		if ( ! Wc_Smart_Cod_Lifecycle::enabled() || empty( $events ) || count( $events ) > 10 ) return false;
+		$endpoint = 'https://api.woosmartcod.com/v3/order-events';
+		if ( ! self::is_allowed_endpoint( $endpoint ) || ! self::ensure_enrolled() ) return false;
+		$body = self::encode_json( array( 'installation_id' => self::installation_id(), 'events' => array_values( $events ) ) );
+		if ( false === $body ) return false;
+		if ( ! Wc_Smart_Cod_Lifecycle::enabled() ) return false;
+		$headers = self::signed_headers( $body );
+		if ( empty( $headers['X-WSC-Signature'] ) ) return false;
+		try {
+			$response = wp_safe_remote_post( $endpoint, array( 'timeout' => 3, 'redirection' => 0, 'sslverify' => true, 'limit_response_size' => 16384, 'headers' => $headers, 'body' => $body ) );
+		} catch ( Exception $e ) { return false; }
+		if ( is_wp_error( $response ) || 202 !== absint( wp_remote_retrieve_response_code( $response ) ) ) return false;
+		$result = json_decode( wp_remote_retrieve_body( $response ), true );
+		$ack = is_array( $result ) && isset( $result['acknowledged'] ) ? $result['acknowledged'] : null;
+		if ( ! is_array( $ack ) || count( $ack ) !== count( $events ) ) return false;
+		foreach ( $events as $event ) {
+			$matches = 0;
+			foreach ( $ack as $a ) {
+				if ( is_array( $a ) && isset( $a['order_reference'], $a['revision'] ) && $a['order_reference'] === $event['order_reference'] && $a['revision'] === $event['revision'] ) $matches++;
+			}
+			if ( 1 !== $matches ) return false;
+		}
+		return true;
+	}
+
 
 	const EVENT                 = 'wsc_send_smart_cod_ai_events';
 	const LOCK_OPTION           = 'wsc_smart_cod_ai_outbox_lock';
@@ -154,6 +201,8 @@ class Wc_Smart_Cod_Ai_Outbox {
 				'installation_id'       => self::installation_id(),
 				'identity_token_scheme' => 1,
 				'network_identity'       => $identity,
+				'success_rate_policy' => Wc_Smart_Cod_Lifecycle::policy(),
+				'response_contract' => 'own-shop-decision-v1',
 			)
 		);
 		$endpoint = self::lookup_endpoint();
@@ -181,15 +230,20 @@ class Wc_Smart_Cod_Ai_Outbox {
 			return null;
 		}
 		$result = json_decode( wp_remote_retrieve_body( $response ), true );
-		$count  = is_array( $result ) && isset( $result['own_shop_qualifying_cancelled_cod_count'] ) && is_int( $result['own_shop_qualifying_cancelled_cod_count'] )
-			? $result['own_shop_qualifying_cancelled_cod_count']
-			: -1;
-		$decision = is_array( $result ) && isset( $result['decision'] ) ? (string) $result['decision'] : '';
-		if ( $count < 0 || ! in_array( $decision, array( 'allow_cod', 'disable_cod' ), true ) || ( $count > 0 ) !== ( 'disable_cod' === $decision ) ) {
+		$policy = Wc_Smart_Cod_Lifecycle::policy();
+		$keys = array( 'decision', 'decision_id', 'response_contract', 'policy_version', 'minimum_success_rate', 'positive_history_enabled' );
+		if ( ! is_array( $result ) || count( $result ) !== count( $keys )
+			|| array_diff( $keys, array_keys( $result ) )
+			|| ! in_array( $result['decision'], array( 'allow_cod', 'disable_cod' ), true )
+			|| 'own-shop-decision-v1' !== $result['response_contract']
+			|| 'own-shop-success-rate-v1' !== $result['policy_version']
+			|| ! is_string( $result['decision_id'] ) || ! preg_match( '/^[a-f0-9]{32}$/i', $result['decision_id'] )
+			|| $result['minimum_success_rate'] !== $policy['minimum_success_rate']
+			|| $result['positive_history_enabled'] !== $policy['enabled'] ) {
 			return null;
 		}
-
-		return array( 'disable_cod' => 'disable_cod' === $decision, 'count' => min( 50, $count ) );
+		// The server evaluates the policy. Checkout never receives or reconstructs history.
+		return array( 'disable_cod' => 'disable_cod' === $result['decision'], 'decision_id' => $result['decision_id'] );
 	}
 
 	/**

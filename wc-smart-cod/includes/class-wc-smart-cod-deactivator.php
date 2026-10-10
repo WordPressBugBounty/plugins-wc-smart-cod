@@ -34,6 +34,8 @@ class Wc_Smart_Cod_Deactivator {
 		Wc_Smart_Cod_Cancelled_Cod_Collector::deactivate();
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wc-smart-cod-ai-outbox.php';
 		Wc_Smart_Cod_Ai_Outbox::deactivate();
+		require_once __DIR__ . '/class-wc-smart-cod-lifecycle.php';
+		Wc_Smart_Cod_Lifecycle::stop();
 	}
 
 }

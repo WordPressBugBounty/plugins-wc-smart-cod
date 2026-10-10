@@ -1,0 +1,350 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart COD for WooCommerce\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: includes/class-wc-smart-cod.php:120
+msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
+msgstr ": Riduci gli ordini in contrassegno non ritirati ripetuti. La protezione può nascondere il contrassegno quando lo stesso cliente corrisponde a un ordine idoneo spedito e successivamente annullato nel tuo negozio. Il servizio è facoltativo e disattivato per impostazione predefinita."
+
+#: admin/partials/wc-smart-cod-admin-display.php:35
+msgid "A separate Smart COD PRO plugin offers advance-payment COD, multiple conditional extra fees, order-pay fee handling, CSV restriction imports, and additional cart, customer, stock, backorder and coupon rules. These features are not part of the Free plugin."
+msgstr "Il plugin separato Smart COD PRO offre contrassegno con acconto, più costi aggiuntivi condizionali, gestione dei costi nella pagina di pagamento dell’ordine, importazione di restrizioni da CSV e regole aggiuntive per carrello, cliente, scorte, prodotti in arretrato e coupon. Queste funzionalità non sono incluse nel plugin Free."
+
+#: admin/class-wc-smart-cod-admin.php:575
+msgid "Add the cities you want to restrict the COD method. Seperate with a comma. This cannot guarantee the cod restriction at all times, because the city field on checkout is a free text field and the user can make typos or use different characters / spelling for his city."
+msgstr "Aggiungi le città per cui limitare il contrassegno, separate da virgole. La corrispondenza non è garantita: il campo città del checkout è a testo libero e il cliente potrebbe commettere errori o utilizzare una grafia diversa."
+
+#: admin/class-wc-smart-cod-admin.php:564
+msgid "Add the postal codes you want to restrict the COD method. Seperate with a comma. You can use fully numeric ranges as well (e.g<code>55133,55134,55400...55600</code>). For ranges use <code>...</code> for delimiter."
+msgstr "Aggiungi i codici postali per cui limitare il contrassegno, separati da virgole. Puoi usare anche intervalli numerici (ad es.<code>55133,55134,55400...55600</code>). Usa <code>...</code> come separatore dell’intervallo."
+
+#: admin/class-wc-smart-cod-admin.php:603
+#: admin/class-wc-smart-cod-admin.php:633
+#: admin/class-wc-smart-cod-admin.php:663
+msgid "All products"
+msgstr "Tutti i prodotti"
+
+#: admin/class-wc-smart-cod-admin.php:701
+msgid "An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don't want to use this feature. You can define different messages per reason."
+msgstr "Messaggio informativo prima dei metodi di pagamento quando il contrassegno non è disponibile. Lascia vuoto per non utilizzarlo. Puoi impostare un messaggio diverso per ciascun motivo."
+
+#: includes/class-wc-smart-cod-lifecycle.php:47
+msgid "At 90%, 9 successful and 1 failed order keep COD available."
+msgstr "Con il 90%, 9 ordini riusciti e 1 non riuscito mantengono disponibile il contrassegno."
+
+#: admin/class-wc-smart-cod-admin.php:602
+#: admin/class-wc-smart-cod-admin.php:632
+#: admin/class-wc-smart-cod-admin.php:662
+msgid "At least one product"
+msgstr "Almeno un prodotto"
+
+#: admin/class-wc-smart-cod-admin.php:769
+msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
+msgstr "Nascondi automaticamente il contrassegno quando l’email o il telefono inseriti al checkout corrispondono a un ordine COD idoneo spedito e successivamente annullato nel tuo negozio. Facoltativo e disattivato per impostazione predefinita. L’attivazione avvia anche la raccolta e la condivisione degli ordini COD annullati idonei, passati e futuri, dei codici di tracciamento disponibili, dei dettagli degli ordini, di un conteggio limitato degli ordini COD precedenti completati e tracciati e degli identificativi pseudonimizzati di cliente e località con api.woosmartcod.com. Email e telefono in chiaro non vengono inviati. La disattivazione interrompe raccolta, condivisione e controlli futuri al checkout. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Scopri come il servizio utilizza i dati.</a>"
+
+#: admin/class-wc-smart-cod-admin.php:773
+msgid "COD Protection"
+msgstr "Protezione del contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:698
+msgid "COD Unavailable Message"
+msgstr "Messaggio per contrassegno non disponibile"
+
+#: admin/class-wc-smart-cod-admin.php:750
+msgid "Charge extra fee differently for shipping method: "
+msgstr "Costo aggiuntivo diverso per il metodo di spedizione: "
+
+#: admin/class-wc-smart-cod-admin.php:309
+#: admin/class-wc-smart-cod-admin.php:737
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Disable"
+msgstr "Disabilita"
+
+#: admin/class-wc-smart-cod-admin.php:572
+msgid "Disable on specific cities"
+msgstr "Disabilita per città"
+
+#: admin/class-wc-smart-cod-admin.php:533
+msgid "Disable on specific countries"
+msgstr "Disabilita per paesi"
+
+#: admin/class-wc-smart-cod-admin.php:561
+msgid "Disable on specific postal codes"
+msgstr "Disabilita per codici postali"
+
+#: admin/class-wc-smart-cod-admin.php:611
+msgid "Disable on specific product categories"
+msgstr "Disabilita per categorie di prodotti"
+
+#: admin/class-wc-smart-cod-admin.php:641
+msgid "Disable on specific products"
+msgstr "Disabilita per prodotti"
+
+#: admin/class-wc-smart-cod-admin.php:671
+msgid "Disable on specific shipping classes"
+msgstr "Disabilita per classi di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:685
+msgid "Disable on specific shipping methods of zones"
+msgstr "Disabilita per metodi delle zone di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:517
+msgid "Disable on specific shipping zones"
+msgstr "Disabilita per zone di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:547
+msgid "Disable on specific states"
+msgstr "Disabilita per regioni / stati"
+
+#: admin/class-wc-smart-cod-admin.php:583
+msgid "Disable on specific user roles"
+msgstr "Disabilita per ruoli utente"
+
+#: admin/class-wc-smart-cod-admin.php:309
+#: admin/class-wc-smart-cod-admin.php:736
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Enable"
+msgstr "Abilita"
+
+#: includes/class-wc-smart-cod.php:121
+msgid "Enable COD Protection"
+msgstr "Abilita la protezione del contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:775
+#: includes/class-wc-smart-cod-lifecycle.php:39
+msgid "Enable COD protection"
+msgstr "Abilita la protezione del contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:711
+#: admin/class-wc-smart-cod-admin.php:755
+msgid "Enter Amount"
+msgstr "Inserisci l’importo"
+
+#: admin/class-wc-smart-cod-admin.php:752
+msgid "Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount"
+msgstr "Inserisci un costo diverso per questo metodo di spedizione oppure lascia vuoto per applicare il costo standard"
+
+#: admin/class-wc-smart-cod-admin.php:725
+msgid "Examples: Round up setting will transform 5.345&euro; to 6&euro;<br />Round down will transform it to 5&euro;."
+msgstr "Esempi: l'arrotondamento per eccesso trasforma 5.345&euro; in 6&euro;<br />L'arrotondamento per difetto li trasforma in 5&euro;."
+
+#: admin/partials/wc-smart-cod-admin-display.php:36
+msgid "Explore PRO features"
+msgstr "Scopri le funzionalità PRO"
+
+#: admin/class-wc-smart-cod-admin.php:706
+msgid "Extra Fee"
+msgstr "Costo aggiuntivo"
+
+#: admin/class-wc-smart-cod-admin.php:731
+msgid "Extra Fee Tax"
+msgstr "Imposta sulla commissione aggiuntiva"
+
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Fixed"
+msgstr "Importo fisso"
+
+#: admin/class-wc-smart-cod-admin.php:805
+msgid "Generic Message"
+msgstr "Messaggio generale"
+
+#: admin/class-wc-smart-cod-admin.php:422
+msgid "Guest (Customer without account)"
+msgstr "Ospite (cliente senza account)"
+
+#: includes/class-wc-smart-cod.php:121
+msgid "How data is used"
+msgstr "Come vengono utilizzati i dati"
+
+#: admin/class-wc-smart-cod-admin.php:740
+msgid "Is extra fee taxable? Use this option if you have taxes enabled in your shop and you want to include tax to COD method."
+msgstr "La commissione aggiuntiva è imponibile? Usa questa opzione se le imposte sono attive nel negozio e vuoi applicarle alla commissione del contrassegno."
+
+#: includes/class-wc-smart-cod-lifecycle.php:45
+msgid "Minimum successful COD rate (%)"
+msgstr "Percentuale minima di ordini COD riusciti (%)"
+
+#: admin/class-wc-smart-cod-admin.php:716
+msgid "Percentage Rounding Settings"
+msgstr "Impostazioni di arrotondamento della percentuale"
+
+#: admin/class-wc-smart-cod-admin.php:1107
+msgid "Please save the changes to see the new settings"
+msgstr "Salva le modifiche per visualizzare le nuove impostazioni"
+
+#: admin/class-wc-smart-cod-admin.php:597
+msgid "Product Category Restriction Mode"
+msgstr "Modalità di restrizione delle categorie di prodotti"
+
+#: admin/class-wc-smart-cod-admin.php:627
+msgid "Product Restriction Mode"
+msgstr "Modalità di restrizione dei prodotti"
+
+#: includes/class-wc-smart-cod-lifecycle.php:41
+msgid "Read how the service uses data."
+msgstr "Scopri come il servizio utilizza i dati."
+
+#: admin/class-wc-smart-cod-admin.php:722
+msgid "Round Down"
+msgstr "Arrotonda per difetto"
+
+#: admin/class-wc-smart-cod-admin.php:721
+msgid "Round Up"
+msgstr "Arrotonda per eccesso"
+
+#: includes/class-wc-smart-cod-lifecycle.php:48
+msgid "Same store only; other COD rules still apply. Set 100% to prevent successful orders from overriding a qualifying failure."
+msgstr "Solo nello stesso negozio; le altre regole del contrassegno restano valide. Imposta il 100% per impedire che gli ordini riusciti superino una mancata consegna rilevante."
+
+#: admin/class-wc-smart-cod-admin.php:606
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted category. Select \"all\", if you want the COD to be restricted if all the cart product's belongs to restricted categories. Then add the restricted categories in the select field below."
+msgstr "Seleziona «almeno uno» per limitare il contrassegno quando almeno un elemento del carrello soddisfa la condizione, oppure «tutti» quando la soddisfano tutti. Specifica categorie di prodotti nel campo corrispondente."
+
+#: admin/class-wc-smart-cod-admin.php:666
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted shipping class. Select \"all\", if you want the COD to be restricted if all of the cart's product's belongs to restricted shipping classes. Then add the restricted shipping classes in the select field below."
+msgstr "Seleziona «almeno uno» per limitare il contrassegno quando almeno un elemento del carrello soddisfa la condizione, oppure «tutti» quando la soddisfano tutti. Specifica classi di spedizione nel campo corrispondente."
+
+#: admin/class-wc-smart-cod-admin.php:636
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart is restricted. Select \"all\", if you want the COD to be restricted if all of the cart's product's are restricted. Then add the restricted products in the select field below."
+msgstr "Seleziona «almeno uno» per limitare il contrassegno quando almeno un elemento del carrello soddisfa la condizione, oppure «tutti» quando la soddisfano tutti. Specifica prodotti nel campo corrispondente."
+
+#: admin/class-wc-smart-cod-admin.php:540
+msgid "Select Countries"
+msgstr "Seleziona i paesi"
+
+#: admin/class-wc-smart-cod-admin.php:590
+msgid "Select Roles"
+msgstr "Seleziona i ruoli"
+
+#: admin/class-wc-smart-cod-admin.php:678
+msgid "Select Shipping Classes"
+msgstr "Seleziona le classi di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:692
+msgid "Select Shipping Methods"
+msgstr "Seleziona i metodi di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:554
+msgid "Select States"
+msgstr "Seleziona le regioni / gli stati"
+
+#: admin/class-wc-smart-cod-admin.php:618
+msgid "Select categories"
+msgstr "Seleziona le categorie"
+
+#: admin/class-wc-smart-cod-admin.php:648
+msgid "Select products"
+msgstr "Seleziona i prodotti"
+
+#: admin/class-wc-smart-cod-admin.php:524
+msgid "Select shipping zones"
+msgstr "Seleziona le zone di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:536
+msgid "Select the countries you want to restrict the COD method"
+msgstr "Seleziona paesi per limitare il contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:614
+msgid "Select the product categories you want to restrict the COD method"
+msgstr "Seleziona categorie di prodotti per limitare il contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:644
+msgid "Select the products you want to restrict the COD method"
+msgstr "Seleziona prodotti per limitare il contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:674
+msgid "Select the shipping classes you want to restrict the COD method"
+msgstr "Seleziona classi di spedizione per limitare il contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:688
+msgid "Select the shipping methods of specific zones, you want to restrict the COD method. <strong>Please note that for WooCommerce versions >= 3.4, this is a built in feature, so if you use the WooCommerce setting, this setting will be disabled. Otherwise leave the WooCommerce setting blank and use our setting.</strong>"
+msgstr "Seleziona i metodi di zone di spedizione specifiche per limitare il contrassegno. <strong>Da WooCommerce 3.4 questa funzione è integrata. Se utilizzi l’impostazione di WooCommerce, questa opzione viene disabilitata. Altrimenti lascia vuota l’impostazione di WooCommerce e utilizza la nostra.</strong>"
+
+#: admin/class-wc-smart-cod-admin.php:520
+msgid "Select the shipping zones you want to restrict the COD method"
+msgstr "Seleziona zone di spedizione per limitare il contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:550
+msgid "Select the states you want to restrict the COD method"
+msgstr "Seleziona regioni / stati per limitare il contrassegno"
+
+#: admin/class-wc-smart-cod-admin.php:586
+msgid "Select the user roles you want to restrict the COD method"
+msgstr "Seleziona ruoli utente per limitare il contrassegno"
+
+#: includes/class-wc-smart-cod.php:105
+msgid "Settings"
+msgstr "Impostazioni"
+
+#: admin/class-wc-smart-cod-admin.php:657
+msgid "Shipping Class Restriction Mode"
+msgstr "Modalità di restrizione delle classi di spedizione"
+
+#: includes/class-wc-smart-cod.php:120
+msgid "Smart COD for WooCommerce"
+msgstr "Smart COD for WooCommerce"
+
+#: includes/class-wc-smart-cod-lifecycle.php:40
+msgid "Stores cancelled and completed COD orders from this store to restrict COD for customers who did not receive their orders, and keep COD available when their successful-order rate meets your threshold."
+msgstr "Memorizza gli ordini in contrassegno annullati e completati di questo negozio per limitare il contrassegno ai clienti che non hanno ritirato gli ordini e mantenerlo disponibile quando la loro percentuale di ordini riusciti raggiunge la soglia scelta."
+
+#: admin/class-wc-smart-cod-admin.php:709
+msgid "The extra amount you charging for cash on delivery (leave blank or zero if you don't charge extra)"
+msgstr "Importo aggiuntivo per il contrassegno (lascia vuoto o zero se non applichi un costo aggiuntivo)"
+
+#: admin/class-wc-smart-cod-admin.php:1106
+msgid "This field should be a number only."
+msgstr "Questo campo deve contenere solo un numero."
+
+#: admin/class-wc-smart-cod-admin.php:812
+msgid "Unavailable by restricted cart amount"
+msgstr "Non disponibile per una restrizione: importo del carrello"
+
+#: admin/class-wc-smart-cod-admin.php:811
+msgid "Unavailable by restricted city"
+msgstr "Non disponibile per una restrizione: città"
+
+#: admin/class-wc-smart-cod-admin.php:808
+msgid "Unavailable by restricted country"
+msgstr "Non disponibile per una restrizione: paese"
+
+#: admin/class-wc-smart-cod-admin.php:810
+msgid "Unavailable by restricted postal code"
+msgstr "Non disponibile per una restrizione: codice postale"
+
+#: admin/class-wc-smart-cod-admin.php:815
+msgid "Unavailable by restricted product"
+msgstr "Non disponibile per una restrizione: prodotto"
+
+#: admin/class-wc-smart-cod-admin.php:814
+msgid "Unavailable by restricted product category"
+msgstr "Non disponibile per una restrizione: categoria di prodotti"
+
+#: admin/class-wc-smart-cod-admin.php:816
+msgid "Unavailable by restricted shipping class"
+msgstr "Non disponibile per una restrizione: classe di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:806
+msgid "Unavailable by restricted shipping method"
+msgstr "Non disponibile per una restrizione: metodo di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:817
+msgid "Unavailable by restricted shipping method of a specific zone"
+msgstr "Non disponibile per una restrizione: metodo di una zona di spedizione specifica"
+
+#: admin/class-wc-smart-cod-admin.php:807
+msgid "Unavailable by restricted shipping zone"
+msgstr "Non disponibile per una restrizione: zona di spedizione"
+
+#: admin/class-wc-smart-cod-admin.php:809
+msgid "Unavailable by restricted state"
+msgstr "Non disponibile per una restrizione: regione / stato"
+
+#: admin/class-wc-smart-cod-admin.php:813
+msgid "Unavailable by restricted user role"
+msgstr "Non disponibile per una restrizione: ruolo dell’utente"

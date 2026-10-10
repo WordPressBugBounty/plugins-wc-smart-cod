@@ -3,16 +3,18 @@ Contributors: fullstackhouse
 Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD
 Requires at least: 4.5
 Requires PHP: 5.6
-Tested up to: 7.1
-Stable tag: 1.9.4
+Tested up to: 7.1.3
+Stable tag: 1.9.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Configure Cash on Delivery restrictions and an optional extra fee in WooCommerce.
+Configure COD restrictions and extra fees for WooCommerce Classic Checkout and Cart & Checkout Blocks.
 
 == Description ==
 
 **Smart COD for WooCommerce** extends the **WooCommerce Cash on Delivery (COD) Gateway** with an optional extra fee and restrictions based on customer conditions such as location and selected shipping method.
+
+**Supports both Classic Checkout and WooCommerce Cart & Checkout Blocks (WooCommerce 9.9+ for Blocks).** The same COD restrictions and extra fees apply to both checkout types.
 
 Whether you’re managing a small shop or a large e-commerce business, this plugin helps you fine-tune your Cash on Delivery service to cater to a wide range of scenarios and requirements.
 
@@ -60,11 +62,23 @@ Since the plugin extends the existing WooCommerce Cash on Delivery Gateway, ther
 2. Go as always to WooCommerce / Settings / Checkout / Cash On Delivery
 3. Setup your desired settings, click 'Save Changes', and you are ready to go!
 
+== Frequently Asked Questions ==
+
+= Does this plugin support WooCommerce Cart and Checkout Blocks? =
+
+Yes. Cart and Checkout Blocks are supported on WooCommerce 9.9 or newer, using the native Store API and Blocks extension APIs. The same COD restrictions and extra fees apply to both Blocks and Classic Checkout. Optional COD Protection also works with both checkout types.
+
+Payment gateways and checkout fields provided by other plugins need their own Blocks compatibility.
+
+= Can I keep using Classic Checkout? =
+
+Yes. Classic shortcode checkout remains supported. You do not need to switch to Blocks, and your existing COD settings apply to either checkout type.
+
 == External services ==
 
-COD Protection and cancelled COD data sharing are optional and off by default. Only after an administrator explicitly enables the option in the Cash on Delivery settings, Smart COD connects to api.woosmartcod.com. It registers the installation and sends eligible historical and future cancelled COD events in small background batches. Registration includes a generated installation identifier, shop domain, operating country and public signing key. Events can include pseudonymized customer and location identifiers, a non-reversible order reference, cancellation time, order amounts/currency and shipping information, including courier name and tracking code where available. An event may also include a capped count of earlier completed COD orders with tracking for the same shopper at that shop. The external service validates signed submissions, deduplicates events, applies an additional secret-keyed transformation to identity tokens, and stores evidence from participating shops for country-level analysis. No individual shop could perform that cross-shop processing locally.
+COD Protection and order-history sharing are optional and off by default in Free and PRO. Enabling the sharing setting in Cash on Delivery settings registers the installation with api.woosmartcod.com and permits the collection described below. Collection includes future physical COD creation snapshots and subsequent outcomes in signed background batches, without requiring tracking or a 24-hour wait. The existing filtered cancellation relay still sends eligible historical and future cancellation evidence and a capped prior-completed tracked COD count for the same shopper at that shop. An existing enabled sharing setting applies to this collection after updating, without another activation step or expansion notice; disabled settings remain disabled. Registration includes a generated installation identifier, shop domain, operating country and public signing key. Events include pseudonymized customer/location identifiers, a non-reversible order reference, timestamps, totals/currency, shipping method, item count, guest/registered status and courier/tracking where available. The service validates signed submissions, deduplicates events and applies an additional secret-keyed transformation to identity tokens. Data supports same-store COD protection and, subject to server-side eligibility review, cross-store machine-learning training; collection does not activate live ML scoring. No individual shop could perform that cross-shop processing locally.
 
-When COD Protection is enabled and checkout contains an email address or telephone number, the plugin sends locally generated SHA-256 identity tokens, the installation identifier and operating country to the COD Protection endpoint. Raw email and telephone values are not sent. The service checks only eligible events belonging to that same installation and returns an allow/disable signal and a capped shop-local match count. The service does not persist checkout lookup requests or create a checkout customer profile. A timeout, invalid response or unavailable service leaves Cash on Delivery available. Turning the option off stops future collection, transmission and checkout lookups. The plugin does not call courier APIs.
+When COD Protection is enabled and checkout contains an email address or telephone number, the plugin sends locally generated SHA-256 identity tokens, the installation identifier and operating country to the COD Protection endpoint. Raw email and telephone values are not sent. The service checks only eligible events belonging to that same installation and returns only an allow/disable decision with a decision reference and policy metadata, not customer-history counts. The service records aggregate decision statistics and pseudonymized supporting evidence for denials, rather than storing every raw checkout lookup request. A timeout, invalid response or unavailable service leaves Cash on Delivery available. Turning the option off stops future collection, transmission and checkout lookups. The plugin does not call courier APIs.
 
 Service information: [cancelled COD service privacy details](https://woosmartcod.com/cancelled-cod-data-sharing/), [Terms and Conditions](https://woosmartcod.com/terms-conditions/) and [Privacy Policy](https://woosmartcod.com/privacy-policy/).
 
@@ -74,7 +88,44 @@ Service information: [cancelled COD service privacy details](https://woosmartcod
 2. assets/screenshot-2.png
 3. assets/screenshot-3.png
 
+== COD Protection, successful history and order lifecycle ==
+Classic shortcode checkout remains supported. Cart and Checkout Blocks are also supported on WooCommerce 9.9 or newer through the native Store API and Blocks extension APIs. The same COD rules, fees and optional order-lifecycle collection apply to both checkouts. Third-party gateways and checkout fields require their own Blocks support.
+
+Changes in this release: collection expands from filtered cancellation evidence to prospective physical COD creation and outcome events. The successful-history allowance adds context so earlier cancellations are not considered in isolation. This prepares representative data for cross-store machine-learning training; receiving data does not automatically activate ML scoring at checkout.
+
+New lifecycle events do NOT require tracking or a 24-hour wait. A new physical COD order created and cancelled within minutes is still recorded whenever the sharing setting is enabled. Other payment methods, virtual-only orders and deposit-child orders are excluded. Existing historical cancellations retain their filtered relay: this release does not import all past creations or completed orders.
+
+Collection and COD restriction are different. Not every collected cancellation is a qualifying negative match. The existing shipment/fulfilment checks remain: tracking, a prior physical-order completed status or a shipped/fulfilled transition. The lower-confidence untracked fallback applies only without a recognized tracking integration, after at least 24 hours between creation and cancellation, with a fulfilment-stage source status when supplied. Tracking AND 24 hours are not universal joint requirements. A cancellation by itself is not proof of refusal or non-delivery.
+
+Optional, off by default, and identical in Free and PRO. Protection checks only this installation. When the existing sharing setting is enabled, the plugin sends future physical COD creation snapshots and later status/outcome changes (including completed, cancelled, refunded and reopened orders) to api.woosmartcod.com in signed background batches. Creation snapshots include pseudonymized email/telephone and postcode identifiers, order reference, timing, totals/currency, shipping method, item count and guest/registered status. Courier names and tracking codes are included where available. Raw customer email, telephone and names are not sent. Data is used for COD protection and, subject to server-side eligibility review, cross-store machine-learning training.
+
+There is one sharing setting. After updating, stores that already enabled sharing also collect future physical COD creation snapshots and subsequent outcomes, without a separate activation or upgrade notice. Stores with sharing disabled remain disabled. Switching sharing off stops future capture, transmission and checkout checks. Historical cancellations keep their existing compatibility relay. Old orders first observed after the update or activation are marked as late observations, not invented checkout snapshots.
+
+The configurable successful-history allowance uses only directly matching email or telephone in this store and affects only the history-based restriction. Default minimum rate: 100%, preserving the existing history restriction unless the merchant chooses a lower rate (50% to 100%). Nine known successful orders and one qualifying dispatched-then-cancelled order meet 90%. Pending orders do not count. WooCommerce completed status is merchant-reported, not automatically courier-confirmed. New completion rows and cumulative historical snapshots are not summed: the service uses a conservative maximum to avoid counting the same deliveries twice. Exact individually imported historical success coverage may therefore be incomplete.
+
+Checkout calls contain hashed identifiers, not raw identity values. The service records aggregate operational counts and pseudonymized evidence for actual denials. This is distinct from storing every raw lookup request. Transport/service errors fail open. More details: https://woosmartcod.com/cancelled-cod-data-sharing/
+
+
+
 == Changelog ==
+
+= 1.9.6 =
+
+* Maintenance - Remove inactive PRO advance-payment integration code from the Free Blocks adapter and frontend. COD restrictions, fees and Classic checkout behavior remain unchanged.
+* Tests - Add regression checks for Free/PRO separation and crafted advance-payment inputs; verify Classic and Blocks parity with and without HPOS.
+
+= 1.9.5 =
+
+* Fix - Remove the COD fee in the same shipping update when WooCommerce or another plugin makes COD unavailable, in Classic and Checkout Blocks.
+* Localization - Include complete Greek and Italian catalogs for plugin settings, notices and frontend messages; keep WooCommerce-native text in its own translation domain.
+* Compatibility - Add native Cart/Checkout Blocks support on WooCommerce 9.9+, including COD restrictions, fees and lifecycle capture, while preserving Classic checkout.
+* Feature - Add a configurable successful-COD history allowance: 100% by default, 50-100%, same-store only and never overriding other COD rules.
+* Compatibility - Tested with WordPress 7.1.3 and WooCommerce 11.2.1.
+* Collection - Record prospective physical COD creation snapshots and later outcomes, even without tracking or a 24-hour wait, whenever the existing sharing setting is enabled.
+* Transparency - Explain collection versus qualifying negative evidence, excluded order types, historical limitations, transmitted data and cross-store ML training in the settings and service disclosure.
+* Settings - Keep both editions opt-in and off by default, with one sharing setting for new and existing installations; no additional activation or expansion notice.
+* Reliability - Use signed, durable background revisions with exact acknowledgments, bounded batches, retries and deduplication; exclude changed or late snapshots from the prospective training cohort.
+* Release - ML collection is not live ML scoring. Backend compatibility, disclosure publication and release verification must precede plugin distribution.
 
 = 1.9.4 =
 * Feature - Add optional COD Protection that can hide Cash on Delivery when checkout identity matches an eligible dispatched-then-cancelled COD order from the same store.

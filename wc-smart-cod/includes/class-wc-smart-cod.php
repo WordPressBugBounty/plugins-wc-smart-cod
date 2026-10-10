@@ -75,7 +75,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.9.4' );
+		define( 'SMART_COD_VER', '1.9.6' );
 
 		self::$version = SMART_COD_VER;
 
@@ -220,6 +220,8 @@ class Wc_Smart_Cod {
 		add_action( 'woocommerce_order_status_cancelled', array( $this, 'capture_ai_cancelled_order' ), 10, 3 );
 		add_action( 'wsc_collect_cancelled_cod_orders', array( $this, 'run_ai_history_batch' ) );
 		add_action( 'wsc_send_smart_cod_ai_events', array( $this, 'send_ai_order_ids' ), 10, 2 );
+		require_once __DIR__ . '/class-wc-smart-cod-lifecycle.php';
+		Wc_Smart_Cod_Lifecycle::register();
 		add_action( 'init', array( $this, 'maybe_start_ai_history_schedule' ), 20 );
 		if ( is_admin() ) {
 			add_action( 'admin_init', array( $this, 'ensure_ai_history_schedule' ) );
@@ -354,6 +356,9 @@ class Wc_Smart_Cod {
 	private function define_public_hooks() {
 
 		$plugin_public = new Wc_Smart_Cod_Public( $this->get_plugin_name() );
+
+        require_once __DIR__ . '/class-wc-smart-cod-blocks.php';
+        new Wc_Smart_Cod_Blocks($plugin_public);
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 

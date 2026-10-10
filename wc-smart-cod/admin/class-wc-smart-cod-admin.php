@@ -306,7 +306,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 
 				if( array_key_exists( $key, $restriction_settings ) ) {
 					if( $restriction_settings[ $key ] === 1 ) {
-						$form_fields[ $key ][ 'title' ] = str_replace( 'Disable', 'Enable', $form_fields[ $key ][ 'title' ] );
+						$form_fields[ $key ][ 'title' ] = str_replace( __( 'Disable', 'wc-smart-cod' ), __( 'Enable', 'wc-smart-cod' ), $form_fields[ $key ][ 'title' ] );
 						$mode = 'enable';
 					}
 				}
@@ -419,7 +419,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			$prepared[ $key ] = $role[ 'name' ];
 		}
 
-		$prepared[ 'guest' ] = 'Guest (Customer without account)';
+		$prepared[ 'guest' ] = __( 'Guest (Customer without account)', 'wc-smart-cod' );
 
 		return $prepared;
 	}
@@ -772,7 +772,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		$form_fields[ 'enable_smart_cod_ai_data_sharing' ] = array(
 			'title'       => __( 'COD Protection', 'wc-smart-cod' ),
 			'type'        => 'checkbox',
-			'label'       => __( 'Enable COD protection and cancelled COD data sharing', 'wc-smart-cod' ),
+			'label'       => __( 'Enable COD protection', 'wc-smart-cod' ),
 			'description' => $sharing_description,
 			'default'     => 'no',
 			'class'       => 'wc-smart-cod-protection-opt-in',
@@ -802,19 +802,19 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 		);
 
 		$restrictions = array(
-			'generic' => 'Generic Message',
-			'shipping_method' => 'Unavailable by restricted shipping method',
-			'shipping_zone' => 'Unavailable by restricted shipping zone',
-			'country' => 'Unavailable by restricted country',
-			'state' => 'Unavailable by restricted state',
-			'postal' => 'Unavailable by restricted postal code',
-			'city' => 'Unavailable by restricted city',
-			'cart_amount' => 'Unavailable by restricted cart amount',
-			'user_role' => 'Unavailable by restricted user role',
-			'category' => 'Unavailable by restricted product category',
-			'product' => 'Unavailable by restricted product',
-			'shipping_class' => 'Unavailable by restricted shipping class',
-			'shipping_zone_method' => 'Unavailable by restricted shipping method of a specific zone'
+			'generic' => __( 'Generic Message', 'wc-smart-cod' ),
+			'shipping_method' => __( 'Unavailable by restricted shipping method', 'wc-smart-cod' ),
+			'shipping_zone' => __( 'Unavailable by restricted shipping zone', 'wc-smart-cod' ),
+			'country' => __( 'Unavailable by restricted country', 'wc-smart-cod' ),
+			'state' => __( 'Unavailable by restricted state', 'wc-smart-cod' ),
+			'postal' => __( 'Unavailable by restricted postal code', 'wc-smart-cod' ),
+			'city' => __( 'Unavailable by restricted city', 'wc-smart-cod' ),
+			'cart_amount' => __( 'Unavailable by restricted cart amount', 'wc-smart-cod' ),
+			'user_role' => __( 'Unavailable by restricted user role', 'wc-smart-cod' ),
+			'category' => __( 'Unavailable by restricted product category', 'wc-smart-cod' ),
+			'product' => __( 'Unavailable by restricted product', 'wc-smart-cod' ),
+			'shipping_class' => __( 'Unavailable by restricted shipping class', 'wc-smart-cod' ),
+			'shipping_zone_method' => __( 'Unavailable by restricted shipping method of a specific zone', 'wc-smart-cod' )
 		);
 
 		$data = wp_parse_args( $data, $defaults );
@@ -1105,6 +1105,7 @@ class Wc_Smart_Cod_Admin extends WC_Gateway_COD {
 			$messages = array(
 				'nan' => __( 'This field should be a number only.', 'wc-smart-cod' ),
 				'please_save_msg' => __( 'Please save the changes to see the new settings', 'wc-smart-cod' ),
+				'enable' => __( 'Enable', 'wc-smart-cod' ), 'disable' => __( 'Disable', 'wc-smart-cod' ), 'fixed' => __( 'Fixed', 'wc-smart-cod' ),
 			);
 
 			wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wc-smart-cod-admin.js', array( 'jquery', 'select2' ), $this->version, false );
