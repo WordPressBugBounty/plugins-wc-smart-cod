@@ -1,0 +1,693 @@
+# This file is distributed under the same license as the Plugins - Smart COD for WooCommerce - Stable (latest release) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart COD for WooCommerce\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translation-Source: https://translate.wordpress.org/projects/wp-plugins/wc-smart-cod/stable/es/default/\n"
+"X-Translation-Review: Community translations retained; additions require human language review\n"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:138
+msgid "7-day free trial"
+msgstr "Prueba gratuita de 7 días"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:121
+msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
+msgstr ": Reduce los pedidos contra reembolso no recogidos que se repiten. La protección del contra reembolso puede ocultar este método de pago cuando el mismo cliente coincide con un pedido válido que fue enviado y posteriormente cancelado en tu tienda. El servicio es opcional y está desactivado por defecto."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:121
+msgid "Add delivery history from connected stores in your country, machine learning and clear reasons for every checkout decision."
+msgstr "Añade el historial de entregas de tiendas conectadas de tu país, machine learning y explicaciones claras para cada decisión en el pago."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:575
+msgid "Add the cities you want to restrict the COD method. Seperate with a comma. This cannot guarantee the cod restriction at all times, because the city field on checkout is a free text field and the user can make typos or use different characters / spelling for his city."
+msgstr "Añade las ciudades en las que quieras restringir el contra reembolso, separadas por comas. La restricción no puede garantizarse en todos los casos, ya que el campo de ciudad al pagar es de texto libre y el cliente puede cometer errores o escribir el nombre de otra forma."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:564
+msgid "Add the postal codes you want to restrict the COD method. Seperate with a comma. You can use fully numeric ranges as well (e.g<code>55133,55134,55400...55600</code>). For ranges use <code>...</code> for delimiter."
+msgstr "Añade los códigos postales a los que quieres restringir el método COD. Sepáralos con comas. También puedes utilizar rangos numéricos (e.g<code>55133,55134,55400...55600</code>). Para la delimitación de rangos utiliza <code>...</code>."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:603
+#: admin/class-wc-smart-cod-admin.php:633
+#: admin/class-wc-smart-cod-admin.php:663
+msgid "All products"
+msgstr "Todos los productos"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:701
+msgid "An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don't want to use this feature. You can define different messages per reason."
+msgstr "Texto informativo que se muestra antes de los métodos de pago cuando el contra reembolso no está disponible para un cliente. Déjalo vacío si no quieres utilizar esta función. Puedes definir un mensaje diferente para cada motivo."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:51
+msgid "At 90%, 9 successful and 1 failed order keep COD available."
+msgstr "Con un 90 %, 9 pedidos completados con éxito y 1 fallido mantienen disponible el contra reembolso."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:602
+#: admin/class-wc-smart-cod-admin.php:632
+#: admin/class-wc-smart-cod-admin.php:662
+msgid "At least one product"
+msgstr "Al menos un producto"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:769
+msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
+msgstr "Oculta automáticamente el contra reembolso cuando el correo electrónico o el teléfono introducidos al pagar coinciden con un pedido contra reembolso válido que fue enviado y posteriormente cancelado en tu tienda. Es opcional y está desactivado por defecto. Al activar esta protección también se inicia la recopilación y el envío a api.woosmartcod.com de eventos válidos de pedidos contra reembolso cancelados, pasados y futuros, códigos de seguimiento cuando estén disponibles, detalles de los pedidos, un recuento limitado de pedidos anteriores contra reembolso completados y con seguimiento, e identificadores seudonimizados del cliente y de su ubicación. No se envían el correo electrónico ni el teléfono en su forma original. Al desactivarla se detienen la futura recopilación, el envío de datos y las comprobaciones al pagar. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Lee cómo utiliza los datos el servicio.</a>"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Backup"
+msgstr "Copia de seguridad"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:773
+msgid "COD Protection"
+msgstr "Protección del contra reembolso"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:698
+#: admin/class-wc-smart-cod-settings-tools.php:42
+msgid "COD Unavailable Message"
+msgstr "Mensaje de pago contra reembolso no disponible"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "COD with an advance payment"
+msgstr "Contra reembolso con anticipo"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:750
+#: admin/class-wc-smart-cod-settings-tools.php:39
+msgid "Charge extra fee differently for shipping method: "
+msgstr "Aplicar un recargo diferente para el método de envío: "
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:162
+msgid "Choose a settings backup to preview before restoring."
+msgstr "Elige una copia de los ajustes para revisarla antes de restaurarla."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "Collect a fixed amount or percentage online. Leave the rest payable on delivery."
+msgstr "Cobra un importe fijo o un porcentaje online. El resto en la entrega."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "Combine conditions for customers, carts and shipping."
+msgstr "Combina condiciones para clientes, carritos y envíos."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Current settings"
+msgstr "Ajustes actuales"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:309
+#: admin/class-wc-smart-cod-admin.php:737
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Disable"
+msgstr "Desactivar"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:572
+msgid "Disable on specific cities"
+msgstr "Desactivar en ciudades específicas"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:533
+msgid "Disable on specific countries"
+msgstr "Desactivar en países específicos"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:561
+msgid "Disable on specific postal codes"
+msgstr "Desactivar en un código postal específico"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:611
+msgid "Disable on specific product categories"
+msgstr "Desactivar en categorías específicas de productos"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:641
+msgid "Disable on specific products"
+msgstr "Desactivar en productos específicos"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:671
+msgid "Disable on specific shipping classes"
+msgstr "Desactivar en clases específicas de envío"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:685
+msgid "Disable on specific shipping methods of zones"
+msgstr "Desactivado en métodos de envío de zonas determinado"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:517
+msgid "Disable on specific shipping zones"
+msgstr "Desactivar en zonas de envío específicas"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:547
+msgid "Disable on specific states"
+msgstr "Desactivar en estaos/provincias específicas"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:583
+msgid "Disable on specific user roles"
+msgstr "Desactivar en perfiles específicos de usuarios"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:309
+#: admin/class-wc-smart-cod-admin.php:736
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Enable"
+msgstr "Activar"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:122
+msgid "Enable COD Protection"
+msgstr "Activar la protección del contra reembolso"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:775
+#: includes/class-wc-smart-cod-lifecycle.php:43
+msgid "Enable COD protection"
+msgstr "Activar la protección del contra reembolso"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:711
+#: admin/class-wc-smart-cod-admin.php:755
+msgid "Enter Amount"
+msgstr "Introducir el Importe"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:752
+msgid "Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount"
+msgstr "Introduce el importe para cobrar de forma diferente en este método de envío o déjalo vacío para cobrar el importe normal"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Estimate non-collection risk from delivery history and order details."
+msgstr "Estima el riesgo de no recogida con el historial de entregas y los datos del pedido."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:725
+msgid "Examples: Round up setting will transform 5.345&euro; to 6&euro;<br />Round down will transform it to 5&euro;."
+msgstr "Ejemplos: el redondeo al alza convierte 5.345&euro; en 6&euro;<br />El redondeo a la baja lo convierte en 5&euro;."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/partials/wc-smart-cod-admin-display.php:29
+msgid "Export or restore your Free settings"
+msgstr "Exporta o restaura tus ajustes de Free"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:706
+#: admin/class-wc-smart-cod-settings-tools.php:38
+msgid "Extra Fee"
+msgstr "Cuota extra"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:731
+#: admin/class-wc-smart-cod-settings-tools.php:40
+msgid "Extra Fee Tax"
+msgstr "Cuota para impuesto extra"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Fee types"
+msgstr "Tipos de cargos"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Fixed"
+msgstr "Fijo"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Flexible COD fees"
+msgstr "Recargos flexibles de contra reembolso"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:805
+msgid "Generic Message"
+msgstr "Mensaje general"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:422
+msgid "Guest (Customer without account)"
+msgstr "Invitado (cliente sin cuenta)"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:122
+msgid "How data is used"
+msgstr "Cómo se utilizan los datos"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "Inspect reasons and checks, with filters and a link to the order when available."
+msgstr "Consulta motivos y comprobaciones, con filtros y un enlace al pedido cuando esté disponible."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:740
+msgid "Is extra fee taxable? Use this option if you have taxes enabled in your shop and you want to include tax to COD method."
+msgstr "¿El recargo está sujeto a impuestos? Utiliza esta opción si tienes los impuestos activados en tu tienda y quieres aplicarlos al recargo del contra reembolso."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:124
+msgid "Learn more"
+msgstr "Más información"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Machine learning"
+msgstr "Machine learning"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:119
+msgid "Meet Smart COD AI"
+msgstr "Descubre Smart COD AI"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:41
+#: includes/class-wc-smart-cod-lifecycle.php:49
+msgid "Minimum successful COD rate (%)"
+msgstr "Porcentaje mínimo de pedidos contra reembolso completados con éxito (%)"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "More flexible restriction rules"
+msgstr "Reglas de restricción más flexibles"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Multiple rules for fixed amounts or percentage fees."
+msgstr "Varias reglas para importes fijos o porcentajes."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:135
+msgid "New to your store? Their delivery history may already be available in your country’s network. Add network insights, ML and clear checkout decisions."
+msgstr "¿Un cliente nuevo? Su historial de entregas puede estar disponible en la red de tu país. Añade datos de la red, ML y decisiones claras en el pago."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:173
+msgid "Only the settings shown above will be replaced. Other settings remain unchanged."
+msgstr "Solo se reemplazarán los ajustes indicados arriba. Los demás no cambiarán."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:716
+#: admin/class-wc-smart-cod-settings-tools.php:40
+msgid "Percentage Rounding Settings"
+msgstr "Ajustes de redondeo de porcentaje"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:1107
+msgid "Please save the changes to see the new settings"
+msgstr "Por favor, guarda para ver los nuevos ajustes"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:597
+#: admin/class-wc-smart-cod-settings-tools.php:35
+msgid "Product Category Restriction Mode"
+msgstr "Modo restricción por categoría de producto"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:627
+#: admin/class-wc-smart-cod-settings-tools.php:36
+msgid "Product Restriction Mode"
+msgstr "Modo de restricción de productos"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:120
+msgid "Protect your COD orders from non-collection."
+msgstr "Protege tus pedidos contra reembolso frente a la no recogida."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:152
+msgid "Protection continues when a failed card payment is followed by COD."
+msgstr "La protección continúa cuando se elige contra reembolso tras fallar el pago con tarjeta."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Protection from your country’s network"
+msgstr "Protección con la red de tu país"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:45
+msgid "Read how the service uses data."
+msgstr "Lee cómo utiliza los datos el servicio."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:174
+msgid "Restore settings"
+msgstr "Restaurar ajustes"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Restriction modes"
+msgstr "Modos de restricción"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:722
+msgid "Round Down"
+msgstr "Redondear a la baja"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:721
+msgid "Round Up"
+msgstr "Redondear a la alta"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:52
+msgid "Same store only; other COD rules still apply. Set 100% to prevent successful orders from overriding a qualifying failure."
+msgstr "Solo en esta tienda; las demás reglas de contra reembolso siguen vigentes. Establece el 100 % para impedir que los pedidos completados con éxito anulen un fallo que cumpla los criterios."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:159
+msgid "Save and restore Free settings on this store. Sharing consent, keys and order data are not included."
+msgstr "Guarda y restaura los ajustes de Free en esta tienda. No se incluyen el consentimiento para compartir datos, las claves ni los datos de pedidos."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/partials/wc-smart-cod-admin-display.php:30
+msgid "Save your settings to a file or restore a previous backup on this store."
+msgstr "Guarda tus ajustes en un archivo o restaura una copia anterior en esta tienda."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "See why each checkout decision was made"
+msgstr "Consulta el motivo de cada decisión en el pago"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:606
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted category. Select \"all\", if you want the COD to be restricted if all the cart product's belongs to restricted categories. Then add the restricted categories in the select field below."
+msgstr "Selecciona «al menos un producto» para restringir el contra reembolso cuando algún producto del carrito pertenezca a una categoría restringida. Selecciona «todos los productos» para restringirlo cuando todos pertenezcan a categorías restringidas. Después, selecciona las categorías restringidas en el campo inferior."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:666
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted shipping class. Select \"all\", if you want the COD to be restricted if all of the cart's product's belongs to restricted shipping classes. Then add the restricted shipping classes in the select field below."
+msgstr "Selecciona «al menos un producto» para restringir el contra reembolso cuando algún producto del carrito pertenezca a una clase de envío restringida. Selecciona «todos los productos» para restringirlo cuando todos pertenezcan a clases de envío restringidas. Después, selecciona las clases de envío restringidas en el campo inferior."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:636
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart is restricted. Select \"all\", if you want the COD to be restricted if all of the cart's product's are restricted. Then add the restricted products in the select field below."
+msgstr "Selecciona «al menos un producto» para restringir el contra reembolso cuando algún producto del carrito esté restringido. Selecciona «todos los productos» para restringirlo cuando todos estén restringidos. Después, selecciona los productos restringidos en el campo inferior."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:540
+msgid "Select Countries"
+msgstr "Seleccionar países"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:590
+msgid "Select Roles"
+msgstr "Seleccionar perfiles"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:678
+msgid "Select Shipping Classes"
+msgstr "Seleccionar clases de envío"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:692
+msgid "Select Shipping Methods"
+msgstr "Selecciona los métodos de envío"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:554
+msgid "Select States"
+msgstr "Seleccionar provincias/estados"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:618
+msgid "Select categories"
+msgstr "Seleccionar categorías"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:648
+msgid "Select products"
+msgstr "Seleccionar productos"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:524
+msgid "Select shipping zones"
+msgstr "Seleccionar zonas de envío"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:536
+msgid "Select the countries you want to restrict the COD method"
+msgstr "Selecciona los países que deseas restringir el método COD"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:614
+msgid "Select the product categories you want to restrict the COD method"
+msgstr "Selecciona las categorías de productos en las que quieras restringir el contra reembolso"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:644
+msgid "Select the products you want to restrict the COD method"
+msgstr "Selecciona los productos para los que quieras restringir el contra reembolso"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:674
+msgid "Select the shipping classes you want to restrict the COD method"
+msgstr "Selecciona las clases de envío en los que quieres restringir el método COD"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:688
+msgid "Select the shipping methods of specific zones, you want to restrict the COD method. <strong>Please note that for WooCommerce versions >= 3.4, this is a built in feature, so if you use the WooCommerce setting, this setting will be disabled. Otherwise leave the WooCommerce setting blank and use our setting.</strong>"
+msgstr "Selecciona los métodos de envío de zonas específicas en los que quieras restringir el contra reembolso. <strong>Ten en cuenta que WooCommerce incluye esta función desde la versión 3.4. Si utilizas el ajuste de WooCommerce, este ajuste se desactivará. En caso contrario, deja vacío el ajuste de WooCommerce y utiliza el nuestro.</strong>"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:520
+msgid "Select the shipping zones you want to restrict the COD method"
+msgstr "Selecciona las zonas de envío que desea restringir el método COD"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:550
+msgid "Select the states you want to restrict the COD method"
+msgstr "Seleccionar los estados/provincias dónde quieres restringir el método COD"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:586
+msgid "Select the user roles you want to restrict the COD method"
+msgstr "Selecciona el perfil de usuario que deseas restringir el método COD"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:105
+msgid "Settings"
+msgstr "Ajustes"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:159
+#: includes/class-wc-smart-cod.php:106
+msgid "Settings backup"
+msgstr "Copia de seguridad de los ajustes"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "Settings restored."
+msgstr "Ajustes restaurados."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:657
+#: admin/class-wc-smart-cod-settings-tools.php:37
+msgid "Shipping Class Restriction Mode"
+msgstr "Modo de restricción por clase de envío"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:121
+msgid "Smart COD for WooCommerce"
+msgstr "Smart COD for WooCommerce"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:44
+msgid "Stores cancelled and completed COD orders from this store to restrict COD for customers who did not receive their orders, and keep COD available when their successful-order rate meets your threshold."
+msgstr "Guarda los pedidos contra reembolso cancelados y completados de esta tienda para restringir este método a los clientes que no recibieron sus pedidos y mantenerlo disponible cuando su porcentaje de pedidos completados con éxito alcance el umbral que establezcas."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "The backup is invalid, belongs to another store, or the preview has expired. Create a new preview."
+msgstr "La copia no es válida, pertenece a otra tienda o la vista previa ha caducado. Crea una nueva vista previa."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:709
+msgid "The extra amount you charging for cash on delivery (leave blank or zero if you don't charge extra)"
+msgstr "La cantidad extra a cargar en contra reembolso (déjalo en blanco o cero si no quieres cargar nada extra)"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:1106
+msgid "This field should be a number only."
+msgstr "Este campo debe ser solo un número."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:123
+#: admin/class-wc-smart-cod-settings-tools.php:139
+msgid "Try it free for 7 days"
+msgstr "Pruébalo gratis durante 7 días"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:812
+msgid "Unavailable by restricted cart amount"
+msgstr "No disponible por restricción de importe del carrito"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:811
+msgid "Unavailable by restricted city"
+msgstr "No disponible por restricción de ciudad"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:808
+msgid "Unavailable by restricted country"
+msgstr "No disponible por restricción de país"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:810
+msgid "Unavailable by restricted postal code"
+msgstr "No disponible por restricción de código postal"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:815
+msgid "Unavailable by restricted product"
+msgstr "No disponible por restricción de producto"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:814
+msgid "Unavailable by restricted product category"
+msgstr "No disponible por restricción de categoría de productos"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:816
+msgid "Unavailable by restricted shipping class"
+msgstr "No disponible por restricción de clase de envío"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:806
+msgid "Unavailable by restricted shipping method"
+msgstr "No disponible por restricción de método de envío"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:817
+msgid "Unavailable by restricted shipping method of a specific zone"
+msgstr "No disponible por restricción de método de envío de una zona específica"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:807
+msgid "Unavailable by restricted shipping zone"
+msgstr "No disponible por restricción de zona de envío"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:809
+msgid "Unavailable by restricted state"
+msgstr "No disponible por restricción de provincia"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:813
+msgid "Unavailable by restricted user role"
+msgstr "No disponible por restricción de perfil de usuario"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Use delivery history from connected stores in the same country, even for new customers. Keep COD available for reliable customers; supported tracking adds courier evidence of delivery or return."
+msgstr "Usa el historial de tiendas conectadas del mismo país, incluso para clientes nuevos. Mantén el contra reembolso para clientes fiables; el seguimiento compatible añade datos de entrega o devolución del transportista."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:143
+msgid "What you gain with Smart COD AI"
+msgstr "Qué ganas con Smart COD AI"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:134
+msgid "Your country’s network. Stronger COD protection."
+msgstr "La red de tu país. Más protección del contra reembolso."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:140
+msgid "Your settings come with you — Smart COD AI detects them automatically for review."
+msgstr "Tus ajustes vienen contigo — Smart COD AI los detecta automáticamente para que los revises."

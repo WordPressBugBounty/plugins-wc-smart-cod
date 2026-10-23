@@ -4,7 +4,7 @@ Tags: WooCommerce, Cash on Delivery, COD, COD Extra Fee, Smart COD
 Requires at least: 4.5
 Requires PHP: 5.6
 Tested up to: 7.1.3
-Stable tag: 1.9.6
+Stable tag: 1.9.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,12 @@ You can configure a standard extra fee and a separate fee for local pickup.
 You can use a fixed price or a percentage of the customer's cart amount.
 You also have a nice rounding option.
 You can enable tax for this fee.
+
+= Settings Backup =
+
+Export your Free settings as a JSON file and restore them on the same store from WooCommerce > Smart COD: Settings backup. Review the current and saved values before confirming. No Smart COD AI account is required.
+
+Backups include COD availability, fees, restriction selections and messages. Sharing consent, credentials and order/customer data are excluded and remain unchanged during restoration. Files from another store are not accepted because product, shipping and category identifiers are store-specific. A preview expires after ten minutes; changing settings after preview requires a new preview.
 
 = Developer-Friendly =
 The plugin integrates seamlessly with WooCommerce and uses a clean, **object-oriented** codebase. It also provides the following filters for easy customization:
@@ -108,6 +114,23 @@ Checkout calls contain hashed identifiers, not raw identity values. The service 
 
 
 == Changelog ==
+
+= 1.9.8 =
+
+* Fix - Refresh COD restrictions and fees when country, region, city, postcode or registered address fields change in Checkout Blocks.
+* Fix - Preserve typed address values while checkout updates are pending and apply the latest changes without duplicate manual cart updates.
+* Reliability - Preserve the original order-creation metadata when delivering lifecycle updates and retries.
+* Compatibility - Tested with WordPress 7.1.3 and WooCommerce 11.2.1.
+* Added - Make the dismissible Smart COD AI announcement and detailed settings card available for the public launch.
+
+= 1.9.7 =
+
+* Reliability - Synchronize plugin version and the explicitly enabled or disabled sharing preference in signed background updates, with revision acknowledgments and retries. Existing sharing choices remain unchanged.
+* Fix - Preserve empty checkout payment fragments when the WooCommerce session expires, avoiding a fatal HTML parsing error.
+
+* Added - Free settings export and same-store restore with preview, explicit confirmation and protection against expired previews or intervening changes.
+* Security - Exclude sharing consent, credentials, PRO-only options and order/customer data from settings backups.
+* Tests - Add backup validation and restore safety contracts to the mandatory release checks. Classic and Blocks checkout behavior is unchanged.
 
 = 1.9.6 =
 

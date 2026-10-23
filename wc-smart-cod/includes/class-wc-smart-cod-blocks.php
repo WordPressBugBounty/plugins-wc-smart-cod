@@ -78,8 +78,51 @@ class Wc_Smart_Cod_Blocks {
         $this->payment(isset($data['payment_method']) ? $data['payment_method'] : '');
         if (isset($data['email'])) WC()->customer->set_billing_email(is_email($data['email']) ? sanitize_email($data['email']) : '');
         if (isset($data['phone'])) WC()->customer->set_billing_phone(sanitize_text_field($data['phone']));
+        if (array_key_exists('customer', $data)) $this->update_customer_preview($data['customer']);
         WC()->customer->save();
         $this->engine->reset_checkout_state();
+    }
+
+    /** Partial address preview only. Final checkout still uses Woo's full address validation. */
+    private function update_customer_preview($data) {
+        $invalid = function () { throw new \Automattic\WooCommerce\StoreApi\Exceptions\RouteException('wsc_invalid_customer', __('Please check your details.', 'woocommerce'), 400); };
+        if (!is_array($data) || array_diff(array_keys($data), array('billing_address','shipping_address'))) $invalid();
+        $props = array(); $additional = array();
+        foreach ($data as $group => $address) {
+            if (!is_array($address) || count($address) > 64) $invalid();
+            $prefix = $group === 'billing_address' ? 'billing' : 'shipping';
+            foreach ($address as $field => $value) {
+                $limits = array('country'=>2,'state'=>200,'city'=>200,'postcode'=>32);
+                if (isset($limits[$field])) {
+                    if (!is_string($value) || strlen($value) > $limits[$field]) $invalid();
+                    $value = sanitize_text_field($value);
+                    if ($field === 'country') {
+                        $value = strtoupper($value);
+                        if ($value !== '' && !isset(WC()->countries->get_countries()[$value])) $invalid();
+                    }
+                    $props[$prefix . '_' . $field] = $value;
+                } elseif (is_string($field) && strpos($field, '/') !== false) {
+                    if ((!is_string($value) && !is_bool($value)) || (is_string($value) && strlen($value) > 1000)) $invalid();
+                    $fields = wc_get_container()->get('Automattic\\WooCommerce\\Blocks\\Domain\\Services\\CheckoutFields');
+                    if (is_wp_error($fields->validate_field_for_location($field, $value, 'address'))) $invalid();
+                    $additional[] = array($fields, $field, $fields->sanitize_field($field, $value), $prefix);
+                } else $invalid(); // No names, account properties, prices or arbitrary customer meta.
+            }
+        }
+        foreach (array('billing','shipping') as $prefix) {
+            if (!array_key_exists($prefix . '_postcode', $props)) continue;
+            $getter = 'get_' . $prefix . '_country';
+            $country = isset($props[$prefix . '_country']) ? $props[$prefix . '_country'] : WC()->customer->$getter();
+            $raw = $props[$prefix . '_postcode'];
+            $props[$prefix . '_postcode'] = $raw === '' ? '' : wc_format_postcode($raw, $country);
+        }
+        if (method_exists(WC()->cart, 'needs_shipping') && !WC()->cart->needs_shipping() && !isset($data['shipping_address'])) {
+            foreach (array('country','state','city','postcode') as $field) {
+                if (array_key_exists('billing_' . $field, $props)) $props['shipping_' . $field] = $props['billing_' . $field];
+            }
+        }
+        if (is_wp_error(WC()->customer->set_props($props))) $invalid();
+        foreach ($additional as $field) $field[0]->persist_field_for_customer($field[1], $field[2], WC()->customer, $field[3]);
     }
 
     /** Submitted JSON is authoritative, even when the cart preview selected a different payment. */

@@ -36,6 +36,7 @@ class Wc_Smart_Cod_Deactivator {
 		Wc_Smart_Cod_Ai_Outbox::deactivate();
 		require_once __DIR__ . '/class-wc-smart-cod-lifecycle.php';
 		Wc_Smart_Cod_Lifecycle::stop();
+		wp_clear_scheduled_hook( 'wsc_sync_installation_status' );
 	}
 
 }

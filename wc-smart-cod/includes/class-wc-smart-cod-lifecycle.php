@@ -17,6 +17,10 @@ class Wc_Smart_Cod_Lifecycle {
         add_action( 'woocommerce_store_api_checkout_order_processed', array( __CLASS__, 'checkout' ), 5 );
 		add_action( 'woocommerce_order_status_changed', array( __CLASS__, 'status_changed' ), 40, 4 );
 		add_action( 'woocommerce_after_order_object_save', array( __CLASS__, 'saved' ), 40 );
+		// Courier integrations can persist metadata without saving the order object.
+		foreach ( array( 'added_post_meta', 'updated_post_meta', 'deleted_post_meta', 'added_order_meta', 'updated_order_meta', 'deleted_order_meta' ) as $hook ) {
+			add_action( $hook, array( __CLASS__, 'tracking_meta_changed' ), 40, 4 );
+		}
 		add_action( self::ACTION, array( __CLASS__, 'send' ) );
 	}
 
@@ -87,6 +91,20 @@ class Wc_Smart_Cod_Lifecycle {
 	}
 	public static function saved( $order ) {
 		if ( self::enabled() && is_object( $order ) && method_exists( $order, 'get_meta' ) && is_array( $order->get_meta( self::STATE, true ) ) ) self::record( $order->get_id() );
+	}
+
+	public static function tracking_meta_changed( $meta_id, $order_id, $meta_key, $meta_value ) {
+		if ( ! self::enabled() || ! function_exists( 'wc_get_order' ) ) return;
+		require_once __DIR__ . '/class-wc-smart-cod-cancelled-cod-collector.php';
+		if ( ! Wc_Smart_Cod_Cancelled_Cod_Collector::is_tracking_metadata_key( $meta_key ) ) return;
+		$order_id = absint( $order_id );
+		$order = $order_id ? wc_get_order( $order_id ) : false;
+		// Observe only orders already in this lifecycle; metadata is not a new checkout.
+		if ( ! $order || ! is_array( $order->get_meta( self::STATE, true ) ) ) return;
+		// Woo fires metadata hooks before it finishes the write/cache cycle. The
+		// existing worker reloads fresh metadata under the order lock and deduplicates
+		// the resulting facts. Scheduling also coalesces post/Woo hooks and burst edits.
+		self::schedule( $order_id, 30 );
 	}
 
 	private static function locked( $id, $callback ) {

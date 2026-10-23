@@ -230,6 +230,13 @@ class Wc_Smart_Cod_Public {
 
 	public function apply_custom_message( $data ) {
 
+		// Expired checkout sessions may omit the payment fragment or return empty HTML.
+		if ( ! is_array( $data ) || ! isset( $data['.woocommerce-checkout-payment'] ) ||
+			! is_string( $data['.woocommerce-checkout-payment'] ) ||
+			'' === trim( $data['.woocommerce-checkout-payment'] ) ) {
+			return $data;
+		}
+
 		try {
 			$this->init_wsc_settings();
 			if ( $this->has_cod_available() === false ) {

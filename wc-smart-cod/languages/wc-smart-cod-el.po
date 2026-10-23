@@ -7,13 +7,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: includes/class-wc-smart-cod.php:120
+#: admin/class-wc-smart-cod-settings-tools.php:138
+msgid "7-day free trial"
+msgstr "7 ημέρες δωρεάν δοκιμή"
+
+#: includes/class-wc-smart-cod.php:121
 msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
 msgstr ": Μειώστε τις επαναλαμβανόμενες παραγγελίες αντικαταβολής που δεν παραλαμβάνονται. Η Προστασία Αντικαταβολής μπορεί να απενεργοποιεί την αντικαταβολή όταν ο ίδιος πελάτης αντιστοιχεί σε επιλέξιμη παραγγελία που είχε αποσταλεί και στη συνέχεια ακυρώθηκε στο κατάστημά σας. Η υπηρεσία είναι προαιρετική και απενεργοποιημένη από προεπιλογή."
 
-#: admin/partials/wc-smart-cod-admin-display.php:35
-msgid "A separate Smart COD PRO plugin offers advance-payment COD, multiple conditional extra fees, order-pay fee handling, CSV restriction imports, and additional cart, customer, stock, backorder and coupon rules. These features are not part of the Free plugin."
-msgstr "Το ξεχωριστό Smart COD PRO προσφέρει αντικαταβολή με προκαταβολή, πολλαπλές πρόσθετες χρεώσεις με συνθήκες, διαχείριση χρεώσεων στη σελίδα πληρωμής παραγγελίας, εισαγωγή περιορισμών από CSV και επιπλέον κανόνες καλαθιού, πελάτη, αποθέματος, αναμονής αποθέματος και κουπονιών. Αυτές οι λειτουργίες δεν περιλαμβάνονται στο Free."
+#: admin/class-wc-smart-cod-settings-tools.php:121
+msgid "Add delivery history from connected stores in your country, machine learning and clear reasons for every checkout decision."
+msgstr "Αξιοποιήστε το ιστορικό παραλαβών από συνδεδεμένα καταστήματα της χώρας σας, machine learning και ξεκάθαρες εξηγήσεις για κάθε απόφαση στο checkout."
 
 #: admin/class-wc-smart-cod-admin.php:575
 msgid "Add the cities you want to restrict the COD method. Seperate with a comma. This cannot guarantee the cod restriction at all times, because the city field on checkout is a free text field and the user can make typos or use different characters / spelling for his city."
@@ -33,7 +37,7 @@ msgstr "Όλα τα προϊόντα"
 msgid "An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don't want to use this feature. You can define different messages per reason."
 msgstr "Ενημερωτικό μήνυμα πριν από τους τρόπους πληρωμής όταν η αντικαταβολή δεν είναι διαθέσιμη. Αφήστε το κενό για να μη χρησιμοποιείται. Μπορείτε να ορίσετε διαφορετικό μήνυμα ανά αιτία."
 
-#: includes/class-wc-smart-cod-lifecycle.php:47
+#: includes/class-wc-smart-cod-lifecycle.php:51
 msgid "At 90%, 9 successful and 1 failed order keep COD available."
 msgstr "Στο 90%, 9 επιτυχημένες και 1 ανεπιτυχής παραγγελία διατηρούν διαθέσιμη την αντικαταβολή."
 
@@ -47,17 +51,43 @@ msgstr "Τουλάχιστον ένα προϊόν"
 msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
 msgstr "Απενεργοποιήστε αυτόματα την αντικαταβολή όταν το email ή το τηλέφωνο στο checkout αντιστοιχεί σε επιλέξιμη παραγγελία αντικαταβολής που είχε αποσταλεί και στη συνέχεια ακυρώθηκε στο κατάστημά σας. Η λειτουργία είναι προαιρετική και απενεργοποιημένη από προεπιλογή. Η ενεργοποίησή της ξεκινά επίσης τη συλλογή και κοινοποίηση στο api.woosmartcod.com επιλέξιμων παλαιότερων και μελλοντικών ακυρωμένων παραγγελιών αντικαταβολής, κωδικών αποστολής όπου υπάρχουν, στοιχείων παραγγελίας, ενός περιορισμένου πλήθους προηγούμενων ολοκληρωμένων παραγγελιών αντικαταβολής με tracking και ψευδωνυμοποιημένων αναγνωριστικών πελάτη/τοποθεσίας. Οι πραγματικές τιμές email και τηλεφώνου δεν αποστέλλονται. Η απενεργοποίηση σταματά τη μελλοντική συλλογή, κοινοποίηση και τους ελέγχους στο checkout. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Διαβάστε πώς χρησιμοποιεί η υπηρεσία τα δεδομένα.</a>"
 
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Backup"
+msgstr "Αντίγραφο"
+
 #: admin/class-wc-smart-cod-admin.php:773
 msgid "COD Protection"
 msgstr "Προστασία Αντικαταβολής"
 
 #: admin/class-wc-smart-cod-admin.php:698
+#: admin/class-wc-smart-cod-settings-tools.php:42
 msgid "COD Unavailable Message"
 msgstr "Μήνυμα μη διαθέσιμης αντικαταβολής"
 
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "COD with an advance payment"
+msgstr "Προκαταβολή αντικαταβολής"
+
 #: admin/class-wc-smart-cod-admin.php:750
+#: admin/class-wc-smart-cod-settings-tools.php:39
 msgid "Charge extra fee differently for shipping method: "
 msgstr "Διαφορετική χρέωση για τρόπο αποστολής: "
+
+#: admin/class-wc-smart-cod-settings-tools.php:162
+msgid "Choose a settings backup to preview before restoring."
+msgstr "Επιλέξτε αντίγραφο ρυθμίσεων για προεπισκόπηση πριν την επαναφορά."
+
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "Collect a fixed amount or percentage online. Leave the rest payable on delivery."
+msgstr "Ένα μέρος online, με σταθερό ποσό ή ποσοστό. Το υπόλοιπο στην παράδοση."
+
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "Combine conditions for customers, carts and shipping."
+msgstr "Συνδυάστε κανόνες για πελάτες, καλάθια και αποστολές."
+
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Current settings"
+msgstr "Τρέχουσες ρυθμίσεις"
 
 #: admin/class-wc-smart-cod-admin.php:309
 #: admin/class-wc-smart-cod-admin.php:737
@@ -111,12 +141,12 @@ msgstr "Απενεργοποίηση για ρόλους χρηστών"
 msgid "Enable"
 msgstr "Ενεργοποίηση"
 
-#: includes/class-wc-smart-cod.php:121
+#: includes/class-wc-smart-cod.php:122
 msgid "Enable COD Protection"
 msgstr "Ενεργοποίηση Προστασίας Αντικαταβολής"
 
 #: admin/class-wc-smart-cod-admin.php:775
-#: includes/class-wc-smart-cod-lifecycle.php:39
+#: includes/class-wc-smart-cod-lifecycle.php:43
 msgid "Enable COD protection"
 msgstr "Ενεργοποίηση προστασίας αντικαταβολής"
 
@@ -129,25 +159,39 @@ msgstr "Εισαγάγετε ποσό"
 msgid "Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount"
 msgstr "Εισαγάγετε διαφορετική χρέωση για αυτόν τον τρόπο αποστολής ή αφήστε το κενό για τη βασική χρέωση"
 
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Estimate non-collection risk from delivery history and order details."
+msgstr "Εκτίμηση κινδύνου μη παραλαβής από ιστορικό παραδόσεων και στοιχεία παραγγελίας."
+
 #: admin/class-wc-smart-cod-admin.php:725
 msgid "Examples: Round up setting will transform 5.345&euro; to 6&euro;<br />Round down will transform it to 5&euro;."
 msgstr "Παραδείγματα: Η στρογγυλοποίηση προς τα πάνω μετατρέπει τα 5.345&euro; σε 6&euro;<br />Η στρογγυλοποίηση προς τα κάτω τα μετατρέπει σε 5&euro;."
 
-#: admin/partials/wc-smart-cod-admin-display.php:36
-msgid "Explore PRO features"
-msgstr "Δείτε τις δυνατότητες PRO"
+#: admin/partials/wc-smart-cod-admin-display.php:29
+msgid "Export or restore your Free settings"
+msgstr "Αντίγραφο και επαναφορά ρυθμίσεων Free"
 
 #: admin/class-wc-smart-cod-admin.php:706
+#: admin/class-wc-smart-cod-settings-tools.php:38
 msgid "Extra Fee"
 msgstr "Πρόσθετη χρέωση"
 
 #: admin/class-wc-smart-cod-admin.php:731
+#: admin/class-wc-smart-cod-settings-tools.php:40
 msgid "Extra Fee Tax"
 msgstr "Φόρος επιπλέον χρέωσης"
+
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Fee types"
+msgstr "Τύποι χρεώσεων"
 
 #: admin/class-wc-smart-cod-admin.php:1108
 msgid "Fixed"
 msgstr "Σταθερό ποσό"
+
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Flexible COD fees"
+msgstr "Ευέλικτες χρεώσεις αντικαταβολής"
 
 #: admin/class-wc-smart-cod-admin.php:805
 msgid "Generic Message"
@@ -157,19 +201,53 @@ msgstr "Γενικό μήνυμα"
 msgid "Guest (Customer without account)"
 msgstr "Επισκέπτης (πελάτης χωρίς λογαριασμό)"
 
-#: includes/class-wc-smart-cod.php:121
+#: includes/class-wc-smart-cod.php:122
 msgid "How data is used"
 msgstr "Πώς χρησιμοποιούνται τα δεδομένα"
+
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "Inspect reasons and checks, with filters and a link to the order when available."
+msgstr "Δείτε αιτίες και ελέγχους, με φίλτρα και σύνδεση στην παραγγελία όπου υπάρχει."
 
 #: admin/class-wc-smart-cod-admin.php:740
 msgid "Is extra fee taxable? Use this option if you have taxes enabled in your shop and you want to include tax to COD method."
 msgstr "Η επιπλέον χρέωση φορολογείται; Χρησιμοποιήστε αυτή την επιλογή αν έχετε ενεργοποιημένους φόρους στο κατάστημα και θέλετε να προσθέσετε φόρο στη χρέωση αντικαταβολής."
 
-#: includes/class-wc-smart-cod-lifecycle.php:45
+#: admin/class-wc-smart-cod-settings-tools.php:124
+msgid "Learn more"
+msgstr "Μάθετε περισσότερα"
+
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Machine learning"
+msgstr "Machine learning"
+
+#: admin/class-wc-smart-cod-settings-tools.php:119
+msgid "Meet Smart COD AI"
+msgstr "Γνωρίστε το Smart COD AI"
+
+#: admin/class-wc-smart-cod-settings-tools.php:41
+#: includes/class-wc-smart-cod-lifecycle.php:49
 msgid "Minimum successful COD rate (%)"
 msgstr "Ελάχιστο ποσοστό επιτυχίας αντικαταβολής (%)"
 
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "More flexible restriction rules"
+msgstr "Περισσότεροι συνδυασμοί περιορισμών"
+
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Multiple rules for fixed amounts or percentage fees."
+msgstr "Πολλαπλοί κανόνες για σταθερά ποσά ή ποσοστά."
+
+#: admin/class-wc-smart-cod-settings-tools.php:135
+msgid "New to your store? Their delivery history may already be available in your country’s network. Add network insights, ML and clear checkout decisions."
+msgstr "Νέος πελάτης στο κατάστημά σας; Μπορεί ήδη να έχει ιστορικό παραλαβών στο δίκτυο της χώρας σας. Αξιοποιήστε το μαζί με ML και ιστορικό αποφάσεων."
+
+#: admin/class-wc-smart-cod-settings-tools.php:173
+msgid "Only the settings shown above will be replaced. Other settings remain unchanged."
+msgstr "Θα αντικατασταθούν μόνο οι παραπάνω ρυθμίσεις. Οι υπόλοιπες παραμένουν αμετάβλητες."
+
 #: admin/class-wc-smart-cod-admin.php:716
+#: admin/class-wc-smart-cod-settings-tools.php:40
 msgid "Percentage Rounding Settings"
 msgstr "Ρυθμίσεις στρογγυλοποίησης ποσοστού"
 
@@ -178,16 +256,38 @@ msgid "Please save the changes to see the new settings"
 msgstr "Αποθηκεύστε τις αλλαγές για να δείτε τις νέες ρυθμίσεις"
 
 #: admin/class-wc-smart-cod-admin.php:597
+#: admin/class-wc-smart-cod-settings-tools.php:35
 msgid "Product Category Restriction Mode"
 msgstr "Τρόπος περιορισμού κατηγοριών προϊόντων"
 
 #: admin/class-wc-smart-cod-admin.php:627
+#: admin/class-wc-smart-cod-settings-tools.php:36
 msgid "Product Restriction Mode"
 msgstr "Τρόπος περιορισμού προϊόντων"
 
-#: includes/class-wc-smart-cod-lifecycle.php:41
+#: admin/class-wc-smart-cod-settings-tools.php:120
+msgid "Protect your COD orders from non-collection."
+msgstr "Προστατέψτε την αντικαταβολή σας από τις μη παραλαβές."
+
+#: admin/class-wc-smart-cod-settings-tools.php:152
+msgid "Protection continues when a failed card payment is followed by COD."
+msgstr "Η προστασία συνεχίζεται και αν ο πελάτης επιλέξει αντικαταβολή μετά από αποτυχία κάρτας."
+
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Protection from your country’s network"
+msgstr "Προστασία από το δίκτυο της χώρας σας"
+
+#: includes/class-wc-smart-cod-lifecycle.php:45
 msgid "Read how the service uses data."
 msgstr "Διαβάστε πώς χρησιμοποιεί η υπηρεσία τα δεδομένα."
+
+#: admin/class-wc-smart-cod-settings-tools.php:174
+msgid "Restore settings"
+msgstr "Επαναφορά ρυθμίσεων"
+
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Restriction modes"
+msgstr "Λειτουργία περιορισμών"
 
 #: admin/class-wc-smart-cod-admin.php:722
 msgid "Round Down"
@@ -197,9 +297,21 @@ msgstr "Στρογγυλοποίηση προς τα κάτω"
 msgid "Round Up"
 msgstr "Στρογγυλοποίηση προς τα πάνω"
 
-#: includes/class-wc-smart-cod-lifecycle.php:48
+#: includes/class-wc-smart-cod-lifecycle.php:52
 msgid "Same store only; other COD rules still apply. Set 100% to prevent successful orders from overriding a qualifying failure."
 msgstr "Μόνο στο ίδιο κατάστημα· οι άλλοι κανόνες αντικαταβολής ισχύουν κανονικά. Επιλέξτε 100% ώστε οι επιτυχημένες παραγγελίες να μην παρακάμπτουν μια επιλέξιμη αποτυχία."
+
+#: admin/class-wc-smart-cod-settings-tools.php:159
+msgid "Save and restore Free settings on this store. Sharing consent, keys and order data are not included."
+msgstr "Αποθηκεύστε και επαναφέρετε τις ρυθμίσεις του Free στο ίδιο κατάστημα. Δεν περιλαμβάνονται η συγκατάθεση κοινοποίησης, τα κλειδιά και τα δεδομένα παραγγελιών."
+
+#: admin/partials/wc-smart-cod-admin-display.php:30
+msgid "Save your settings to a file or restore a previous backup on this store."
+msgstr "Αποθηκεύστε τις ρυθμίσεις σε αρχείο ή επαναφέρετε ένα προηγούμενο αντίγραφο σε αυτό το κατάστημα."
+
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "See why each checkout decision was made"
+msgstr "Δείτε γιατί πάρθηκε κάθε απόφαση στο checkout"
 
 #: admin/class-wc-smart-cod-admin.php:606
 msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted category. Select \"all\", if you want the COD to be restricted if all the cart product's belongs to restricted categories. Then add the restricted categories in the select field below."
@@ -281,17 +393,31 @@ msgstr "Επιλέξτε ρόλους χρηστών για περιορισμό
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
+#: admin/class-wc-smart-cod-settings-tools.php:159
+#: includes/class-wc-smart-cod.php:106
+msgid "Settings backup"
+msgstr "Αντίγραφο ρυθμίσεων"
+
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "Settings restored."
+msgstr "Οι ρυθμίσεις επαναφέρθηκαν."
+
 #: admin/class-wc-smart-cod-admin.php:657
+#: admin/class-wc-smart-cod-settings-tools.php:37
 msgid "Shipping Class Restriction Mode"
 msgstr "Τρόπος περιορισμού κλάσεων αποστολής"
 
-#: includes/class-wc-smart-cod.php:120
+#: includes/class-wc-smart-cod.php:121
 msgid "Smart COD for WooCommerce"
 msgstr "Smart COD for WooCommerce"
 
-#: includes/class-wc-smart-cod-lifecycle.php:40
+#: includes/class-wc-smart-cod-lifecycle.php:44
 msgid "Stores cancelled and completed COD orders from this store to restrict COD for customers who did not receive their orders, and keep COD available when their successful-order rate meets your threshold."
 msgstr "Αποθηκεύει ακυρωμένες και ολοκληρωμένες παραγγελίες αντικαταβολής του καταστήματος για να περιορίζει την αντικαταβολή σε πελάτες που δεν παρέλαβαν και να τη διατηρεί διαθέσιμη όταν το ποσοστό επιτυχίας τους καλύπτει το όριό σας."
+
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "The backup is invalid, belongs to another store, or the preview has expired. Create a new preview."
+msgstr "Το αντίγραφο δεν είναι έγκυρο, ανήκει σε άλλο κατάστημα ή η προεπισκόπηση έληξε. Δημιουργήστε νέα προεπισκόπηση."
 
 #: admin/class-wc-smart-cod-admin.php:709
 msgid "The extra amount you charging for cash on delivery (leave blank or zero if you don't charge extra)"
@@ -300,6 +426,11 @@ msgstr "Πρόσθετο ποσό χρέωσης αντικαταβολής (α�
 #: admin/class-wc-smart-cod-admin.php:1106
 msgid "This field should be a number only."
 msgstr "Το πεδίο πρέπει να περιέχει μόνο αριθμό."
+
+#: admin/class-wc-smart-cod-settings-tools.php:123
+#: admin/class-wc-smart-cod-settings-tools.php:139
+msgid "Try it free for 7 days"
+msgstr "Δοκιμάστε δωρεάν για 7 ημέρες"
 
 #: admin/class-wc-smart-cod-admin.php:812
 msgid "Unavailable by restricted cart amount"
@@ -348,3 +479,19 @@ msgstr "Μη διαθέσιμη λόγω περιορισμού περιφέρε
 #: admin/class-wc-smart-cod-admin.php:813
 msgid "Unavailable by restricted user role"
 msgstr "Μη διαθέσιμη λόγω περιορισμού ρόλου χρήστη"
+
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Use delivery history from connected stores in the same country, even for new customers. Keep COD available for reliable customers; supported tracking adds courier evidence of delivery or return."
+msgstr "Αξιοποιήστε το ιστορικό συνδεδεμένων καταστημάτων της ίδιας χώρας, ακόμη και για νέους πελάτες. Κρατήστε την αντικαταβολή για συνεπείς πελάτες, με στοιχεία παράδοσης ή επιστροφής από υποστηριζόμενους courier."
+
+#: admin/class-wc-smart-cod-settings-tools.php:143
+msgid "What you gain with Smart COD AI"
+msgstr "Τι κερδίζετε με το Smart COD AI"
+
+#: admin/class-wc-smart-cod-settings-tools.php:134
+msgid "Your country’s network. Stronger COD protection."
+msgstr "Προστατέψτε την αντικαταβολή σας από τις μη παραλαβές."
+
+#: admin/class-wc-smart-cod-settings-tools.php:140
+msgid "Your settings come with you — Smart COD AI detects them automatically for review."
+msgstr "Οι ρυθμίσεις σας έρχονται μαζί σας — το Smart COD AI τις εντοπίζει αυτόματα για έλεγχο."

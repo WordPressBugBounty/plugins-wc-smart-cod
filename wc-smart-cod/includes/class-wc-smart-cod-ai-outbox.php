@@ -667,11 +667,18 @@ class Wc_Smart_Cod_Ai_Outbox {
 	 *
 	 * @return bool
 	 */
-	private static function ensure_enrolled() {
+	public static function sync_installation_registration() {
+		if ( ! self::is_data_sharing_enabled() && ( ! get_option( self::INSTALLATION_OPTION ) || ! get_option( self::PRIVATE_KEY_OPTION ) ) ) return true;
+		return self::ensure_enrolled( true );
+	}
+	private static function ensure_enrolled( $force = false ) {
 		$domain     = self::get_site_domain();
 		$country    = self::get_operating_country();
 		$enrollment = get_option( self::ENROLLED_OPTION );
-		if ( is_array( $enrollment ) && isset( $enrollment['site_domain'], $enrollment['operating_country'] )
+		$version = defined( 'SMART_COD_VER' ) ? SMART_COD_VER : '';
+		$sync = get_option( 'wsc_installation_sync_state' );
+		if ( ! $force && is_array( $enrollment ) && isset( $enrollment['site_domain'], $enrollment['operating_country'] )
+			&& ( isset( $enrollment['plugin_version'] ) ? $enrollment['plugin_version'] : '' ) === $version
 			&& self::safe_equals( $domain, (string) $enrollment['site_domain'] )
 			&& self::safe_equals( $country, (string) $enrollment['operating_country'] ) ) {
 			return true;
@@ -700,6 +707,13 @@ class Wc_Smart_Cod_Ai_Outbox {
 		if ( false === $body ) {
 			return false;
 		}
+		if ( is_array( $sync ) ) {
+			$payload = json_decode( $body, true );
+			$payload['source']['data_sharing_enabled'] = $sync['enabled'];
+			$payload['source']['sharing_revision'] = $sync['revision'];
+			$body = self::encode_json( $payload );
+			if ( false === $body ) return false;
+		}
 
 		try {
 			$response = wp_safe_remote_post(
@@ -715,9 +729,24 @@ class Wc_Smart_Cod_Ai_Outbox {
 		} catch ( Exception $exception ) {
 			return false;
 		}
+		if ( is_array( $sync ) && ! is_wp_error( $response ) && 409 === absint( wp_remote_retrieve_response_code( $response ) ) ) {
+			$conflict = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( is_array( $conflict ) && isset( $conflict['code'], $conflict['sharing_revision'] ) && 'sharing_revision_conflict' === $conflict['code'] && is_int( $conflict['sharing_revision'] ) && $conflict['sharing_revision'] >= $sync['revision'] && $conflict['sharing_revision'] < 9007199254740991 ) {
+				$current = get_option( 'wsc_installation_sync_state' );
+				if ( is_array( $current ) && $current['revision'] === $sync['revision'] ) {
+					$current['revision'] = $conflict['sharing_revision'] + 1;
+					update_option( 'wsc_installation_sync_state', $current, false );
+				}
+			}
+			return false;
+		}
 
 		if ( ! is_wp_error( $response ) && isset( $response['response']['code'] ) && in_array( absint( $response['response']['code'] ), array( 200, 201 ), true ) ) {
-			update_option( self::ENROLLED_OPTION, array( 'site_domain' => $domain, 'operating_country' => $country ), false );
+			if ( is_array( $sync ) ) {
+				$ack = json_decode( wp_remote_retrieve_body( $response ), true );
+				if ( ! is_array( $ack ) || ! isset( $ack['installation_id'], $ack['sharing_revision'] ) || $ack['installation_id'] !== self::installation_id() || $ack['sharing_revision'] !== $sync['revision'] ) return false;
+			}
+			update_option( self::ENROLLED_OPTION, array( 'site_domain' => $domain, 'operating_country' => $country, 'plugin_version' => $version ), false );
 			return true;
 		}
 

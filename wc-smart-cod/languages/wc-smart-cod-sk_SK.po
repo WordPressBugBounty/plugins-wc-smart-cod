@@ -1,0 +1,681 @@
+# This file is distributed under the same license as the Plugins - Smart COD for WooCommerce - Stable (latest release) package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Smart COD for WooCommerce\n"
+"Language: sk_SK\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2);\n"
+"X-Translation-Source: https://translate.wordpress.org/projects/wp-plugins/wc-smart-cod/stable/sk/default/\n"
+"X-Translation-Review: Community translations retained; additions require human language review\n"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:138
+msgid "7-day free trial"
+msgstr "7 dní na vyskúšanie zadarmo"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:121
+msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
+msgstr ": Obmedzte opakované neprevzaté objednávky na dobierku. Ochrana dobierky môže skryť platbu na dobierku, ak ten istý zákazník zodpovedá oprávnenej objednávke, ktorá bola vo vašom obchode odoslaná a neskôr zrušená. Služba je voliteľná a predvolene vypnutá."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:121
+msgid "Add delivery history from connected stores in your country, machine learning and clear reasons for every checkout decision."
+msgstr "Využite históriu doručenia prepojených obchodov vo vašej krajine, strojové učenie a jasné vysvetlenie každého rozhodnutia v pokladni."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:575
+msgid "Add the cities you want to restrict the COD method. Seperate with a comma. This cannot guarantee the cod restriction at all times, because the city field on checkout is a free text field and the user can make typos or use different characters / spelling for his city."
+msgstr "Pridajte mestá, pre ktoré chcete vylúčiť pri platbe dobierkou. Oddeľte ich čiarkou. Toto obmedzenie nemusí vždy fungovať, hlavne ak mesto zákazník nenapíše správne."
+
+#. Community translation with technical correction: Restore HTML code tags
+#. translated as kód; leave Slovak wording unchanged.
+#: admin/class-wc-smart-cod-admin.php:564
+msgid "Add the postal codes you want to restrict the COD method. Seperate with a comma. You can use fully numeric ranges as well (e.g<code>55133,55134,55400...55600</code>). For ranges use <code>...</code> for delimiter."
+msgstr "Pridajte poštové smerovacie čísla, ktorými chcete obmedziť spôsob dobierky. Oddeľte ich čiarkou. Môžete použiť aj úplne číselné rozsahy (napr.<code>55133,55134,55400...55600</code>). Pre rozsahy použite <code>...</code> ako oddeľovač."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:603
+#: admin/class-wc-smart-cod-admin.php:633
+#: admin/class-wc-smart-cod-admin.php:663
+msgid "All products"
+msgstr "Všetky produkty"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:701
+msgid "An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don't want to use this feature. You can define different messages per reason."
+msgstr "Informačný text, ktorý sa zobrazí pred spôsobmi platby, ak nie je pre zákazníka dostupný spôsob platby na dobierku. Ak túto funkciu nechcete používať, nechajte ju prázdnu. Môžete definovať rôzne správy podľa dôvodu."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:51
+msgid "At 90%, 9 successful and 1 failed order keep COD available."
+msgstr "Pri 90 % zostáva dobierka dostupná pri 9 úspešných a 1 neúspešnej objednávke."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:602
+#: admin/class-wc-smart-cod-admin.php:632
+#: admin/class-wc-smart-cod-admin.php:662
+msgid "At least one product"
+msgstr "Najmenej jeden produkt"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:769
+msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
+msgstr "Automaticky skryť dobierku, ak e-mail alebo telefón pri platení zodpovedá oprávnenej objednávke na dobierku, ktorá bola vo vašom obchode odoslaná a neskôr zrušená. Voliteľné a predvolene vypnuté. Zapnutím tejto ochrany sa tiež začne zhromažďovanie a zdieľanie oprávnených minulých a budúcich udalostí zrušených objednávok na dobierku, sledovacích kódov, ak sú dostupné, údajov o objednávkach, obmedzeného počtu skôr dokončených sledovaných objednávok na dobierku a pseudonymizovaných identifikátorov zákazníkov a lokalít so službou api.woosmartcod.com. E-mail a telefón sa neposielajú v pôvodnej podobe. Vypnutím sa zastaví ďalšie zhromažďovanie, zdieľanie a kontroly pri platení. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Prečítajte si, ako služba používa údaje.</a>"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Backup"
+msgstr "Záloha"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:773
+msgid "COD Protection"
+msgstr "Ochrana dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:698
+#: admin/class-wc-smart-cod-settings-tools.php:42
+msgid "COD Unavailable Message"
+msgstr "Správa o nedostupnosti dobierky"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "COD with an advance payment"
+msgstr "Dobierka so zálohou"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:750
+#: admin/class-wc-smart-cod-settings-tools.php:39
+msgid "Charge extra fee differently for shipping method: "
+msgstr "Odlišne účtovať príplatok za spôsob dopravy:"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:162
+msgid "Choose a settings backup to preview before restoring."
+msgstr "Vyberte zálohu nastavení na náhľad pred obnovením."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "Collect a fixed amount or percentage online. Leave the rest payable on delivery."
+msgstr "Vyberte pevnú sumu alebo percento online. Zvyšok pri doručení."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "Combine conditions for customers, carts and shipping."
+msgstr "Kombinujte podmienky pre zákazníkov, košíky a dopravu."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Current settings"
+msgstr "Aktuálne nastavenia"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:309
+#: admin/class-wc-smart-cod-admin.php:737
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Disable"
+msgstr "Zakázať"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:572
+msgid "Disable on specific cities"
+msgstr "Zakázať v konkrétnych mestách"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:533
+msgid "Disable on specific countries"
+msgstr "Zakázať v určitých krajinách"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:561
+msgid "Disable on specific postal codes"
+msgstr "Zakázať na konkrétnych poštových smerovacích číslach"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:611
+msgid "Disable on specific product categories"
+msgstr "Zakázať na konkrétnych kategóriách produktov"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:641
+msgid "Disable on specific products"
+msgstr "Zakázať na konkrétnych produktoch"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:671
+msgid "Disable on specific shipping classes"
+msgstr "Zakázať v konkrétnych triedach dopravy"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:685
+msgid "Disable on specific shipping methods of zones"
+msgstr "Zakázať pri konkrétnych spôsoboch dopravy v zónach"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:517
+msgid "Disable on specific shipping zones"
+msgstr "Zakázať v konkrétnych zónach dopravy"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:547
+msgid "Disable on specific states"
+msgstr "Zakázať v konkrétnych štátoch"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:583
+msgid "Disable on specific user roles"
+msgstr "Zakázať na konkrétnych používateľských rolách"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:309
+#: admin/class-wc-smart-cod-admin.php:736
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Enable"
+msgstr "Povoliť"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:122
+msgid "Enable COD Protection"
+msgstr "Zapnúť ochranu dobierky"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:775
+#: includes/class-wc-smart-cod-lifecycle.php:43
+msgid "Enable COD protection"
+msgstr "Zapnúť ochranu dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:711
+#: admin/class-wc-smart-cod-admin.php:755
+msgid "Enter Amount"
+msgstr "Zadajte sumu"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:752
+msgid "Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount"
+msgstr "Zadajte sumu, ktorú chcete pri tomto spôsobe dopravy účtovať inak, alebo ju nechajte prázdnu, aby ste účtovali bežnú sumu."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Estimate non-collection risk from delivery history and order details."
+msgstr "Odhad rizika neprevzatia z histórie doručenia a údajov objednávky."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:725
+msgid "Examples: Round up setting will transform 5.345&euro; to 6&euro;<br />Round down will transform it to 5&euro;."
+msgstr "Príklady: Zaokrúhlenie nahor zmení 5,345&euro; na 6&euro;<br />Zaokrúhlenie nadol zmení na 5&euro;."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/partials/wc-smart-cod-admin-display.php:29
+msgid "Export or restore your Free settings"
+msgstr "Export alebo obnovenie nastavení Free"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:706
+#: admin/class-wc-smart-cod-settings-tools.php:38
+msgid "Extra Fee"
+msgstr "Dodatočný poplatok"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:731
+#: admin/class-wc-smart-cod-settings-tools.php:40
+msgid "Extra Fee Tax"
+msgstr "Daň za dodatočný poplatok"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Fee types"
+msgstr "Typy poplatkov"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:1108
+msgid "Fixed"
+msgstr "Pevná suma"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Flexible COD fees"
+msgstr "Flexibilné poplatky za dobierku"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:805
+msgid "Generic Message"
+msgstr "Všeobecná správa"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:422
+msgid "Guest (Customer without account)"
+msgstr "Hosť (zákazník bez účtu)"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:122
+msgid "How data is used"
+msgstr "Ako sa údaje používajú"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "Inspect reasons and checks, with filters and a link to the order when available."
+msgstr "Pozrite si dôvody a kontroly s filtrami a odkazom na objednávku, ak je dostupný."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:740
+msgid "Is extra fee taxable? Use this option if you have taxes enabled in your shop and you want to include tax to COD method."
+msgstr "Je príplatok zdaniteľný? Túto možnosť použite, ak máte v obchode povolené dane a chcete zahrnúť daň do metódy dobierky."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:124
+msgid "Learn more"
+msgstr "Zistiť viac"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Machine learning"
+msgstr "Strojové učenie"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:119
+msgid "Meet Smart COD AI"
+msgstr "Spoznajte Smart COD AI"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:41
+#: includes/class-wc-smart-cod-lifecycle.php:49
+msgid "Minimum successful COD rate (%)"
+msgstr "Minimálna miera úspešných objednávok na dobierku (%)"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "More flexible restriction rules"
+msgstr "Flexibilnejšie pravidlá obmedzení"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Multiple rules for fixed amounts or percentage fees."
+msgstr "Viac pravidiel pre pevné sumy alebo percentuálne poplatky."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:135
+msgid "New to your store? Their delivery history may already be available in your country’s network. Add network insights, ML and clear checkout decisions."
+msgstr "Nový zákazník? Jeho história doručenia už môže byť dostupná v sieti vo vašej krajine. Využite sieť, ML a prehľadné rozhodovanie v pokladni."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:173
+msgid "Only the settings shown above will be replaced. Other settings remain unchanged."
+msgstr "Nahradia sa iba vyššie uvedené nastavenia. Ostatné zostanú nezmenené."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:716
+#: admin/class-wc-smart-cod-settings-tools.php:40
+msgid "Percentage Rounding Settings"
+msgstr "Nastavenia zaokrúhľovania percent"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:1107
+msgid "Please save the changes to see the new settings"
+msgstr "Ak chcete zobraziť nové nastavenia, uložte zmeny"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:597
+#: admin/class-wc-smart-cod-settings-tools.php:35
+msgid "Product Category Restriction Mode"
+msgstr "Režim obmedzenia kategórie produktu"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:627
+#: admin/class-wc-smart-cod-settings-tools.php:36
+msgid "Product Restriction Mode"
+msgstr "Režim obmedzenia produktu"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:120
+msgid "Protect your COD orders from non-collection."
+msgstr "Chráňte objednávky na dobierku pred neprevzatím."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:152
+msgid "Protection continues when a failed card payment is followed by COD."
+msgstr "Ochrana pokračuje, aj keď po neúspešnej platbe kartou zákazník zvolí dobierku."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Protection from your country’s network"
+msgstr "Ochrana vďaka sieti vo vašej krajine"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:45
+msgid "Read how the service uses data."
+msgstr "Prečítajte si, ako služba používa údaje."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:174
+msgid "Restore settings"
+msgstr "Obnoviť nastavenia"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Restriction modes"
+msgstr "Režimy obmedzení"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:722
+msgid "Round Down"
+msgstr "Zaokrúhliť nadol"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:721
+msgid "Round Up"
+msgstr "Zaokrúhliť nahor"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:52
+msgid "Same store only; other COD rules still apply. Set 100% to prevent successful orders from overriding a qualifying failure."
+msgstr "Iba v rámci rovnakého obchodu; ostatné pravidlá dobierky naďalej platia. Nastavte 100 %, aby úspešné objednávky neprevážili nad neúspešnou objednávkou spĺňajúcou podmienky."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:159
+msgid "Save and restore Free settings on this store. Sharing consent, keys and order data are not included."
+msgstr "Uložte a obnovte nastavenia Free v tomto obchode. Súhlas so zdieľaním, kľúče a údaje objednávok nie sú zahrnuté."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/partials/wc-smart-cod-admin-display.php:30
+msgid "Save your settings to a file or restore a previous backup on this store."
+msgstr "Uložte nastavenia do súboru alebo v tomto obchode obnovte predchádzajúcu zálohu."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "See why each checkout decision was made"
+msgstr "Zistite dôvod každého rozhodnutia v pokladni"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:606
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted category. Select \"all\", if you want the COD to be restricted if all the cart product's belongs to restricted categories. Then add the restricted categories in the select field below."
+msgstr "Vyberte \"aspoň jeden\", ak chcete, aby bola dobierka nedostupná, keď aspoň jeden produkt v košíku patrí do kategórie, ktorá má zakázanú možnosť posielania na dobierku. Vyberte \"všetky\", ak chcete, aby bola dobierka nedostupná, ak všetky produkty v košíku partia do kategórií, ktoré majú zakázanú možnosť posielania na dobierku. Potom pridajte požadované kategórie."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:666
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart belongs to a restricted shipping class. Select \"all\", if you want the COD to be restricted if all of the cart's product's belongs to restricted shipping classes. Then add the restricted shipping classes in the select field below."
+msgstr "Vyberte \"aspoň jeden\", ak chcete, aby bola dobierka nedostupná, keď aspoň jeden produkt v košíku patrí do zvolenej triedy dopravy. Vyberte \"všetky\", ak chcete, aby bola dobierka nedostupná, ak všetky produkty v košíku patria do zvolenej triedy dopravy. Potom pridajte požadovanú triedu dopravy, pre ktorú chcete obmedziť možnosť platby dobierkou."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:636
+msgid "Select \"at least one\", if you want the COD to be restricted when at least one product of the cart is restricted. Select \"all\", if you want the COD to be restricted if all of the cart's product's are restricted. Then add the restricted products in the select field below."
+msgstr "Vyberte \"aspoň jeden\", ak chcete, aby bola dobierka nedostupná, keď aspoň jeden produkt v košíku má zakázanú možnosť posielania na dobierku. Vyberte \"všetky\", ak chcete, aby bola dobierka nedostupná, ak všetky produkty v košíku majú zakázanú možnosť posielania na dobierku. Potom pridajte požadované produkty."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:540
+msgid "Select Countries"
+msgstr "Vybrať krajiny"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:590
+msgid "Select Roles"
+msgstr "Vybrať roly"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:678
+msgid "Select Shipping Classes"
+msgstr "Vyberte triedy dopravy"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:692
+msgid "Select Shipping Methods"
+msgstr "Vyberte spôsoby dopravy"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:554
+msgid "Select States"
+msgstr "Vybrať štáty"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:618
+msgid "Select categories"
+msgstr "Vybrať kategórie"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:648
+msgid "Select products"
+msgstr "Vybrať produkty"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:524
+msgid "Select shipping zones"
+msgstr "Vybrať zóny dopravy"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:536
+msgid "Select the countries you want to restrict the COD method"
+msgstr "Vyberte krajiny, v ktorých chcete obmedziť spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:614
+msgid "Select the product categories you want to restrict the COD method"
+msgstr "Vyberte kategórie produktov, ktoré chcete obmedziť pre spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:644
+msgid "Select the products you want to restrict the COD method"
+msgstr "Vyberte produkty, ktoré chcete obmedziť spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:674
+msgid "Select the shipping classes you want to restrict the COD method"
+msgstr "Vyberte triedy dopravy, pre ktoré chcete obmedziť spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:688
+msgid "Select the shipping methods of specific zones, you want to restrict the COD method. <strong>Please note that for WooCommerce versions >= 3.4, this is a built in feature, so if you use the WooCommerce setting, this setting will be disabled. Otherwise leave the WooCommerce setting blank and use our setting.</strong>"
+msgstr "Vyberte spôsoby dopravy konkrétnych zón, ktoré chcete obmedziť na spôsob dobierky. <strong>Upozorňujeme, že pre verzie WooCommerce >= 3.4 ide o zabudovanú funkciu, takže ak použijete nastavenie WooCommerce, toto nastavenie bude vypnuté. V opačnom prípade nechajte nastavenie WooCommerce prázdne a použite naše nastavenie.</strong>"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:520
+msgid "Select the shipping zones you want to restrict the COD method"
+msgstr "Vyberte zóny dopravy, v ktorých chcete obmedziť spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:550
+msgid "Select the states you want to restrict the COD method"
+msgstr "Vyberte štáty, v ktorých chcete obmedziť spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:586
+msgid "Select the user roles you want to restrict the COD method"
+msgstr "Vyberte roly používateľov, ktorým chcete obmedziť spôsob dobierky"
+
+#. Approved WordPress.org community translation preserved.
+#: includes/class-wc-smart-cod.php:105
+msgid "Settings"
+msgstr "Nastavenia"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:159
+#: includes/class-wc-smart-cod.php:106
+msgid "Settings backup"
+msgstr "Záloha nastavení"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "Settings restored."
+msgstr "Nastavenia boli obnovené."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:657
+#: admin/class-wc-smart-cod-settings-tools.php:37
+msgid "Shipping Class Restriction Mode"
+msgstr "Režim obmedzenia triedy dopravy"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod.php:121
+msgid "Smart COD for WooCommerce"
+msgstr "Smart COD for WooCommerce"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: includes/class-wc-smart-cod-lifecycle.php:44
+msgid "Stores cancelled and completed COD orders from this store to restrict COD for customers who did not receive their orders, and keep COD available when their successful-order rate meets your threshold."
+msgstr "Ukladá zrušené a dokončené objednávky na dobierku z tohto obchodu, aby obmedzil dobierku zákazníkom, ktorí svoje objednávky neprevzali, a ponechal ju dostupnú, ak miera ich úspešných objednávok dosiahne váš limit."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "The backup is invalid, belongs to another store, or the preview has expired. Create a new preview."
+msgstr "Záloha je neplatná, patrí inému obchodu alebo náhľad vypršal. Vytvorte nový náhľad."
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:709
+msgid "The extra amount you charging for cash on delivery (leave blank or zero if you don't charge extra)"
+msgstr "Dodatočná suma, ktorú účtujete za dobierku (ak neúčtujete dodatočnú sumu, nechajte prázdne miesto, alebo nulu)"
+
+#. Approved WordPress.org community translation preserved.
+#: admin/class-wc-smart-cod-admin.php:1106
+msgid "This field should be a number only."
+msgstr "V tomto poli by malo byť len číslo."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:123
+#: admin/class-wc-smart-cod-settings-tools.php:139
+msgid "Try it free for 7 days"
+msgstr "Vyskúšajte zadarmo na 7 dní"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:812
+msgid "Unavailable by restricted cart amount"
+msgstr "Nedostupné pre obmedzenie podľa sume v košíku"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:811
+msgid "Unavailable by restricted city"
+msgstr "Nedostupné pre obmedzenie podľa mestu"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:808
+msgid "Unavailable by restricted country"
+msgstr "Nedostupné pre obmedzenie podľa krajine"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:810
+msgid "Unavailable by restricted postal code"
+msgstr "Nedostupné pre obmedzenie podľa PSČ"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:815
+msgid "Unavailable by restricted product"
+msgstr "Nedostupné pre obmedzenie podľa produktu"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:814
+msgid "Unavailable by restricted product category"
+msgstr "Nedostupné pre obmedzenie podľa kategórii produktov"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:816
+msgid "Unavailable by restricted shipping class"
+msgstr "Nedostupné pre obmedzenie podľa triede dopravy"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:806
+msgid "Unavailable by restricted shipping method"
+msgstr "Nedostupné pre obmedzenie podľa spôsobu dopravy"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:817
+msgid "Unavailable by restricted shipping method of a specific zone"
+msgstr "Nedostupné pre obmedzenie podľa spôsobu dopravy v konkrétnej zóne"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:807
+msgid "Unavailable by restricted shipping zone"
+msgstr "Nedostupné pre obmedzenie podľa zóne dopravy"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:809
+msgid "Unavailable by restricted state"
+msgstr "Nedostupné pre obmedzenie podľa regiónu"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-admin.php:813
+msgid "Unavailable by restricted user role"
+msgstr "Nedostupné pre obmedzenie podľa používateľskej role"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Use delivery history from connected stores in the same country, even for new customers. Keep COD available for reliable customers; supported tracking adds courier evidence of delivery or return."
+msgstr "Využite históriu doručenia prepojených obchodov v rovnakej krajine aj pri nových zákazníkoch. Zachovajte dobierku spoľahlivým zákazníkom; podporované sledovanie pridá údaje dopravcu o doručení či vrátení."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:143
+msgid "What you gain with Smart COD AI"
+msgstr "Čo získate so Smart COD AI"
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:134
+msgid "Your country’s network. Stronger COD protection."
+msgstr "Sieť vo vašej krajine. Silnejšia ochrana dobierky."
+
+#. AI-assisted addition; human language review required before WordPress.org
+#. submission.
+#: admin/class-wc-smart-cod-settings-tools.php:140
+msgid "Your settings come with you — Smart COD AI detects them automatically for review."
+msgstr "Vaše nastavenia prejdú s vami — Smart COD AI ich automaticky nájde na kontrolu."

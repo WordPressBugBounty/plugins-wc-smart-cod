@@ -3,12 +3,16 @@ msgstr ""
 "Project-Id-Version: Smart COD for WooCommerce\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: includes/class-wc-smart-cod.php:120
+#: admin/class-wc-smart-cod-settings-tools.php:138
+msgid "7-day free trial"
+msgstr ""
+
+#: includes/class-wc-smart-cod.php:121
 msgid ": Reduce repeat uncollected COD orders. COD Protection can hide Cash on Delivery when the same customer matches an eligible order that was dispatched and later cancelled in your store. The service is optional and off by default."
 msgstr ""
 
-#: admin/partials/wc-smart-cod-admin-display.php:35
-msgid "A separate Smart COD PRO plugin offers advance-payment COD, multiple conditional extra fees, order-pay fee handling, CSV restriction imports, and additional cart, customer, stock, backorder and coupon rules. These features are not part of the Free plugin."
+#: admin/class-wc-smart-cod-settings-tools.php:121
+msgid "Add delivery history from connected stores in your country, machine learning and clear reasons for every checkout decision."
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:575
@@ -29,7 +33,7 @@ msgstr ""
 msgid "An informational text to display before the payment methods, when the COD method is not available for a customer. Leave it empty if you don't want to use this feature. You can define different messages per reason."
 msgstr ""
 
-#: includes/class-wc-smart-cod-lifecycle.php:47
+#: includes/class-wc-smart-cod-lifecycle.php:51
 msgid "At 90%, 9 successful and 1 failed order keep COD available."
 msgstr ""
 
@@ -43,16 +47,42 @@ msgstr ""
 msgid "Automatically hide Cash on Delivery when the checkout email or telephone matches an eligible COD order that was dispatched and later cancelled in your store. Optional and off by default. Enabling this protection also starts collection and sharing of eligible past and future cancelled COD events, tracking codes where available, order details, a capped count of earlier completed tracked COD orders, and pseudonymized customer/location identifiers with api.woosmartcod.com. Raw email and telephone values are not sent. Turning it off stops future collection, sharing and checkout checks. <a href=\"%s\" target=\"_blank\" rel=\"noopener\">Read how the service uses data.</a>"
 msgstr ""
 
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Backup"
+msgstr ""
+
 #: admin/class-wc-smart-cod-admin.php:773
 msgid "COD Protection"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:698
+#: admin/class-wc-smart-cod-settings-tools.php:42
 msgid "COD Unavailable Message"
 msgstr ""
 
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "COD with an advance payment"
+msgstr ""
+
 #: admin/class-wc-smart-cod-admin.php:750
+#: admin/class-wc-smart-cod-settings-tools.php:39
 msgid "Charge extra fee differently for shipping method: "
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:162
+msgid "Choose a settings backup to preview before restoring."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:149
+msgid "Collect a fixed amount or percentage online. Leave the rest payable on delivery."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "Combine conditions for customers, carts and shipping."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:167
+msgid "Current settings"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:309
@@ -107,12 +137,12 @@ msgstr ""
 msgid "Enable"
 msgstr ""
 
-#: includes/class-wc-smart-cod.php:121
+#: includes/class-wc-smart-cod.php:122
 msgid "Enable COD Protection"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:775
-#: includes/class-wc-smart-cod-lifecycle.php:39
+#: includes/class-wc-smart-cod-lifecycle.php:43
 msgid "Enable COD protection"
 msgstr ""
 
@@ -125,24 +155,38 @@ msgstr ""
 msgid "Enter Amount to charge differently in this shipping method or leave it empty to charge the normal amount"
 msgstr ""
 
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Estimate non-collection risk from delivery history and order details."
+msgstr ""
+
 #: admin/class-wc-smart-cod-admin.php:725
 msgid "Examples: Round up setting will transform 5.345&euro; to 6&euro;<br />Round down will transform it to 5&euro;."
 msgstr ""
 
-#: admin/partials/wc-smart-cod-admin-display.php:36
-msgid "Explore PRO features"
+#: admin/partials/wc-smart-cod-admin-display.php:29
+msgid "Export or restore your Free settings"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:706
+#: admin/class-wc-smart-cod-settings-tools.php:38
 msgid "Extra Fee"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:731
+#: admin/class-wc-smart-cod-settings-tools.php:40
 msgid "Extra Fee Tax"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Fee types"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:1108
 msgid "Fixed"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Flexible COD fees"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:805
@@ -153,19 +197,53 @@ msgstr ""
 msgid "Guest (Customer without account)"
 msgstr ""
 
-#: includes/class-wc-smart-cod.php:121
+#: includes/class-wc-smart-cod.php:122
 msgid "How data is used"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "Inspect reasons and checks, with filters and a link to the order when available."
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:740
 msgid "Is extra fee taxable? Use this option if you have taxes enabled in your shop and you want to include tax to COD method."
 msgstr ""
 
-#: includes/class-wc-smart-cod-lifecycle.php:45
+#: admin/class-wc-smart-cod-settings-tools.php:124
+msgid "Learn more"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:147
+msgid "Machine learning"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:119
+msgid "Meet Smart COD AI"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:41
+#: includes/class-wc-smart-cod-lifecycle.php:49
 msgid "Minimum successful COD rate (%)"
 msgstr ""
 
+#: admin/class-wc-smart-cod-settings-tools.php:150
+msgid "More flexible restriction rules"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:148
+msgid "Multiple rules for fixed amounts or percentage fees."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:135
+msgid "New to your store? Their delivery history may already be available in your country’s network. Add network insights, ML and clear checkout decisions."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:173
+msgid "Only the settings shown above will be replaced. Other settings remain unchanged."
+msgstr ""
+
 #: admin/class-wc-smart-cod-admin.php:716
+#: admin/class-wc-smart-cod-settings-tools.php:40
 msgid "Percentage Rounding Settings"
 msgstr ""
 
@@ -174,15 +252,37 @@ msgid "Please save the changes to see the new settings"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:597
+#: admin/class-wc-smart-cod-settings-tools.php:35
 msgid "Product Category Restriction Mode"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:627
+#: admin/class-wc-smart-cod-settings-tools.php:36
 msgid "Product Restriction Mode"
 msgstr ""
 
-#: includes/class-wc-smart-cod-lifecycle.php:41
+#: admin/class-wc-smart-cod-settings-tools.php:120
+msgid "Protect your COD orders from non-collection."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:152
+msgid "Protection continues when a failed card payment is followed by COD."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Protection from your country’s network"
+msgstr ""
+
+#: includes/class-wc-smart-cod-lifecycle.php:45
 msgid "Read how the service uses data."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:174
+msgid "Restore settings"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:43
+msgid "Restriction modes"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:722
@@ -193,8 +293,20 @@ msgstr ""
 msgid "Round Up"
 msgstr ""
 
-#: includes/class-wc-smart-cod-lifecycle.php:48
+#: includes/class-wc-smart-cod-lifecycle.php:52
 msgid "Same store only; other COD rules still apply. Set 100% to prevent successful orders from overriding a qualifying failure."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:159
+msgid "Save and restore Free settings on this store. Sharing consent, keys and order data are not included."
+msgstr ""
+
+#: admin/partials/wc-smart-cod-admin-display.php:30
+msgid "Save your settings to a file or restore a previous backup on this store."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:146
+msgid "See why each checkout decision was made"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:606
@@ -277,16 +389,30 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
+#: admin/class-wc-smart-cod-settings-tools.php:159
+#: includes/class-wc-smart-cod.php:106
+msgid "Settings backup"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "Settings restored."
+msgstr ""
+
 #: admin/class-wc-smart-cod-admin.php:657
+#: admin/class-wc-smart-cod-settings-tools.php:37
 msgid "Shipping Class Restriction Mode"
 msgstr ""
 
-#: includes/class-wc-smart-cod.php:120
+#: includes/class-wc-smart-cod.php:121
 msgid "Smart COD for WooCommerce"
 msgstr ""
 
-#: includes/class-wc-smart-cod-lifecycle.php:40
+#: includes/class-wc-smart-cod-lifecycle.php:44
 msgid "Stores cancelled and completed COD orders from this store to restrict COD for customers who did not receive their orders, and keep COD available when their successful-order rate meets your threshold."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:160
+msgid "The backup is invalid, belongs to another store, or the preview has expired. Create a new preview."
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:709
@@ -295,6 +421,11 @@ msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:1106
 msgid "This field should be a number only."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:123
+#: admin/class-wc-smart-cod-settings-tools.php:139
+msgid "Try it free for 7 days"
 msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:812
@@ -343,4 +474,20 @@ msgstr ""
 
 #: admin/class-wc-smart-cod-admin.php:813
 msgid "Unavailable by restricted user role"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:145
+msgid "Use delivery history from connected stores in the same country, even for new customers. Keep COD available for reliable customers; supported tracking adds courier evidence of delivery or return."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:143
+msgid "What you gain with Smart COD AI"
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:134
+msgid "Your country’s network. Stronger COD protection."
+msgstr ""
+
+#: admin/class-wc-smart-cod-settings-tools.php:140
+msgid "Your settings come with you — Smart COD AI detects them automatically for review."
 msgstr ""

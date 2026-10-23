@@ -1,0 +1,36 @@
+/* Admin-only, scoped product guidance. Never loaded on checkout. */
+/* Keep the global announcement in the native WordPress notice/button style. */
+#wpbody-content .wsc-ai-upgrade-notice.notice{box-sizing:border-box;width:100%;max-width:960px;padding:1px 12px!important}
+.wsc-ai-upgrade-notice__inner{padding-right:24px}
+.wsc-ai-upgrade-notice p{font-size:13px;line-height:1.6}
+.wsc-ai-upgrade-notice .wsc-ai-upgrade-notice__source{margin:9px 0 4px;color:#1d2327}
+.wsc-ai-upgrade-notice .wsc-ai-upgrade-notice__message{margin:4px 0 10px}
+.wsc-ai-upgrade-notice .wsc-ai-upgrade-notice__actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;margin:10px 0 11px}
+.wsc-ai-upgrade-notice__learn-more{text-underline-offset:2px}
+.wsc-backup-shortcut{margin:14px 0 8px;font-size:12px;line-height:1.7}
+.wsc-backup-shortcut a{font-weight:500;text-underline-offset:3px}
+.wsc-backup-shortcut span{display:block;color:#646970;font-size:12px}
+.wsc-ai-upgrade-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,250px);gap:12px 24px;box-sizing:border-box;width:100%;max-width:960px;margin:16px 0 14px;padding:20px;border:1px solid #c6d8d0;border-radius:10px;background:linear-gradient(110deg,#fff 40%,#f3f8ef);color:#1d3434}
+.wsc-ai-upgrade-card__brand{font-size:11px;line-height:1.4;font-weight:700;letter-spacing:.08em;color:#43685a;text-transform:uppercase}
+.wsc-ai-upgrade-card .wsc-ai-upgrade-card__story h3{font-size:19px;line-height:1.35;font-weight:600;color:#173b36;margin:6px 0 8px;padding:0}
+.wsc-ai-upgrade-card p{font-size:13px;line-height:1.65;margin:0;color:#4c605b}
+.wsc-ai-upgrade-card__details{grid-column:1/-1;margin:0}
+.wsc-ai-upgrade-card__details summary{width:fit-content;max-width:100%;cursor:pointer;font-size:12px;line-height:1.6;font-weight:600;color:#285b4b}
+.wsc-ai-upgrade-card__details summary:focus-visible{outline:2px solid #2271b1;outline-offset:3px}
+.wsc-ai-upgrade-card__details[open] summary{margin-bottom:8px}
+.wsc-ai-upgrade-card__details p{font-size:12px}
+.wsc-ai-upgrade-card ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px;margin:12px 0 0;padding:0;list-style:none}
+.wsc-ai-upgrade-card li:first-child,.wsc-ai-upgrade-card li:last-child{grid-column:1/-1}
+.wsc-ai-upgrade-card li{display:flex;align-items:baseline;gap:7px;margin:0;font-size:12px;line-height:1.6;color:#345b4c}
+.wsc-ai-upgrade-card li>span{font-weight:700;color:#427b50}
+.wsc-ai-upgrade-card li>div{min-width:0}
+.wsc-ai-upgrade-card li strong{display:block;color:#254e40;font-weight:600;margin-bottom:2px}
+.wsc-ai-upgrade-card__details .wsc-ai-upgrade-card__continuity{margin-top:12px;padding-top:10px;border-top:1px solid #d7e3d9;color:#4c605b}
+.wsc-ai-upgrade-card__start{display:flex;flex-direction:column;align-self:start;align-items:flex-start;justify-content:center;gap:9px;padding-left:22px;border-left:1px solid #d7e3d9}
+.wsc-ai-upgrade-card__trial{display:inline-block;padding:4px 9px;border-radius:5px;background:#e3f1d1;color:#315921;font-size:12px;line-height:1.5;font-weight:600}
+.wsc-ai-upgrade-card__start .button.button-primary{display:block;box-sizing:border-box;width:100%;padding:6px 10px;border:1px solid #183c35;background:#183c35;color:#fff;box-shadow:none;text-align:center;white-space:normal;font-size:13px;line-height:1.6;min-height:36px}
+.wsc-ai-upgrade-card__start .button.button-primary:hover{background:#28584a;border-color:#28584a;color:#fff}
+.wsc-ai-upgrade-card__start .button.button-primary:focus{outline:2px solid #2271b1;outline-offset:3px}
+.wsc-ai-upgrade-card__start .wsc-ai-upgrade-card__migration{font-size:12px;line-height:1.6}
+@media(max-width:800px){.wsc-ai-upgrade-card{grid-template-columns:minmax(0,1fr);gap:14px;padding:16px}.wsc-ai-upgrade-card ul{grid-template-columns:minmax(0,1fr);gap:10px}.wsc-ai-upgrade-card__start{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px 12px;padding:12px 0 0;border-left:0;border-top:1px solid #d7e3d9}.wsc-ai-upgrade-card__start .button.button-primary{width:auto;justify-self:end}.wsc-ai-upgrade-card__start .wsc-ai-upgrade-card__migration{grid-column:1/-1}.wsc-ai-upgrade-card .wsc-ai-upgrade-card__story h3{font-size:17px}.wsc-ai-upgrade-card p{font-size:12px;line-height:1.6}}
+@media(max-width:480px){.wsc-ai-upgrade-card__start{grid-template-columns:minmax(0,1fr)}.wsc-ai-upgrade-card__start .button.button-primary{width:100%;justify-self:stretch}.wsc-ai-upgrade-card__trial{justify-self:start}}

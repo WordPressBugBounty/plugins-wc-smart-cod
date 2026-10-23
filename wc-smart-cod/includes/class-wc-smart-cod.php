@@ -75,7 +75,7 @@ class Wc_Smart_Cod {
 
 		$this->plugin_name = 'wc-smart-cod';
 		
-		define( 'SMART_COD_VER', '1.9.6' );
+		define( 'SMART_COD_VER', '1.9.8' );
 
 		self::$version = SMART_COD_VER;
 
@@ -103,6 +103,7 @@ class Wc_Smart_Cod {
 
 		if ( function_exists( 'WC' ) ) {
 			$plugin_links[] = '<a href="' . esc_url( self::$plugin_settings_url ) . '">' . esc_html__( 'Settings', 'wc-smart-cod' ) . '</a>';
+			$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wsc-settings-backup' ) ) . '">' . esc_html__( 'Settings backup', 'wc-smart-cod' ) . '</a>';
 		}
 
 		return array_merge( $plugin_links, $links );
@@ -222,8 +223,13 @@ class Wc_Smart_Cod {
 		add_action( 'wsc_send_smart_cod_ai_events', array( $this, 'send_ai_order_ids' ), 10, 2 );
 		require_once __DIR__ . '/class-wc-smart-cod-lifecycle.php';
 		Wc_Smart_Cod_Lifecycle::register();
+		require_once __DIR__ . '/class-wc-smart-cod-installation-sync.php';
+		Wc_Smart_Cod_Installation_Sync::register();
 		add_action( 'init', array( $this, 'maybe_start_ai_history_schedule' ), 20 );
 		if ( is_admin() ) {
+			require_once __DIR__ . '/class-wc-smart-cod-settings-backup.php';
+			require_once dirname( __DIR__ ) . '/admin/class-wc-smart-cod-settings-tools.php';
+			Wc_Smart_Cod_Settings_Tools::register();
 			add_action( 'admin_init', array( $this, 'ensure_ai_history_schedule' ) );
 		}
 

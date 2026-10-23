@@ -17,11 +17,25 @@
     const errorId = 'wc-smart-cod-update';
     const customerUpdating = () => {
         const cart = data.select(cartStore);
-        return cart.isCustomerDataUpdating() || cart.isCartDataStale();
+        return ['isCustomerDataUpdating','isCartDataStale','isShippingRateBeingSelected',
+            'hasPendingItemsOperations','isApplyingCoupon','isRemovingCoupon'].some(selector =>
+            typeof cart[selector] === 'function' && cart[selector]());
     };
+    // Only inputs missing from Woo's automatic Store API refresh belong in this job.
+    // Native item/coupon/shipping updates already return a fresh server protection policy.
+    function checkoutInputs() {
+        const store = data.select(cartStore), cart = store.getCartData(), customer = store.getCustomerData();
+        const address = (value = {}) => Object.fromEntries(Object.keys(value).sort()
+            .filter(key => ['country','state','city','postcode'].includes(key) || key.includes('/'))
+            .map(key => [key, value[key]]));
+        const needsShipping = typeof store.getNeedsShipping === 'function' ? store.getNeedsShipping() : cart.needsShipping;
+        return {customer:{billing_address:address(customer.billingAddress),
+            ...(needsShipping === false ? {} : {shipping_address:address(customer.shippingAddress)})}};
+    }
     async function updateNativeCart(job) {
+        const payload = job;
         const response = await wp.apiFetch({path:'/wc/store/v1/cart/extensions',method:'POST',
-            data:{namespace,data:job},headers:{Nonce:nonce},parse:false});
+            data:{namespace,data:payload},headers:{Nonce:nonce},parse:false});
         const cart = await response.json();
         if (!cart || !Array.isArray(cart.items) || !cart.totals || typeof protection(cart).cod_available !== 'boolean') {
             throw new Error('Invalid native cart response');
@@ -60,7 +74,7 @@
     function changed() {
         const customer = data.select(cartStore).getCustomerData().billingAddress || {};
         const snapshot = {payment_method:data.select(paymentStore).getActivePaymentMethod() || '',
-            email:customer.email || '', phone:customer.phone || ''};
+            email:customer.email || '', phone:customer.phone || '', ...checkoutInputs()};
         if (snapshot.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(snapshot.email)) snapshot.email = '';
         const key = JSON.stringify(snapshot);
         if (key !== last) { last = key; pending = snapshot; }

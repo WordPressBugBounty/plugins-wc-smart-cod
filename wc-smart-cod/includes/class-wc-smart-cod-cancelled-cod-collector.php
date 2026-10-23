@@ -697,6 +697,13 @@ class Wc_Smart_Cod_Cancelled_Cod_Collector {
 		return apply_filters( 'wsc_cancelled_cod_tracking_data', $tracking, $order );
 	}
 
+	/** Metadata whose changes can affect the existing tracking extractor. */
+	public static function is_tracking_metadata_key( $key ) {
+		if ( ! is_string( $key ) || '' === $key ) return false;
+		$key = strtolower( $key );
+		return self::is_known_tracking_adapter_key( $key ) || self::is_tracking_key( $key ) || self::is_provider_key( $key );
+	}
+
 	/**
 	 * Explicit adapters for tracking plugins whose order-meta schemas are
 	 * documented or verified in their source. They keep the tracking number and
